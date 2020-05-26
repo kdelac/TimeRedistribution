@@ -11,7 +11,13 @@ namespace TimeRedistribution.Model
         public Doctor Doctor { get; set; }
         public Guid PatientId { get; set; }
         public Patient Patient { get; set; }
-        public DateTime Date { get; set; }
-        public string Time { get; set; }
+        public DateTime DateTime { get; set; }
+    }
+
+    public class AppointmentInsert
+    {
+        public Guid DoctorId { get; set; }
+        public Guid PatientId { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

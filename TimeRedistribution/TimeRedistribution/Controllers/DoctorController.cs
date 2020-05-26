@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TimeRedistribution.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,38 +20,89 @@ namespace TimeRedistribution.Controllers
         {
             _context = context;
         }
-        // GET: api/<DoctorController>
+
         [HttpGet]
-        public IEnumerable<Doctor> Get()
-        {            
-            return _context.Doctors.ToList();
+        public async Task<ActionResult<IEnumerable<Doctor>>> Get()
+        {
+            
+            return await _context.Doctors.ToListAsync();            
         }
 
-        // GET api/<DoctorController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Doctor>> Get(Guid id)
         {
-            return "value";
+            var doctor = _context.Doctors.FirstOrDefault(a => a.Id == id);
+
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+
+            return doctor;
         }
 
-        // POST api/<DoctorController>
         [HttpPost]
-        public void Post(Doctor doctor)
+        public async Task<ActionResult<Doctor>> Post(DoctorFInsert doctor)
         {
-            _context.Doctors.Add(doctor);
-            _context.SaveChanges();
+            Doctor doc = new Doctor();
+            doc.Id = Guid.NewGuid();
+            doc.Name = doctor.Name;
+            doc.Surname = doctor.Surname;
+            doc.OIB = doctor.OIB;
+            doc.Specialization = doctor.Specialization;
+            _context.Doctors.Add(doc);
+            await _context.SaveChangesAsync();
+            return doc;
         }
 
-        // PUT api/<DoctorController>/5
         [HttpPut("{id}")]
-        public void Put(int id, Doctor doctor)
-        {            
+        public async Task<IActionResult> Put(Guid id, DoctorForUpdate doctor)
+        {
+            if (id != doctor.Id)
+            {
+                return BadRequest();
+            }
+
+            var doc = await _context.Doctors.FindAsync(id);
+            if (doc == null)
+            {
+                return NotFound();
+            }
+
+            doc.Name = doctor.Name;
+            doc.Surname = doctor.Surname;
+            doc.OIB = doctor.OIB;
+            doc.Specialization = doctor.Specialization;
+            doc.StartOfWork = doctor.StartOfWork;
+            doc.EndOfWorl = doctor.EndOfWorl;
+            doc.SrartBreak = doctor.SrartBreak;
+            doc.EndBreak = doctor.EndBreak;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
-        // DELETE api/<DoctorController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<Doctor>> Delete(Guid id)
         {
+            Doctor doctor = _context.Doctors.FirstOrDefault(a => a.Id == id);
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+
+            _context.Doctors.Remove(doctor);
+            await _context.SaveChangesAsync();
+
+            return doctor;
         }
     }
 }
