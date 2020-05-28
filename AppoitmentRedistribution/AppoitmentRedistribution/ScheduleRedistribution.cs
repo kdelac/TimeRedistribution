@@ -21,13 +21,13 @@
         public void Redistribut()
         {
             var doctors = _contex.Doctors.Include(_ => _.Appointments).Where(_ => _.Appointments.Count() > 0).ToList();
-            TimeSpan tenMin = new TimeSpan(0, 10, 0);
+            TimeSpan tenMin = new TimeSpan(0, 5, 0);
 
             doctors.ForEach(_ =>
             {
                 var query = _.Appointments.OrderBy(a => a.DateTime.TimeOfDay).Where(b => b.Status == "Waiting" && b.DateTime.Date == DateTime.Now.Date);
 
-                if (Check(query.FirstOrDefault(), tenMin))
+                if (query.FirstOrDefault() != null && Check(query.FirstOrDefault(), tenMin))
                 {
                     ChangeAppoitments(query.ToList(), tenMin);
                     _logger.LogInformation("Promjenjeni termini u: {time}", DateTimeOffset.Now);
