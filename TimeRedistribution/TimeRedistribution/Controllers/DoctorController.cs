@@ -48,8 +48,7 @@ namespace TimeRedistribution.Controllers
             doc.Id = Guid.NewGuid();
             doc.Name = doctor.Name;
             doc.Surname = doctor.Surname;
-            doc.OIB = doctor.OIB;
-            doc.Specialization = doctor.Specialization;
+
             _context.Doctors.Add(doc);
             await _context.SaveChangesAsync();
             return doc;
@@ -71,12 +70,6 @@ namespace TimeRedistribution.Controllers
 
             doc.Name = doctor.Name;
             doc.Surname = doctor.Surname;
-            doc.OIB = doctor.OIB;
-            doc.Specialization = doctor.Specialization;
-            doc.StartOfWork = doctor.StartOfWork;
-            doc.EndOfWorl = doctor.EndOfWorl;
-            doc.SrartBreak = doctor.SrartBreak;
-            doc.EndBreak = doctor.EndBreak;
 
             try
             {

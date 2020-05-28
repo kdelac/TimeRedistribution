@@ -10,12 +10,6 @@ namespace TimeRedistribution.Model
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Specialization { get; set; }
-        public string OIB { get; set; }
-        public string StartOfWork { get; set; }
-        public string EndOfWorl { get; set; }
-        public string SrartBreak { get; set; }
-        public string EndBreak { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
     }
 
@@ -23,12 +17,6 @@ namespace TimeRedistribution.Model
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Specialization { get; set; }
-        public string OIB { get; set; }
-        public string StartOfWork { get; set; }
-        public string EndOfWorl { get; set; }
-        public string SrartBreak { get; set; }
-        public string EndBreak { get; set; }
     }
 
     public class DoctorForUpdate
@@ -36,11 +24,5 @@ namespace TimeRedistribution.Model
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Specialization { get; set; }
-        public string OIB { get; set; }
-        public string StartOfWork { get; set; }
-        public string EndOfWorl { get; set; }
-        public string SrartBreak { get; set; }
-        public string EndBreak { get; set; }
     }
 }
