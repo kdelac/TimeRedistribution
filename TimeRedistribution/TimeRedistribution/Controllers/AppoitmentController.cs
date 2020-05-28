@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace TimeRedistribution.Controllers
     public class AppoitmentController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private bzvz bz;
 
         public AppoitmentController(DatabaseContext context)
         {
@@ -60,7 +62,7 @@ namespace TimeRedistribution.Controllers
             TimeSpan first = new TimeSpan(8, 0, 0);
             TimeSpan next = new TimeSpan(0, 30, 0);
 
-            app.OrderByDescending(_ => _.DateTime.TimeOfDay);
+            app = app.OrderByDescending(_ => _.DateTime.TimeOfDay);
             var a = app.FirstOrDefault();
 
 
@@ -69,6 +71,11 @@ namespace TimeRedistribution.Controllers
                 appointmentToSave.DateTime = appointment.DateTime.Date + first;
                 appointmentToSave.DoctorId = appointment.DoctorId;
                 appointmentToSave.PatientId = appointment.PatientId;
+
+                if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
+                {
+                    appointmentToSave.Status = "Completed";
+                }
 
                 _context.Appointments.Add(appointmentToSave);
                 await _context.SaveChangesAsync();
@@ -79,12 +86,28 @@ namespace TimeRedistribution.Controllers
             appointmentToSave.DoctorId = appointment.DoctorId;
             appointmentToSave.PatientId = appointment.PatientId;
 
+            if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
+            {
+                appointmentToSave.Status = "Completed";
+            }
+
+            if (appointmentToSave.DateTime.TimeOfDay == DateTime.Now.TimeOfDay)
+            {
+                appointmentToSave.Status = "Pending";
+            }
+
+            if (appointmentToSave.DateTime.TimeOfDay > DateTime.Now.TimeOfDay)
+            {
+                appointmentToSave.Status = "Waiting";
+            }
+
             _context.Appointments.Add(appointmentToSave);
             await _context.SaveChangesAsync();
             return appointmentToSave;
-
-
         }
+
+
+        
 
         [HttpPut("{doctorId}/{patientId}")]
         public async Task<IActionResult> Put(Guid doctorId,Guid patientId, AppointmentInsert appointment)
@@ -103,6 +126,7 @@ namespace TimeRedistribution.Controllers
             app.PatientId = appointment.PatientId;
             app.DoctorId = appointment.DoctorId;
             app.DateTime = appointment.DateTime;
+
 
             try
             {
@@ -129,6 +153,6 @@ namespace TimeRedistribution.Controllers
             await _context.SaveChangesAsync();
 
             return appoitment;
-        }
+        }        
     }
 }
