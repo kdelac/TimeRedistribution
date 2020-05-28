@@ -33,7 +33,8 @@ namespace AppoitmentRedistribution
                 _contex = new TimeScheduelContext();
                 scheduleRedistribution = new ScheduleRedistribution(_contex, _logger);
                 scheduleRedistribution.Redistribut();
-                await Task.Delay(5000, stoppingToken);
+
+                await Task.Delay(60*1000, stoppingToken);
             }
         }
     }
