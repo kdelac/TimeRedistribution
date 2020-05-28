@@ -14,7 +14,7 @@ namespace TimeRedistribution.Controllers
     public class AppoitmentController : ControllerBase
     {
         private readonly DatabaseContext _context;
-        private bzvz bz;
+        private DodavanjeTermina dodavanje;
 
         public AppoitmentController(DatabaseContext context)
         {
@@ -38,6 +38,28 @@ namespace TimeRedistribution.Controllers
             }
 
             return appoitments;
+        }
+
+        [HttpGet("DodajTermine")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> DodavanjeTermina()
+        {
+            var a = await _context.Doctors.ToListAsync();
+            var b = await _context.Patients.ToListAsync();
+            dodavanje = new DodavanjeTermina(_context);
+            a.ForEach(_ =>
+            {
+                List<Appointment> app = new List<Appointment>();
+                b.ForEach(d =>
+                {
+                    Appointment www = new Appointment();
+                    www.DoctorId = _.Id;
+                    www.PatientId = d.Id;
+                    www.DateTime = DateTime.Parse("2020-05-28T10:06:29.928Z");
+                    app.Add(www);
+                });
+                dodavanje.insertMulti(app);
+            });
+            return null;
         }
 
         [HttpGet("{patientId}/Patient")]
