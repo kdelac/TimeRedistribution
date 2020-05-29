@@ -23,8 +23,7 @@ namespace TimeRedistribution.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Doctor>>> Get()
-        {
-            
+        {            
             return await _context.Doctors.ToListAsync();            
         }
 

@@ -126,10 +126,7 @@ namespace TimeRedistribution.Controllers
             _context.Appointments.Add(appointmentToSave);
             await _context.SaveChangesAsync();
             return appointmentToSave;
-        }
-
-
-        
+        }        
 
         [HttpPut("{doctorId}/{patientId}")]
         public async Task<IActionResult> Put(Guid doctorId,Guid patientId, AppointmentInsert appointment)
