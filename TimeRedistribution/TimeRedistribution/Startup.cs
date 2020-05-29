@@ -28,6 +28,10 @@ namespace TimeRedistribution
 
             services.AddDbContext<DatabaseContext>(opt =>
             opt.UseSqlServer("Server=localhost;Database=TimeScheduel;Trusted_Connection=True;"));
+            //Za rad s bazom preko dockera
+            //opt.UseSqlServer("Data Source =localhost, 1401; Database=TimeScheduel; Initial Catalog = TimeScheduel; Persist Security Info = True; User ID = sa; Password = SecretP@ssw0rd"));
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
