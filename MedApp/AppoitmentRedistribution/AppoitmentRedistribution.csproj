@@ -8,4 +8,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MedAppData\MedAppData.csproj" />
+    <ProjectReference Include="..\MedAppServices\MedAppServices.csproj" />
+  </ItemGroup>
 </Project>
