@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MedAppCore.Models;
@@ -18,6 +19,14 @@ namespace MedAppData.Repositories
         {
             return await MedAppDbContext.Doctors
                 .Include(_ => _.Appointments)
+                .ToListAsync();
+        }
+
+        public async Task<List<Doctor>> GetAllWithAppointmentExistAsync()
+        {
+            return await MedAppDbContext.Doctors
+                .Include(_ => _.Appointments)
+                .Where(_ => _.Appointments.Count > 0)
                 .ToListAsync();
         }
 

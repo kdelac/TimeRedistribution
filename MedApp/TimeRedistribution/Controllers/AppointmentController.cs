@@ -16,12 +16,16 @@ namespace TimeRedistribution.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IRescheduleService _rescheduleService;
         private readonly IMapper _mapper;
+        private readonly IDodavanjeTermina _dodajTermin;
 
-        public AppointmentController(IAppointmentService appointmentService, IMapper mapper)
+        public AppointmentController(IAppointmentService appointmentService, IMapper mapper, IRescheduleService rescheduleService, IDodavanjeTermina dodavanjeTermina)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
+            _rescheduleService = rescheduleService;
+            _dodajTermin = dodavanjeTermina;
         }
 
         [HttpGet]
@@ -29,6 +33,12 @@ namespace TimeRedistribution.Controllers
         {
             var apointments = await _appointmentService.GetAllWithPatientsAndDoctorAsync();
             return Ok(apointments);
+        }
+
+        [HttpGet("Reschedule")]
+        public void Reschedule()
+        {
+             _rescheduleService.Reschedule();
         }
 
         [HttpPost]
@@ -71,6 +81,17 @@ namespace TimeRedistribution.Controllers
             await _appointmentService.DeleteAppointment(appointment);
 
             return NoContent();
+        }
+
+
+        /// <summary>
+        /// Pomocno, samo u svrhu pregleda podataka
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("DodajTermine")]
+        public async Task DodavanjeTermina()
+        {
+            await _dodajTermin.Dodaj();
         }
     }
 }

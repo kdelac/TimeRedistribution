@@ -24,16 +24,8 @@ namespace TimeRedistribution
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("MedAppData")));
-
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "TimeRedistribution", Version = "v1" });
-            });
-
-            services.AddControllers();
-            services.AddAutoMapper(typeof(Startup));
+        {   
+            services.AddControllers();            
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -71,10 +63,26 @@ namespace TimeRedistribution
 
         private void Services(IServiceCollection services)
         {
+            services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("MedAppData")));
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "TimeRedistribution", Version = "v1" });
+            });
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
+            services.AddTransient<IRescheduleService, RescheduleService>();
+
+            /// <summary>
+            /// Pomocno, samo u svrhu pregleda podataka
+            /// </summary>
+            /// <returns></returns>
+            services.AddTransient<IDodavanjeTermina, DodavanjeTermina>();
         }
     }
 }

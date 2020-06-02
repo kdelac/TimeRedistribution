@@ -50,5 +50,11 @@ namespace MedAppServices
 
             await _unitOfWork.Save();
         }
+
+        public async Task AddRangeAsync(IEnumerable<Patient> patients)
+        {
+            await _unitOfWork.Patients.AddRangeAsync(patients);
+            await _unitOfWork.Save();
+        }
     }
 }

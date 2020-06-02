@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using MedAppData;
 using Microsoft.EntityFrameworkCore;
+using MedAppCore.Services;
+using MedAppServices;
+using MedAppCore;
 
 namespace AppoitmentRedistribution
 {
@@ -20,10 +22,9 @@ namespace AppoitmentRedistribution
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
-                {
-                    services.Configure<ScheduleRedistribution>(hostContext.Configuration.GetSection("ScheduleRedistribution"));
+                {                   
                     services.AddHostedService<Worker>();
-                    services.AddTransient(_ => _.GetRequiredService<IOptions<ScheduleRedistribution>>().Value);
+                    services.AddTransient<IRescheduleService, RescheduleService>();
                 });
     }
 }

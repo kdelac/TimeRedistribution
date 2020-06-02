@@ -13,5 +13,7 @@ namespace MedAppCore.Services
         Task<Doctor> CreateDoctor(Doctor newDoctor);
         Task UpdateDoctor(Doctor doctorToBeUpdated, Doctor doctor);
         Task DeleteDoctor(Doctor doctor);
+        Task AddRangeAsync(IEnumerable<Doctor> doctors);
+        Task<List<Doctor>> GetAllWithAppointmentExistAsync();
     }
 }

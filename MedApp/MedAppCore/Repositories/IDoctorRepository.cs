@@ -10,5 +10,6 @@ namespace MedAppCore.Repositories
     {
         Task<IEnumerable<Doctor>> GetAllWithAppointmentAsync();
         Task<Doctor> GetWithAppointmentByIdAsync(Guid id);
+        Task<List<Doctor>> GetAllWithAppointmentExistAsync();
     }
 }

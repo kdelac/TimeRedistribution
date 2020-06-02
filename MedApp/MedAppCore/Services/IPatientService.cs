@@ -13,5 +13,6 @@ namespace MedAppCore.Services
         Task<Patient> CreatePatient(Patient newPatient);
         Task UpdatePatient(Patient patientToBeUpdated, Patient patient);
         Task DeletePatient(Patient patient);
+        Task AddRangeAsync(IEnumerable<Patient> patients);
     }
 }

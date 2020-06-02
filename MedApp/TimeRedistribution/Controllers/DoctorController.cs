@@ -38,6 +38,13 @@ namespace TimeRedistribution.Controllers
             return Ok(doctorResuource);
         }
 
+        [HttpPost("AddMultiple")]
+        public async Task CreateMultipleDoctors(IEnumerable<DoctorResource> doctors)
+        {
+            var patientResources = _mapper.Map<IEnumerable<DoctorResource>, IEnumerable<Doctor>>(doctors);
+            await _doctorService.AddRangeAsync(patientResources);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<Doctor>> UpdateDoctor(Guid id, [FromBody] DoctorResource saveDoctor)
         {

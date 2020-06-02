@@ -17,6 +17,12 @@ namespace MedAppServices
             _unitOfWork = unitOfWork;
         }
 
+        public async Task AddRangeAsync(IEnumerable<Appointment> appointments)
+        {
+            await _unitOfWork.Appointments.AddRangeAsync(appointments);
+            await _unitOfWork.Save();
+        }
+
         public async Task<Appointment> CreateAppointment(Appointment newAppointment)
         {
             await _unitOfWork.Appointments.AddAsync(newAppointment);
@@ -33,6 +39,16 @@ namespace MedAppServices
         public async Task<IEnumerable<Appointment>> GetAll()
         {
             return await _unitOfWork.Appointments.GetAllAsync();
+        }
+
+        public async Task<List<Appointment>> GetAllForDateAndStatus(DateTime dateTime, string status)
+        {
+            return await _unitOfWork.Appointments.GetAllForDateAndStatus(dateTime, status);
+        }
+
+        public async Task<IEnumerable<Appointment>> GetAllForDoctorAndDate(Guid doctorId, DateTime date)
+        {
+            return await _unitOfWork.Appointments.GetAllForDoctorAndDate(doctorId, date);
         }
 
         public Task<IEnumerable<Appointment>> GetAllWithDoctor()

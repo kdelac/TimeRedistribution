@@ -16,5 +16,8 @@ namespace MedAppCore.Services
         Task UpdateAppointment(Appointment appointmentToBeUpdated, Appointment appointment);
         Task DeleteAppointment(Appointment appointment);
         Task<IEnumerable<Appointment>> GetAllWithPatientsAndDoctorAsync();
+        Task AddRangeAsync(IEnumerable<Appointment> appointments);
+        Task<IEnumerable<Appointment>> GetAllForDoctorAndDate(Guid doctorId, DateTime date);
+        Task<List<Appointment>> GetAllForDateAndStatus(DateTime dateTime, string status);
     }
 }

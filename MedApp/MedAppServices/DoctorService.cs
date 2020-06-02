@@ -17,6 +17,12 @@ namespace MedAppServices
             _unitOfWork = unitOfWork;
         }
 
+        public async Task AddRangeAsync(IEnumerable<Doctor> doctors)
+        {
+            await _unitOfWork.Doctors.AddRangeAsync(doctors);
+            await _unitOfWork.Save();
+        }
+
         public async Task<Doctor> CreateDoctor(Doctor newDoctor)
         {
             newDoctor.Id = Guid.NewGuid();
@@ -34,6 +40,11 @@ namespace MedAppServices
         public async Task<IEnumerable<Doctor>> GetAllWithAppointment()
         {
             return await _unitOfWork.Doctors.GetAllWithAppointmentAsync();
+        }
+
+        public Task<List<Doctor>> GetAllWithAppointmentExistAsync()
+        {
+            return _unitOfWork.Doctors.GetAllWithAppointmentExistAsync();
         }
 
         public async Task<Doctor> GetDoctorById(Guid id)

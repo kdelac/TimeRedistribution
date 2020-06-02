@@ -47,6 +47,23 @@ namespace MedAppData.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Appointment>> GetAllForDoctorAndDate(Guid doctorId, DateTime date)
+        {
+            return await MedAppDbContext.Appointments
+                .Where(_ => _.DoctorId == doctorId && _.DateTime == date)
+                .OrderByDescending(_ => _.DateTime)
+                .ToListAsync();
+        }
+
+        public async Task<List<Appointment>> GetAllForDateAndStatus(DateTime dateTime, string status)
+        {
+            return await MedAppDbContext.Appointments
+                .Include(_ => _.Patient)
+                .Include(_ => _.Doctor)
+                .Where(_ => _.DateTime.Date == dateTime.Date && _.Status == status)
+                .ToListAsync();
+        }
+
         private MedAppDbContext MedAppDbContext
         {
             get { return Context as MedAppDbContext; }

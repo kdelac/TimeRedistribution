@@ -12,5 +12,7 @@ namespace MedAppCore.Repositories
         Task<IEnumerable<Appointment>> GetAllWithPatientsByDoctorIdAsync(Guid doctorId);
         Task<IEnumerable<Appointment>> GetAllWithPatientsAndDoctorAsync();
         Task<Appointment> GetAppointment(Guid doctorId, Guid patientId);
+        Task<IEnumerable<Appointment>> GetAllForDoctorAndDate(Guid doctorId, DateTime date);
+        Task<List<Appointment>> GetAllForDateAndStatus(DateTime dateTime, string status);
     }
 }
