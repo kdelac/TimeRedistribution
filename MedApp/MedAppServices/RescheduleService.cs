@@ -24,43 +24,23 @@ namespace MedAppServices
 
         public void Reschedule()
         {
-            List<Appointment> appointments =  _appointmentService.GetAllForDateAndStatus(DateTime.Now, "Waiting").Result;
-            List<Doctor> doctors =  _doctorService.GetAllWithAppointmentExistAsync().Result;
-  
+            List<Appointment> appointments = _appointmentService.GetAllForDateAndStatus(DateTime.Now, "Waiting").Result;
+            List<Doctor> doctors = _doctorService.GetAllWithAppointmentExistAsync().Result;
             TimeSpan tenMin = new TimeSpan(0, 5, 0);
-            
+
             foreach (Doctor item in doctors)
             {
                 appoitmentsToReschedule = new List<Appointment>();
                 appoitmentsToReschedule = appointments.OrderBy(b => b.DateTime).Where(a => a.DoctorId == item.Id).ToList();
 
                 if (appoitmentsToReschedule.Count() > 0 && Check(appoitmentsToReschedule.FirstOrDefault(), tenMin))
-                {
+                {                    
                     ChangeAppoitments(appoitmentsToReschedule, tenMin);
                 }
             }
         }
 
-        public void ChangeAppoitments(List<Appointment> appoitments, TimeSpan a)
-        {
-            for (int i = 0; i < appoitments.Count(); i++)
-            {
-                UpdateAppoitment(appoitments[i], a);
-
-                if (i < appoitments.Count() - 1 && CheckGap(appoitments[i], appoitments[i + 1], a))
-                {
-                    break;
-                }
-
-                if (i < appoitments.Count() - 2 && CheckGap(appoitments[i + 1], appoitments[i + 2], a))
-                {
-                    UpdateAppoitment(appoitments[i + 1], a);
-                    break;
-                }
-            }
-        }
-
-        public void  UpdateAppoitment(Appointment appointment, TimeSpan appoitmentExtend)
+        public void UpdateAppoitment(Appointment appointment, TimeSpan appoitmentExtend)
         {
             Appointment appointmentToBeUpdated = new Appointment();
             appointmentToBeUpdated.DoctorId = appointment.DoctorId;
@@ -117,6 +97,29 @@ namespace MedAppServices
                 Console.WriteLine(ex.Message);
             }
 
+        }
+
+        public void ChangeAppoitments(List<Appointment> appointments, TimeSpan tenMin)
+        {
+            var prvi = appointments.First();
+            if (appointments.Count() == 1)
+            {
+                UpdateAppoitment(prvi, tenMin);
+                appointments.Remove(prvi);
+            }
+
+            if (appointments.Count > 1 && CheckGap(prvi, appointments[1], tenMin))
+            {
+                UpdateAppoitment(prvi, tenMin);
+                appointments.Remove(prvi);
+            }
+
+            if (appointments.Count > 1 && !CheckGap(prvi, appointments[1], tenMin))
+            {
+                UpdateAppoitment(prvi, tenMin);
+                appointments.Remove(prvi);
+                ChangeAppoitments(appointments, tenMin);
+            }
         }
     }
 }
