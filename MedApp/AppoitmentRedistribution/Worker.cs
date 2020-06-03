@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MedAppCore.Services;
-using MedAppServices;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -15,10 +9,12 @@ namespace AppoitmentRedistribution
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly IPatientService _unit;
 
-        public Worker(ILogger<Worker> logger)
+        public Worker(ILogger<Worker> logger, IPatientService unit)
         {
             _logger = logger;
+            _unit = unit;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
