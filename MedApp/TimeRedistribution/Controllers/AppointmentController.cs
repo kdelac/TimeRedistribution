@@ -36,9 +36,9 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpGet("Reschedule")]
-        public void Reschedule()
+        public async Task Reschedule()
         {
-             _rescheduleService.Reschedule();
+             await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
         }
 
         [HttpPost]

@@ -14,7 +14,6 @@ namespace MedAppServices
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IDoctorService _doctorService;
-        private List<Appointment> appoitmentsToReschedule;
 
         public RescheduleService(IAppointmentService appointmentService, IDoctorService doctorService)
         {
@@ -22,47 +21,76 @@ namespace MedAppServices
             _doctorService = doctorService;
         }
 
-        public void Reschedule()
+        public async Task Reschedule(int deleyMin, DateTime date, string status)
         {
-            List<Appointment> appointments = _appointmentService.GetAllForDateAndStatus(DateTime.Now, "Waiting").Result;
-            List<Doctor> doctors = _doctorService.GetAllWithAppointmentExistAsync().Result;
-            TimeSpan tenMin = new TimeSpan(0, 5, 0);
+            List<Doctor> doctors = await _doctorService.GetAllWithAppointmentExistAsync();
+            TimeSpan deley = new TimeSpan(0, deleyMin, 0);
 
-            foreach (Doctor item in doctors)
+            await Doctors(doctors, deley, status, date);
+        }          
+
+        public async Task ChangeAppoitments(List<Appointment> appointments, TimeSpan deley)
+        {
+            var prvi = appointments.First();
+            if (appointments.Count() == 1)
             {
-                appoitmentsToReschedule = new List<Appointment>();
-                appoitmentsToReschedule = appointments.OrderBy(b => b.DateTime).Where(a => a.DoctorId == item.Id).ToList();
+                await UpdateAppoitment(prvi, deley);
+                appointments.Remove(prvi);
+            }
 
-                if (appoitmentsToReschedule.Count() > 0 && Check(appoitmentsToReschedule.FirstOrDefault(), tenMin))
-                {                    
-                    ChangeAppoitments(appoitmentsToReschedule, tenMin);
-                }
+            if (appointments.Count > 1 && CheckGap(prvi, appointments[1], deley))
+            {
+                await UpdateAppoitment(prvi, deley);
+                appointments.Remove(prvi);
+            }
+
+            if (appointments.Count > 1 && !CheckGap(prvi, appointments[1], deley))
+            {
+                await UpdateAppoitment(prvi, deley);
+                appointments.Remove(prvi);
+                await ChangeAppoitments(appointments, deley);
             }
         }
 
-        public void UpdateAppoitment(Appointment appointment, TimeSpan appoitmentExtend)
+        public async Task Doctors(List<Doctor> doctors, TimeSpan deley, string status, DateTime date)
+        {            
+            if (doctors.Count > 0)
+            {
+                var doctor = doctors.FirstOrDefault();
+                var appointments = doctor.Appointments.OrderBy(a => a.DateTime).Where(b => b.Status == status && b.DateTime.Date == date.Date).ToList();
+
+                if (appointments.Count() > 0 && Check(appointments.FirstOrDefault(), deley))
+                {
+                    await ChangeAppoitments(appointments, deley);
+                }
+                doctors.Remove(doctor);
+                await Doctors(doctors, deley, status, date);
+            }
+        }
+
+        public async Task UpdateAppoitment(Appointment appointment, TimeSpan appoitmentExtend)
         {
             Appointment appointmentToBeUpdated = new Appointment();
             appointmentToBeUpdated.DoctorId = appointment.DoctorId;
             appointmentToBeUpdated.PatientId = appointment.PatientId;
-            appointmentToBeUpdated.Status = "Waiting";
+            appointmentToBeUpdated.Status = appointment.Status;
             appointmentToBeUpdated.DateTime = appointment.DateTime.Date + appointment.DateTime.TimeOfDay + appoitmentExtend;
-            _appointmentService.UpdateAppointment(appointment, appointmentToBeUpdated);
-            //SendEmail(FindPatient(appointment.PatientId), appointment.DateTime);
-        }
+            await _appointmentService.UpdateAppointment(appointment, appointmentToBeUpdated);
+            //SendEmail(appointment.Patient, appointment.DateTime);
+        } 
 
-        public bool CheckGap(Appointment appoitment, Appointment appoitmentNext, TimeSpan a)
+        public bool CheckGap(Appointment appoitment, Appointment appoitmentNext, TimeSpan deley)
         {
-            if (appoitmentNext.DateTime.TimeOfDay - appoitment.DateTime.TimeOfDay > a)
+            if (appoitmentNext.DateTime.TimeOfDay - appoitment.DateTime.TimeOfDay > deley)
             {
                 return true;
             }
             return false;
         }
 
-        public bool Check(Appointment appointment, TimeSpan ts)
+        public bool Check(Appointment appointment, TimeSpan deley)
         {
-            TimeSpan vr = DateTime.Now.TimeOfDay - ts;
+            TimeSpan vr = DateTime.Now.TimeOfDay - deley;
             if (vr > appointment.DateTime.TimeOfDay)
             {
                 return true;
@@ -90,35 +118,10 @@ namespace MedAppServices
                     client.Send(message);
                     client.Disconnect(true);
                 }
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-            }
-
-        }
-
-        public void ChangeAppoitments(List<Appointment> appointments, TimeSpan tenMin)
-        {
-            var prvi = appointments.First();
-            if (appointments.Count() == 1)
-            {
-                UpdateAppoitment(prvi, tenMin);
-                appointments.Remove(prvi);
-            }
-
-            if (appointments.Count > 1 && CheckGap(prvi, appointments[1], tenMin))
-            {
-                UpdateAppoitment(prvi, tenMin);
-                appointments.Remove(prvi);
-            }
-
-            if (appointments.Count > 1 && !CheckGap(prvi, appointments[1], tenMin))
-            {
-                UpdateAppoitment(prvi, tenMin);
-                appointments.Remove(prvi);
-                ChangeAppoitments(appointments, tenMin);
             }
         }
     }

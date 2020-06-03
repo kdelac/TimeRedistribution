@@ -39,7 +39,7 @@ namespace MedAppServices
                     Appointment www = new Appointment();
                     www.DoctorId = _.Id;
                     www.PatientId = d.Id;
-                    www.DateTime = DateTime.Parse("2020-06-02T10:06:29.928Z");
+                    www.DateTime = DateTime.Parse("2020-06-03T10:06:29.928Z");
                     app.Add(www);
                 });
                 Provjera(app);
@@ -54,7 +54,7 @@ namespace MedAppServices
             appointments.ForEach(async _ => {
 
                 Appointment appointmentToSave = new Appointment();
-                TimeSpan first = new TimeSpan(14, 0, 0);
+                TimeSpan first = new TimeSpan(9, 20, 0);
                 TimeSpan next = new TimeSpan(0, 5, 0);      
 
                 if (appointments1.Count() == 0)
@@ -66,6 +66,11 @@ namespace MedAppServices
                     if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
                     {
                         appointmentToSave.Status = "Completed";
+                    }
+
+                    if (appointmentToSave.DateTime.TimeOfDay > DateTime.Now.TimeOfDay)
+                    {
+                        appointmentToSave.Status = "Waiting";
                     }
 
                     appointments1.Add(appointmentToSave);

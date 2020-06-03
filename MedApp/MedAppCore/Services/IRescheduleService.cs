@@ -7,6 +7,6 @@ namespace MedAppCore.Services
 {
     public interface IRescheduleService
     {
-        void Reschedule();
+        Task Reschedule(int deleyMin, DateTime date, string status);
     }
 }
