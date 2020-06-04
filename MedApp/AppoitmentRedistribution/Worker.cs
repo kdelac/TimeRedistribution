@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MedAppCore.Services;
@@ -9,9 +10,9 @@ namespace AppoitmentRedistribution
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IPatientService _unit;
+        private readonly IRescheduleService _unit;
 
-        public Worker(ILogger<Worker> logger, IPatientService unit)
+        public Worker(ILogger<Worker> logger, IRescheduleService unit)
         {
             _logger = logger;
             _unit = unit;
@@ -21,6 +22,7 @@ namespace AppoitmentRedistribution
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                await _unit.Reschedule(10, DateTime.Now, "Waiting");
                 await Task.Delay(1000, stoppingToken);
             }
         }
