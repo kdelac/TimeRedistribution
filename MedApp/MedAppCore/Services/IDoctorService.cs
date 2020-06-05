@@ -14,6 +14,6 @@ namespace MedAppCore.Services
         Task UpdateDoctor(Doctor doctorToBeUpdated, Doctor doctor);
         Task DeleteDoctor(Doctor doctor);
         Task AddRangeAsync(IEnumerable<Doctor> doctors);
-        Task<List<Doctor>> GetAllWithAppointmentExistAsync();
+        Task<List<Doctor>> GetAllWithAppointmentExistAsync(DateTime date);
     }
 }

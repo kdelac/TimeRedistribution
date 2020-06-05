@@ -19,6 +19,7 @@ namespace MedAppData.Repositories
             return await MedAppDbContext.Patients
                 .Include(_ => _.Appointments)
                 .ToListAsync();
+
         }
 
         public async Task<Patient> GetWithAppointmentByIdAsync(Guid id)

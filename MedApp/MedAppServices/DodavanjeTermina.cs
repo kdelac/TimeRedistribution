@@ -39,7 +39,7 @@ namespace MedAppServices
                     Appointment www = new Appointment();
                     www.DoctorId = _.Id;
                     www.PatientId = d.Id;
-                    www.DateTime = DateTime.Parse("2020-06-03T10:06:29.928Z");
+                    www.DateTime = DateTime.Parse("2020-06-06T10:06:29.928Z");
                     app.Add(www);
                 });
                 Provjera(app);
@@ -54,7 +54,7 @@ namespace MedAppServices
             appointments.ForEach(async _ => {
 
                 Appointment appointmentToSave = new Appointment();
-                TimeSpan first = new TimeSpan(9, 20, 0);
+                TimeSpan first = new TimeSpan(10, 25, 0);
                 TimeSpan next = new TimeSpan(0, 5, 0);      
 
                 if (appointments1.Count() == 0)
@@ -102,6 +102,7 @@ namespace MedAppServices
 
             });
              _appointmentService.AddRangeAsync(appointments1);
+            Task.Delay(1000);
         }
     }
 }

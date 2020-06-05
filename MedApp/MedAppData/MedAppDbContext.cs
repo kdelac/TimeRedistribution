@@ -28,6 +28,8 @@ namespace MedAppData
                 .HasOne(bc => bc.Patient)
                 .WithMany(c => c.Appointments)
                 .HasForeignKey(bc => bc.PatientId);
+            modelBuilder.Entity<Appointment>()
+                .HasIndex(p => new { p.DateTime, p.Status });
         }
     }
 }

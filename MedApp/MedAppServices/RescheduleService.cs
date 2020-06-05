@@ -7,6 +7,7 @@ using MedAppCore.Services;
 using System.Threading.Tasks;
 using System.Linq;
 using MimeKit;
+using System.Runtime.CompilerServices;
 
 namespace MedAppServices
 {
@@ -23,15 +24,35 @@ namespace MedAppServices
 
         public async Task Reschedule(int deleyMin, DateTime date, string status)
         {
-            List<Doctor> doctors = await _doctorService.GetAllWithAppointmentExistAsync();
+            List<Doctor> doctors = await _doctorService.GetAllWithAppointmentExistAsync(date);
             TimeSpan deley = new TimeSpan(0, deleyMin, 0);
 
-            await Doctors(doctors, deley, status, date);
-        }          
+            if (doctors.Count > 0)
+            {
+                await Doctors(doctors, deley, status, date);                
+            }
+        }
+
+        public async Task Doctors(List<Doctor> doctors, TimeSpan deley, string status, DateTime date)
+        {
+            if (doctors.Count > 0)
+            {
+                var doctor = doctors.FirstOrDefault();
+                var appointments = doctor.Appointments.OrderBy(a => a.DateTime).Where(b => b.Status == status && b.DateTime.Date == date.Date).ToList();
+
+                if (appointments.Count() > 0 && Check(appointments.FirstOrDefault(), deley))
+                {
+                    await ChangeAppoitments(appointments, deley);
+                }
+                doctors.Remove(doctor);
+                await Doctors(doctors, deley, status, date);
+            }
+        }
 
         public async Task ChangeAppoitments(List<Appointment> appointments, TimeSpan deley)
         {
             var prvi = appointments.First();
+            
             if (appointments.Count() == 1)
             {
                 await UpdateAppoitment(prvi, deley);
@@ -52,30 +73,13 @@ namespace MedAppServices
             }
         }
 
-        public async Task Doctors(List<Doctor> doctors, TimeSpan deley, string status, DateTime date)
-        {            
-            if (doctors.Count > 0)
-            {
-                var doctor = doctors.FirstOrDefault();
-                var appointments = doctor.Appointments.OrderBy(a => a.DateTime).Where(b => b.Status == status && b.DateTime.Date == date.Date).ToList();
-
-                if (appointments.Count() > 0 && Check(appointments.FirstOrDefault(), deley))
-                {
-                    await ChangeAppoitments(appointments, deley);
-                }
-                doctors.Remove(doctor);
-                await Doctors(doctors, deley, status, date);
-            }
-        }
-
         public async Task UpdateAppoitment(Appointment appointment, TimeSpan appoitmentExtend)
         {
             Appointment appointmentToBeUpdated = new Appointment();
             appointmentToBeUpdated.DoctorId = appointment.DoctorId;
             appointmentToBeUpdated.PatientId = appointment.PatientId;
-            appointmentToBeUpdated.Status = appointment.Status;
             appointmentToBeUpdated.DateTime = appointment.DateTime.Date + appointment.DateTime.TimeOfDay + appoitmentExtend;
-            await _appointmentService.UpdateAppointment(appointment, appointmentToBeUpdated);
+            await _appointmentService.UpdateAppointment(appointmentToBeUpdated.DateTime, appointmentToBeUpdated.DoctorId, appointmentToBeUpdated.PatientId);
             //SendEmail(appointment.Patient, appointment.DateTime);
         } 
 

@@ -31,7 +31,7 @@ namespace TimeRedistribution.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAllAppointments()
         {
-            var apointments = await _appointmentService.GetAllWithPatientsAndDoctorAsync();
+            var apointments = await _appointmentService.GetAll();
             return Ok(apointments);
         }
 
@@ -39,6 +39,12 @@ namespace TimeRedistribution.Controllers
         public async Task Reschedule()
         {
              await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
+        }
+
+        [HttpPut("{doctorId}/{patientId}/NewUpdate")]
+        public void UpdateAppointment(Guid doctorId, Guid patientId, DateTime date)
+        {
+            _appointmentService.UpdateAppointment(date, doctorId, patientId);
         }
 
         [HttpPost]

@@ -22,11 +22,10 @@ namespace MedAppData.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Doctor>> GetAllWithAppointmentExistAsync()
+        public async Task<List<Doctor>> GetAllWithAppointmentExistAsync(DateTime date)
         {
             return await MedAppDbContext.Doctors
                 .Include(_ => _.Appointments)
-                .ThenInclude(_ => _.Patient)
                 .Where(_ => _.Appointments.Count > 0)
                 .ToListAsync();
         }

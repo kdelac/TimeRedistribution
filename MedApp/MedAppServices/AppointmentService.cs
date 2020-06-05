@@ -83,5 +83,10 @@ namespace MedAppServices
 
             await _unitOfWork.Save();
         }
+
+        public async Task UpdateAppointment(DateTime date, Guid doctorId, Guid patientId)
+        {
+            await _unitOfWork.Appointments.UpdateAppointment(date, doctorId, patientId);
+        }
     }
 }

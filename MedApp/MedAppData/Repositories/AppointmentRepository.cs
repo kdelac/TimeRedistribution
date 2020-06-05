@@ -1,5 +1,6 @@
 ﻿using MedAppCore.Models;
 using MedAppCore.Repositories;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -58,10 +59,17 @@ namespace MedAppData.Repositories
         public async Task<List<Appointment>> GetAllForDateAndStatus(DateTime dateTime, string status)
         {
             return await MedAppDbContext.Appointments
-                .Include(_ => _.Patient)
-                .Include(_ => _.Doctor)
                 .Where(_ => _.DateTime.Date == dateTime.Date && _.Status == status)
                 .ToListAsync();
+        }
+
+        public async Task UpdateAppointment(DateTime date, Guid doctorId, Guid patientId)
+        {
+            SqlParameter param1 = new SqlParameter("@DoctorId", doctorId);
+            SqlParameter param2 = new SqlParameter("@PatientId", patientId);
+            SqlParameter param3 = new SqlParameter("@Date", date);
+
+            await MedAppDbContext.Database.ExecuteSqlRawAsync("UpdateAppointmentStoredProcedure @DoctorId, @PatientId, @Date", parameters: new[] { param1, param2,param3});
         }
 
         private MedAppDbContext MedAppDbContext
