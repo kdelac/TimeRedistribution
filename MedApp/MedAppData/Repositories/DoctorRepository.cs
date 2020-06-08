@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MedAppCore.Models;
 using MedAppCore.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Z.EntityFramework.Plus;
 
 namespace MedAppData.Repositories
 {
@@ -22,7 +23,7 @@ namespace MedAppData.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Doctor>> GetAllWithAppointmentExistAsync(DateTime date)
+        public async Task<List<Doctor>> GetAllWithAppointmentExistAsync()
         {
             return await MedAppDbContext.Doctors
                 .Include(_ => _.Appointments)

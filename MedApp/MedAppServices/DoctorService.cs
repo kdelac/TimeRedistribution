@@ -42,9 +42,9 @@ namespace MedAppServices
             return await _unitOfWork.Doctors.GetAllWithAppointmentAsync();
         }
 
-        public Task<List<Doctor>> GetAllWithAppointmentExistAsync(DateTime date)
+        public Task<List<Doctor>> GetAllWithAppointmentExistAsync()
         {
-            return _unitOfWork.Doctors.GetAllWithAppointmentExistAsync(date);
+            return _unitOfWork.Doctors.GetAllWithAppointmentExistAsync();
         }
 
         public async Task<Doctor> GetDoctorById(Guid id)

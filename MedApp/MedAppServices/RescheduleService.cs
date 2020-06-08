@@ -24,7 +24,7 @@ namespace MedAppServices
 
         public async Task Reschedule(int deleyMin, DateTime date, string status)
         {
-            List<Doctor> doctors = await _doctorService.GetAllWithAppointmentExistAsync(date);
+            List<Doctor> doctors = await _doctorService.GetAllWithAppointmentExistAsync();
             TimeSpan deley = new TimeSpan(0, deleyMin, 0);
 
             if (doctors.Count > 0)

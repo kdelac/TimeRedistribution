@@ -18,24 +18,14 @@ namespace AppoitmentRedistribution
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
-            {
-                //services.AddSingleton<IPatientService, PatientService>();
-                //services.AddSingleton<IUnitOfWork, UnitOfWork>();
-                //services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer("Server=localhost;Database=TimeScheduel;Trusted_Connection=True;"));
-
-                //services.AddScoped<IDoctorService, DoctorService>();
-                //services.AddScoped<IPatientService, PatientService>();
-                    
-                
+            {                
                 services.AddHostedService<Worker>();
                 services.AddScoped<IRescheduleService, RescheduleService>();
                 services.AddScoped<IAppointmentService, AppointmentService>();
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
                 services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer("Server=localhost;Database=TimeScheduel;Trusted_Connection=True;"));
-
                 services.AddScoped<IDoctorService, DoctorService>();
                 services.AddScoped<IPatientService, PatientService>();
-
             });
     }
 

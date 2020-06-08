@@ -39,7 +39,7 @@ namespace MedAppServices
                     Appointment www = new Appointment();
                     www.DoctorId = _.Id;
                     www.PatientId = d.Id;
-                    www.DateTime = DateTime.Parse("2020-06-06T10:06:29.928Z");
+                    www.DateTime = DateTime.Parse("2020-06-08T10:06:29.928Z");
                     app.Add(www);
                 });
                 Provjera(app);
