@@ -1,3 +1,11 @@
 # TimeRedistribution
 
-<body>Dva su solutiona, jedan je background servis(AppoitmentRedistribution), a drugi je API(TimeRedistribution). Kod APIja su CRUD operacije na tri tablice u bazi. Ima jedan api poziv koji služi za automatsko dodavanje više termina. Za provjeru treba samo stavit bazu lokalno i dodat par doktora i pacijenata i onda pozvati API kojo će dodijelit pacijente doktorima. Za lakše testiranje u klasi DodavanjeTermina možeš promijenuti parametre, first u koliko sati će početi s dodavanjem termina, a next služi da idućeg upiše pola sata poslije predhodnog. Background servis pali se svakih 60sec i to se može promijenit u Worker klasi. U klasi ScheduleRedistribution nalazi se logika koja provjerava kašnjenje. Trenutno je postavljeno da ako kasni 5min početak svima promjeni raspored. To se isto može promjenit na varijabli tenMin. Slanje e-maila radi, ali je zakomentirano zbog toga što trebaju podaci za autentifikaciju.</body>
+<body><p>Solution se sastoji od dva glavna projekta, jedan služi za pozivanje web API-ja (TimeRedistribution), a drugi(AppoitmentRedistribution) je za promjenu termina. Ostala tri projekta služe za obradu podataka.</p> 
+
+<h3>Promjena termina</h3>
+<p>Za promjenu termina koristi se RescheduleService koji ima glavnu metodu koja prima tri parametrea. Prvi parametar je broj minuta s kojima se određuje kašnjenje. drugi parametar je datum, odnosno dan za koji će se radit provjera, treći parametar je status, on se postavlja u ovom slučaju na "Waiting", odnosno provjeravaju se svi termini koji su na čekanju. Na početku metoda vrati sve doktore koji imaju zakazane termine. Potom se za svakog doktora uzmu termini na dan kada je postavljen datum u metodi i sa postavljenim statusom. Potom se provjeravaju svi termini koje treba premjestiti, ako se sljedeći termin ne preklapa prestaje se sa pregledom termina trenutnog doktora i prelazi se na idućeg doktora.</p>
+
+<h3>AppointmentRedistribution</h3>
+<p>Ovo je projekt tipa service worker koji poziva preraspodijelu vremena, u njemu se može postaviti svakih koliko vremena hoćemo da se preraspodijela pokrene</p>
+
+</body>
