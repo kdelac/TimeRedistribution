@@ -49,6 +49,8 @@ namespace TimeRedistribution
 
             app.UseAuthorization();
 
+            app.UseCors("enableCORS");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -68,6 +70,17 @@ namespace TimeRedistribution
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "TimeRedistribution", Version = "v1" });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "enableCORS",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyHeader()
+                                      .AllowAnyMethod()
+                                      .AllowAnyOrigin();
+                                  });
             });
 
             services.AddAutoMapper(typeof(Startup));
