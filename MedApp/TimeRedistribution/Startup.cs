@@ -90,6 +90,7 @@ namespace TimeRedistribution
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IRescheduleService, RescheduleService>();
+            services.AddTransient<ISignService, SignService>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka
