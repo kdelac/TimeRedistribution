@@ -51,7 +51,7 @@ namespace MedAppServices
 
             PdfSignatureAppearance appearance = signer.GetSignatureAppearance();
             appearance.SetLocation(signingDocument.Location)
-                .SetPageRect(new Rectangle(36, 648, 200, 100))
+                .SetPageRect(new Rectangle(425, 0, 150, 75))
                 .SetPageNumber(1);
             signer.SetFieldName("MyFieldName");
 
