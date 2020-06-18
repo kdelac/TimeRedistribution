@@ -14,6 +14,7 @@ namespace MedAppCore
         IPatientRepository Patients { get; }
         IUserSearchRepository UserSearch { get; }
         IDateSearchRepository DateSearch { get; }
+        IDoctorPatientRepository DoctorPatients { get; }
         Task<int> Save();
     }
 }
