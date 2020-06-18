@@ -1,4 +1,5 @@
-﻿using MedAppCore;
+﻿using ElasticSearch;
+using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using System;
@@ -11,10 +12,12 @@ namespace MedAppServices
     public class DoctorService : IDoctorService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly Work _work;
 
-        public DoctorService(IUnitOfWork unitOfWork)
+        public DoctorService(IUnitOfWork unitOfWork, Work work)
         {
             _unitOfWork = unitOfWork;
+            _work = work;
         }
 
         public async Task AddRangeAsync(IEnumerable<Doctor> doctors)
@@ -58,6 +61,11 @@ namespace MedAppServices
             doctorToBeUpdated.Surname = doctor.Surname;
 
             await _unitOfWork.Save();
+        }
+
+        public async Task<IEnumerable<Doctor>> GetAll()
+        {
+            return await _unitOfWork.Doctors.GetAllAsync();
         }
     }
 }

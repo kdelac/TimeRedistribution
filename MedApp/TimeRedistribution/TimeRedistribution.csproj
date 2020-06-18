@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Elasticsearch.Net" Version="7.7.1" />
     <PackageReference Include="itext7" Version="7.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
@@ -13,10 +14,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NEST" Version="7.7.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ElasticSearch\ElasticSearch.csproj" />
     <ProjectReference Include="..\MedAppData\MedAppData.csproj" />
     <ProjectReference Include="..\MedAppServices\MedAppServices.csproj" />
   </ItemGroup>

@@ -15,5 +15,6 @@ namespace MedAppCore.Services
         Task DeleteDoctor(Doctor doctor);
         Task AddRangeAsync(IEnumerable<Doctor> doctors);
         Task<List<Doctor>> GetAllWithAppointmentExistAsync();
+        Task<IEnumerable<Doctor>> GetAll();
     }
 }

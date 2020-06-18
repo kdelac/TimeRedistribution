@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRedistribution", "TimeRedistribution\TimeRedistribution.csproj", "{DC457D14-5DCC-4927-B4E1-3A721C11AAED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeRedistribution", "TimeRedistribution\TimeRedistribution.csproj", "{DC457D14-5DCC-4927-B4E1-3A721C11AAED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedAppData", "MedAppData\MedAppData.csproj", "{2C06607C-2EFB-40C8-AC00-4D3BDB41D74E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedAppData", "MedAppData\MedAppData.csproj", "{2C06607C-2EFB-40C8-AC00-4D3BDB41D74E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppoitmentRedistribution", "AppoitmentRedistribution\AppoitmentRedistribution.csproj", "{A768B69D-D7A5-4494-AC6B-43683C42D037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppoitmentRedistribution", "AppoitmentRedistribution\AppoitmentRedistribution.csproj", "{A768B69D-D7A5-4494-AC6B-43683C42D037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedAppServices", "MedAppServices\MedAppServices.csproj", "{6E42BA10-217A-4752-A5C4-E7148B54CF67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedAppServices", "MedAppServices\MedAppServices.csproj", "{6E42BA10-217A-4752-A5C4-E7148B54CF67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedAppCore", "MedAppCore\MedAppCore.csproj", "{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedAppCore", "MedAppCore\MedAppCore.csproj", "{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch", "ElasticSearch\ElasticSearch.csproj", "{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,6 +10,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MedAppServices;
 using AutoMapper;
+using Nest;
+using System;
+using Microsoft.AspNetCore.Http;
+using ElasticSearch;
 
 namespace TimeRedistribution
 {
@@ -67,6 +71,34 @@ namespace TimeRedistribution
         {
             services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("MedAppData")));
 
+            #region elastic
+
+            var connectionString = Configuration.GetConnectionString("elasticsearch");
+
+            var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultIndex("users");
+
+            services.AddSingleton(settings);
+
+            services.AddScoped(s =>
+            {
+                var connectionSettings = s.GetRequiredService<ConnectionSettings>();
+                var client = new ElasticClient(connectionSettings);
+
+                return client;
+            });
+
+            services.AddScoped<Work>();
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
+            #endregion
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "TimeRedistribution", Version = "v1" });
@@ -91,6 +123,7 @@ namespace TimeRedistribution
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IRescheduleService, RescheduleService>();
             services.AddTransient<ISignService, SignService>();
+            services.AddTransient<INameSearchService, NameSearchService>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka
