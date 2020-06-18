@@ -25,6 +25,7 @@ namespace MedAppServices
 
         public async Task<Appointment> CreateAppointment(Appointment newAppointment)
         {
+            newAppointment.Id = Guid.NewGuid();
             await _unitOfWork.Appointments.AddAsync(newAppointment);
             await _unitOfWork.Save();
             return newAppointment;

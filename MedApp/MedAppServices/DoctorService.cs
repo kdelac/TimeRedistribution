@@ -1,5 +1,4 @@
-﻿using ElasticSearch;
-using MedAppCore;
+﻿using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using System;
@@ -12,12 +11,10 @@ namespace MedAppServices
     public class DoctorService : IDoctorService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Work _work;
 
-        public DoctorService(IUnitOfWork unitOfWork, Work work)
+        public DoctorService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _work = work;
         }
 
         public async Task AddRangeAsync(IEnumerable<Doctor> doctors)

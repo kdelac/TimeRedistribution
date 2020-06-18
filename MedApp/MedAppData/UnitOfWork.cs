@@ -1,9 +1,9 @@
 ﻿using MedAppCore;
 using MedAppCore.Repositories;
+using MedAppCore.Repositories.ElasticSearch;
 using MedAppData.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MedAppData.Repositories.ElasticSearch;
+using Nest;
 using System.Threading.Tasks;
 
 namespace MedAppData
@@ -11,13 +11,17 @@ namespace MedAppData
     public class UnitOfWork : IUnitOfWork
     {
         private readonly MedAppDbContext _context;
+        private readonly ElasticClient _client;
         private PatientRepository _patientRepository;
         private DoctorRepository _doctorRepository;
         private AppointmentRepository _appointmentRepository;
+        private UserSearchRepository _userSearchRepository;
+        private DateSearchRepository _dateSearchRepository;
 
-        public UnitOfWork(MedAppDbContext context)
+        public UnitOfWork(MedAppDbContext context, ElasticClient client)
         {
-            this._context = context;
+            _context = context;
+            _client = client;
         }
 
 
@@ -26,6 +30,10 @@ namespace MedAppData
         public IAppointmentRepository Appointments => _appointmentRepository = _appointmentRepository ?? new AppointmentRepository(_context);
 
         public IPatientRepository Patients => _patientRepository = _patientRepository ?? new PatientRepository(_context);
+
+        public IUserSearchRepository UserSearch => _userSearchRepository = _userSearchRepository ?? new UserSearchRepository(_client);
+
+        public IDateSearchRepository DateSearch => _dateSearchRepository = _dateSearchRepository ?? new DateSearchRepository(_client);
 
         public async Task<int> Save()
         {

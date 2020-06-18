@@ -29,6 +29,13 @@ namespace TimeRedistribution.Controllers
             return Ok(doctors);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Doctor>> GetDoctor(Guid id)
+        {
+            var doctor = await _doctorService.GetDoctorById(id);
+            return Ok(doctor);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Doctor>> CreateDoctor(DoctorResource doctor)
         {
@@ -45,7 +52,7 @@ namespace TimeRedistribution.Controllers
             await _doctorService.AddRangeAsync(patientResources);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/Update")]
         public async Task<ActionResult<Doctor>> UpdateDoctor(Guid id, [FromBody] DoctorResource saveDoctor)
         {
             var doctorToBeUpdate = await _doctorService.GetDoctorById(id);

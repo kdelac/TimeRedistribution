@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedAppServices", "MedAppSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedAppCore", "MedAppCore\MedAppCore.csproj", "{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticSearch", "ElasticSearch\ElasticSearch.csproj", "{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FF2C0E2-5B3C-4577-90DC-998A0FE4EC8D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F2070B8-F08A-4BD0-8138-4750FAF5A7F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,17 +1,16 @@
-﻿using ElasticSearch.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedAppCore.Services
+namespace MedAppCore.Services.ElasticSearch
 {
-    public interface INameSearchService
+    public interface IDateSearchService
     {
         void CreateIndex();
         Task DeleteIndex();
         Task DeleteFromIndex();
-        List<Users> GetFromIndex(string keyWord);
+        List<string> GetUrisIndex(DateTime keyWord);
         Task AddRangeToIndexAsync();
     }
 }

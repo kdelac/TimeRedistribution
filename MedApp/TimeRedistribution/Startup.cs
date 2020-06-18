@@ -13,7 +13,8 @@ using AutoMapper;
 using Nest;
 using System;
 using Microsoft.AspNetCore.Http;
-using ElasticSearch;
+using MedAppCore.Services.ElasticSearch;
+using MedAppServices.ElasticSearch;
 
 namespace TimeRedistribution
 {
@@ -75,8 +76,7 @@ namespace TimeRedistribution
 
             var connectionString = Configuration.GetConnectionString("elasticsearch");
 
-            var settings = new ConnectionSettings(new Uri(connectionString))
-                .DefaultIndex("users");
+            var settings = new ConnectionSettings(new Uri(connectionString));
 
             services.AddSingleton(settings);
 
@@ -87,8 +87,6 @@ namespace TimeRedistribution
 
                 return client;
             });
-
-            services.AddScoped<Work>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -123,7 +121,8 @@ namespace TimeRedistribution
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IRescheduleService, RescheduleService>();
             services.AddTransient<ISignService, SignService>();
-            services.AddTransient<INameSearchService, NameSearchService>();
+            services.AddTransient<IUserSearchService, UserSearchService>();
+            services.AddTransient<IDateSearchService, DateSearchService>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka

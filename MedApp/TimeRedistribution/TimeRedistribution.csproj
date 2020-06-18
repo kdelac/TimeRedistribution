@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ElasticSearch\ElasticSearch.csproj" />
     <ProjectReference Include="..\MedAppData\MedAppData.csproj" />
     <ProjectReference Include="..\MedAppServices\MedAppServices.csproj" />
   </ItemGroup>

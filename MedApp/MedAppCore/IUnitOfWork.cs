@@ -1,4 +1,5 @@
 ﻿using MedAppCore.Repositories;
+using MedAppCore.Repositories.ElasticSearch;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,8 @@ namespace MedAppCore
         IDoctorRepository Doctors { get; }
         IAppointmentRepository Appointments { get; }
         IPatientRepository Patients { get; }
+        IUserSearchRepository UserSearch { get; }
+        IDateSearchRepository DateSearch { get; }
         Task<int> Save();
     }
 }

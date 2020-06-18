@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using ElasticSearch;
 using MedAppCore.Models;
 using MedAppCore.Services;
+using MedAppCore.Services.ElasticSearch;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Math.EC.Rfc7748;
@@ -16,42 +16,76 @@ namespace TimeRedistribution.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        private readonly INameSearchService _nameSearchService;
+        private readonly IUserSearchService _userSearchService;
+        private readonly IDateSearchService _dateSearchService;
         private readonly IMapper _mapper;
 
-        public SearchController(INameSearchService nameSearchService)
+        public SearchController(IUserSearchService userSearchService, IDateSearchService dateSearchService)
         {
-            _nameSearchService = nameSearchService;
+            _userSearchService = userSearchService;
+            _dateSearchService = dateSearchService;
         }
 
         [HttpGet("CreateIndex")]
         public void CreateIndex()
         {
-            _nameSearchService.CreateIndex();
+            _userSearchService.CreateIndex();
         }
 
         [HttpGet("DeleteIndex")]
         public async Task DeleteIndex()
         {
-            await _nameSearchService.DeleteIndex();
+            await _userSearchService.DeleteIndex();
         }
 
         [HttpGet("DeleteFromIndex")]
         public async Task DeleteFromIndex()
         {
-            await _nameSearchService.DeleteFromIndex();
+            await _userSearchService.DeleteFromIndex();
         }
 
-        [HttpGet("AddDoctors")]
+        [HttpGet("AddToIndex")]
         public async Task AddDoctors()
         {
-            await _nameSearchService.AddRangeToIndexAsync();
+            await _userSearchService.AddRangeToIndexAsync();
         }
 
         [HttpGet("Search")]
-        public void Search(string keyWord)
+        public List<string> Search(string keyWord)
         {
-            _nameSearchService.GetFromIndex(keyWord);
+            var result =  _userSearchService.GetUrisIndex(keyWord);
+            return result;
+        }
+
+        [HttpGet("CreateIndex/Date")]
+        public void CreateIndexDate()
+        {
+            _dateSearchService.CreateIndex();
+        }
+
+        [HttpGet("DeleteIndex/Date")]
+        public async Task DeleteIndexDate()
+        {
+            await _dateSearchService.DeleteIndex();
+        }
+
+        [HttpGet("DeleteFromIndex/Date")]
+        public async Task DeleteFromIndexDate()
+        {
+            await _dateSearchService.DeleteFromIndex();
+        }
+
+        [HttpGet("AddToIndex/Date")]
+        public async Task AddDoctorsDate()
+        {
+            await _dateSearchService.AddRangeToIndexAsync();
+        }
+
+        [HttpGet("Search/Date")]
+        public List<string> SearchDate(DateTime keyWord)
+        {
+            var result = _dateSearchService.GetUrisIndex(keyWord);
+            return result;
         }
     }
 }

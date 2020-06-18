@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using ElasticSearch;
-using ElasticSearch.Models;
 using MedAppCore.Models;
+using MedAppCore.Models.ElasticSearch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +16,20 @@ namespace TimeRedistribution.Mapping
             CreateMap<Doctor, DoctorResource>();
             CreateMap<Patient, PatientResource>();
             CreateMap<Appointment, AppointmentResource>();
-            CreateMap<Doctor, Users>();
+            CreateMap<Doctor, User>();
+            CreateMap<Patient, User>();
+            CreateMap<Patient, Date>();
+            CreateMap<Doctor, Date>();
+            CreateMap<Appointment, Date>();
 
             CreateMap<DoctorResource, Doctor>();
             CreateMap<PatientResource, Patient>();
             CreateMap<AppointmentResource, Appointment>();
-            CreateMap<Users, Doctor>();
+            CreateMap<User, Doctor>();
+            CreateMap<User, Patient>();
+            CreateMap<Date, Patient>();
+            CreateMap<Date, Doctor>();
+            CreateMap<Date, Appointment>();
         }
     }
 }

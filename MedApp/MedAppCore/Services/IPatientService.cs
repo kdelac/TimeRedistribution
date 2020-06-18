@@ -14,5 +14,6 @@ namespace MedAppCore.Services
         Task UpdatePatient(Patient patientToBeUpdated, Patient patient);
         Task DeletePatient(Patient patient);
         Task AddRangeAsync(IEnumerable<Patient> patients);
+        Task<IEnumerable<Patient>> GetAll();
     }
 }

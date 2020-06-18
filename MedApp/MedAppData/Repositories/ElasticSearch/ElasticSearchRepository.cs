@@ -1,16 +1,17 @@
-﻿using Nest;
+﻿using MedAppCore.Repositories.ElasticSearch;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElasticSearch
+namespace MedAppData.Repositories.ElasticSearch
 {
-    public class ElasticS<TEntity> : IElastic<TEntity> where TEntity : class
+    public class ElasticSearchRepository<TEntity> : IElasticSearchRepository<TEntity> where TEntity : class
     {
         protected readonly ElasticClient Client;
 
-        public ElasticS(ElasticClient client)
+        public ElasticSearchRepository(ElasticClient client)
         {
             Client = client;
         }
@@ -42,9 +43,9 @@ namespace ElasticSearch
                 );
         }
 
-        public async Task DeleteAllFromIndex(string indexName)
+        public async Task DeleteAllFromIndex()
         {
-                await Client.DeleteByQueryAsync<TEntity>(_ => _.MatchAll());
+            await Client.DeleteByQueryAsync<TEntity>(_ => _.MatchAll());
         }
     }
 }
