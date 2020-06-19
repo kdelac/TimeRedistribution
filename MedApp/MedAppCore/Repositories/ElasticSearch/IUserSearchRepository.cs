@@ -8,6 +8,6 @@ namespace MedAppCore.Repositories.ElasticSearch
 {
     public interface IUserSearchRepository : IElasticSearchRepository<User>
     {
-        ISearchResponse<User> OnGet(string keyWord, string indexName);
+        ISearchResponse<User> OnGet(string keyWord, string indexName, int? skip, int? size, Type type);
     }
 }

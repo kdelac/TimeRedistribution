@@ -8,6 +8,6 @@ namespace MedAppCore.Repositories.ElasticSearch
 {
     public interface IDateSearchRepository : IElasticSearchRepository<Date>
     {
-        ISearchResponse<Date> OnGet(DateTime keyWord, string indexName);
+        ISearchResponse<Date> OnGet(DateTime keyWord, string indexName, int? skip, int? size, Type type);
     }
 }

@@ -42,9 +42,9 @@ namespace MedAppServices
             await _unitOfWork.UserSearch.DeleteIndexAsync(indexName);
         }
 
-        public List<string> GetUrisIndex(string keyWord)
+        public List<string> GetUris(string keyWord, int? skip, int? size, Type type)
         {
-            var result = _unitOfWork.UserSearch.OnGet(keyWord, indexName);
+            var result = _unitOfWork.UserSearch.OnGet(keyWord, indexName, skip, size, type);
             var results = result.Documents.ToList();
             List<string> urls = new List<string>();
             results.ForEach(_ => {

@@ -52,9 +52,9 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpGet("Search")]
-        public List<string> Search(string keyWord)
+        public List<string> Search(string keyWord, int? skip, int? size)
         {
-            var result =  _userSearchService.GetUrisIndex(keyWord);
+            var result =  _userSearchService.GetUris(keyWord, skip, size, null);
             return result;
         }
 
@@ -83,9 +83,9 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpGet("Search/Date")]
-        public List<string> SearchDate(DateTime keyWord)
+        public List<string> SearchDate(DateTime keyWord, int? skip, int? size)
         {
-            var result = _dateSearchService.GetUrisIndex(keyWord);
+            var result = _dateSearchService.GetUris(keyWord, skip, size, null);
             return result;
         }
 

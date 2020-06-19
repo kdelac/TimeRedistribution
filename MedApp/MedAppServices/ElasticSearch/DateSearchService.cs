@@ -49,9 +49,9 @@ namespace MedAppServices.ElasticSearch
             await _unitOfWork.DateSearch.DeleteIndexAsync(name);
         }
 
-        public List<string> GetUrisIndex(DateTime keyWord)
+        public List<string> GetUris(DateTime keyWord, int? skip, int? size, Type type)
         {
-            var result = _unitOfWork.DateSearch.OnGet(keyWord, indexName);
+            var result = _unitOfWork.DateSearch.OnGet(keyWord, indexName, skip, size, type);
             var results = result.Documents.ToList();
             List<string> urls = new List<string>();
             results.ForEach(_ => {
@@ -66,18 +66,18 @@ namespace MedAppServices.ElasticSearch
         {
             var doctor = await _doctorService.GetAll();
             var patient = await _patientService.GetAll();
-            var doctors = doctor.ToList();
-            var patients = patient.ToList();
             var appoitment = await _appointmentService.GetAll();
+            var doctors = doctor.ToList();
+            var patients = patient.ToList();            
             var appointments = appoitment.ToList();
+
             var dateD = _mapper.Map<List<Doctor>, List<Date>>(doctors);
-            dateD.ForEach(_ => _.Path = "api/Doctor/");
             await _unitOfWork.DateSearch.AddToIndex(dateD, indexName);
+
             var dateP = _mapper.Map<List<Patient>, List<Date>>(patients);
-            dateP.ForEach(_ => _.Path = "api/Patient/");
             await _unitOfWork.DateSearch.AddToIndex(dateP, indexName);
+
             var dateA = _mapper.Map<List<Appointment>, List<Date>>(appointments);
-            dateA.ForEach(_ => _.Path = "api/Appointment/");
             await _unitOfWork.DateSearch.AddToIndex(dateA, indexName);
         }
     }

@@ -13,28 +13,36 @@ namespace TimeRedistribution.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Doctor, DoctorResource>();
-            CreateMap<Patient, PatientResource>();
-            CreateMap<Appointment, AppointmentResource>();
+            CreateMap<Doctor, DoctorResource>().ReverseMap();
+            CreateMap<Patient, PatientResource>().ReverseMap();
+            CreateMap<Appointment, AppointmentResource>().ReverseMap();
 
-            CreateMap<Doctor, User>();
-            CreateMap<Patient, User>();
+            CreateMap<Doctor, User>()
+                .BeforeMap((d, p) => p.Path = "api/Doctor/")
+                .BeforeMap((d, p) => p.Type = typeof(Doctor))
+                .ReverseMap();
+            CreateMap<Patient, User>()
+                .BeforeMap((d, p) => p.Type = typeof(Patient))
+                .BeforeMap((d, p) => p.Path = "api/Patient/")
+                .ReverseMap();
 
-            CreateMap<Patient, Date>().ForMember(d => d.DateTime, p => p.MapFrom(src => src.DateOfBirth));
-            CreateMap<Doctor, Date>().ForMember(dt => dt.DateTime, d => d.MapFrom(src => src.DateOfBirth));
-            CreateMap<Appointment, Date>().ForMember(d => d.DateTime, ap => ap.MapFrom(src => src.DateTime));
+            CreateMap<Patient, Date>()
+                .BeforeMap((d, p) => p.Type = typeof(Patient))
+                .ForMember(d => d.DateTime, p => p.MapFrom(src => src.DateOfBirth))
+                .BeforeMap((d, p) => p.Path = "api/Patient/")
+                .ReverseMap();
+            CreateMap<Doctor, Date>()
+                .BeforeMap((d, p) => p.Type = typeof(Doctor))
+                .ForMember(dt => dt.DateTime, d => d.MapFrom(src => src.DateOfBirth))
+                .BeforeMap((d, p) => p.Path = "api/Doctor/")
+                .ReverseMap();
+            CreateMap<Appointment, Date>()
+                .BeforeMap((d, p) => p.Type = typeof(Appointment))
+                .ForMember(d => d.DateTime, ap => ap.MapFrom(src => src.DateTime))
+                .BeforeMap((d, p) => p.Path = "api/Appointment/")
+                .ReverseMap();
 
 
-            CreateMap<DoctorResource, Doctor>();
-            CreateMap<PatientResource, Patient>();
-            CreateMap<AppointmentResource, Appointment>();
-
-            CreateMap<User, Doctor>();
-            CreateMap<User, Patient>();
-
-            CreateMap<Date, Patient>().ForMember(p => p.DateOfBirth, p => p.MapFrom(src => src.DateTime));
-            CreateMap<Date, Doctor>().ForMember(d => d.DateOfBirth, dt => dt.MapFrom(src => src.DateTime));
-            CreateMap<Date, Appointment>().ForMember(a => a.DateTime, ap => ap.MapFrom(src => src.DateTime));
         }
     }
 }

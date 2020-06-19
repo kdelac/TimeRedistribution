@@ -13,19 +13,20 @@ namespace MedAppData.Repositories.ElasticSearch
             : base(client)
         { }
 
-        public ISearchResponse<User> OnGet(string keyWord, string indexName)
+        public ISearchResponse<User> OnGet(string keyWord, string indexName, int? skip, int? size, Type type)
         {
             var result =
                  ElasticClient.Search<User>(s => s
                  .Index(indexName)
                 .Query(q => q
-                .MultiMatch(m => m
+                .Match(m => m.Field(f => f.Type)
+                            .Query(type.ToString()))
+                && q.MultiMatch(m => m
                     .Fields(f => f
-                        .Field(ff => ff.Name)
-                        .Field(a => a.Surname)
-                    )
+                    .Field(ff => ff.Name)
+                    .Field(a => a.Surname))
                     .Operator(Operator.Or)
-                    .Query(keyWord))).Size(10000));
+                    .Query(keyWord))).From(skip).Size(size));
 
             return result;
         }

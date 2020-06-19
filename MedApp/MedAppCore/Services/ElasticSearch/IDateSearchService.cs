@@ -11,7 +11,7 @@ namespace MedAppCore.Services.ElasticSearch
         Task DeleteIndex();
         Task DeleteIndex(string name);
         Task DeleteFromIndex();
-        List<string> GetUrisIndex(DateTime keyWord);
+        List<string> GetUris(DateTime keyWord, int? skip, int? size, Type type);
         Task AddRangeToIndexAsync();
     }
 }
