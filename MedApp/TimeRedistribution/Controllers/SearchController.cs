@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using AutoMapper;
 using MedAppCore.Models;
@@ -86,6 +87,12 @@ namespace TimeRedistribution.Controllers
         {
             var result = _dateSearchService.GetUrisIndex(keyWord);
             return result;
+        }
+
+        [HttpGet("Delete/word")]
+        public async Task SearchDate(string name)
+        {
+            await _dateSearchService.DeleteIndex(name);
         }
     }
 }

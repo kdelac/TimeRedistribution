@@ -44,6 +44,11 @@ namespace MedAppServices.ElasticSearch
             await _unitOfWork.DateSearch.DeleteIndexAsync(indexName);
         }
 
+        public async Task DeleteIndex(string name)
+        {
+            await _unitOfWork.DateSearch.DeleteIndexAsync(name);
+        }
+
         public List<string> GetUrisIndex(DateTime keyWord)
         {
             var result = _unitOfWork.DateSearch.OnGet(keyWord, indexName);

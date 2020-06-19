@@ -37,6 +37,7 @@ namespace MedAppServices
                 patients.ForEach(d =>
                 {
                     Appointment www = new Appointment();
+                    www.Id = Guid.NewGuid();
                     www.DoctorId = _.Id;
                     www.PatientId = d.Id;
                     www.DateTime = DateTime.Parse("2020-06-08T10:06:29.928Z");
@@ -62,6 +63,7 @@ namespace MedAppServices
                     appointmentToSave.DateTime = _.DateTime.Date + first;
                     appointmentToSave.DoctorId = _.DoctorId;
                     appointmentToSave.PatientId = _.PatientId;
+                    appointmentToSave.Id = _.Id;
 
                     if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
                     {
@@ -81,6 +83,7 @@ namespace MedAppServices
                     appointmentToSave.DateTime = appointments1[0].DateTime.Date + appointments1[0].DateTime.TimeOfDay + brojac;
                     appointmentToSave.DoctorId = _.DoctorId;
                     appointmentToSave.PatientId = _.PatientId;
+                    appointmentToSave.Id = _.Id;
 
                     if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
                     {

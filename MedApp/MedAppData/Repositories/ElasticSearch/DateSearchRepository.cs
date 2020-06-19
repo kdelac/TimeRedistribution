@@ -15,12 +15,15 @@ namespace MedAppData.Repositories.ElasticSearch
 
         public ISearchResponse<Date> OnGet(DateTime keyWord, string indexName)
         {
+            DateTime dt = new DateTime(keyWord.Year, keyWord.Month, keyWord.Day, 0, 0, 0);
             var result =
                  ElasticClient.Search<Date>(s => s      
                  .Index(indexName)
                  .AllowNoIndices()
-                 .Query(q => q.Match(m => m
-                            .Query(keyWord.ToString()))).Size(10000));
+                 .Query(q => q.DateRange(d => d
+                                        .Field(fl => fl.DateTime)
+                                        .GreaterThanOrEquals(dt)
+                                        .LessThan(dt.AddDays(1)))).Size(10000));
 
             return result;
         }
