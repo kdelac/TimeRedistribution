@@ -72,6 +72,12 @@ namespace MedAppData.Repositories
             await MedAppDbContext.Database.ExecuteSqlRawAsync("UpdateAppointmentStoredProcedure @DoctorId, @PatientId, @Date", parameters: new[] { param1, param2,param3});
         }
 
+        public async Task<Appointment> GetAppointmentById(Guid id)
+        {
+            return await MedAppDbContext.Appointments
+                .FirstOrDefaultAsync(_ => _.Id == id);
+        }
+
         private MedAppDbContext MedAppDbContext
         {
             get { return Context as MedAppDbContext; }

@@ -15,7 +15,19 @@ namespace MedAppData.Repositories.ElasticSearch
 
         public ISearchResponse<User> OnGet(string keyWord, string indexName, int? skip, int? size, Type type)
         {
-            var result =
+            if (!size.HasValue && skip.HasValue)
+            {
+                size = 10000 - skip;
+            }
+
+            if (!size.HasValue && !skip.HasValue)
+            {
+                size = 10000;
+            }
+
+            if (type != null)
+            {
+                var result =
                  ElasticClient.Search<User>(s => s
                  .Index(indexName)
                 .Query(q => q
@@ -28,7 +40,24 @@ namespace MedAppData.Repositories.ElasticSearch
                     .Operator(Operator.Or)
                     .Query(keyWord))).From(skip).Size(size));
 
-            return result;
+                return result;
+            }
+            else
+            {
+                var result =
+                 ElasticClient.Search<User>(s => s
+                 .Index(indexName)
+                .Query(q => q.MultiMatch(m => m
+                    .Fields(f => f
+                    .Field(ff => ff.Name)
+                    .Field(a => a.Surname))
+                    .Operator(Operator.Or)
+                    .Query(keyWord))).From(skip).Size(size));
+
+                return result;
+            }
+
+            
         }
 
         private ElasticClient ElasticClient

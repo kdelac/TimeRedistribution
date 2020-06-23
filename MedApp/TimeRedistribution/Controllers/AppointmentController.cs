@@ -35,6 +35,13 @@ namespace TimeRedistribution.Controllers
             return Ok(apointments);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Appointment>> GetAppointment(Guid id)
+        {
+            var appointment = await _appointmentService.GetAppointmentById(id);
+            return Ok(appointment);
+        }
+
         [HttpGet("Reschedule")]
         public async Task Reschedule()
         {

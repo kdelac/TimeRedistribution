@@ -51,10 +51,17 @@ namespace TimeRedistribution.Controllers
             await _userSearchService.AddRangeToIndexAsync();
         }
 
-        [HttpGet("Search")]
+        [HttpGet("Search/Users")]
         public List<string> Search(string keyWord, int? skip, int? size)
         {
-            var result =  _userSearchService.GetUris(keyWord, skip, size, null);
+            var result =  _userSearchService.GetAllUris(keyWord, skip, size);
+            return result;
+        }
+
+        [HttpGet("Search/Users/WithType")]
+        public List<string> SearchWithType(string keyWord, int? skip, int? size)
+        {
+            var result = _userSearchService.GetUrisWithType(keyWord, skip, size, typeof(Doctor));
             return result;
         }
 
@@ -85,11 +92,18 @@ namespace TimeRedistribution.Controllers
         [HttpGet("Search/Date")]
         public List<string> SearchDate(DateTime keyWord, int? skip, int? size)
         {
-            var result = _dateSearchService.GetUris(keyWord, skip, size, null);
+            var result = _dateSearchService.GetAllUris(keyWord, skip, size);
             return result;
         }
 
-        [HttpGet("Delete/word")]
+        [HttpGet("Search/Date/WithType")]
+        public List<string> SearchDateWithType(DateTime keyWord, int? skip, int? size)
+        {
+            var result = _dateSearchService.GetUrisWithType(keyWord, skip, size, typeof(Doctor));
+            return result;
+        }
+
+        [HttpGet("Delete/Index")]
         public async Task SearchDate(string name)
         {
             await _dateSearchService.DeleteIndex(name);

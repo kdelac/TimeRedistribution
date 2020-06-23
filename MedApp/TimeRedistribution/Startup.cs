@@ -126,6 +126,7 @@ namespace TimeRedistribution
 
             services.AddTransient<IUserSearchService, UserSearchService>();
             services.AddTransient<IDateSearchService, DateSearchService>();
+            services.AddTransient<IUriService, UriService>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka

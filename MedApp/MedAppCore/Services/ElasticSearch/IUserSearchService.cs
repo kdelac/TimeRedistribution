@@ -11,7 +11,8 @@ namespace MedAppCore.Services
         void CreateIndex();
         Task DeleteIndex();
         Task DeleteFromIndex();
-        List<string> GetUris(string keyWord, int? skip, int? size, Type type);
+        List<string> GetAllUris(string keyWord, int? skip, int? size);
+        List<string> GetUrisWithType(string keyWord, int? skip, int? size, Type type);
         Task AddRangeToIndexAsync();
     }
 }

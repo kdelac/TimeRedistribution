@@ -18,16 +18,17 @@ namespace MedAppServices.ElasticSearch
         private readonly IDoctorService _doctorService;
         private readonly IPatientService _patientService;
         private readonly IAppointmentService _appointmentService;
+        private readonly IUriService _uriService;
         private readonly IMapper _mapper;
         private readonly string indexName = "dates";
-        private readonly string url = "https://localhost:44308/";
-        public DateSearchService(IUnitOfWork unitOfWork, IPatientService patientService, IDoctorService doctorService, IAppointmentService appointmentService, IMapper mapper)
+        public DateSearchService(IUnitOfWork unitOfWork, IPatientService patientService, IDoctorService doctorService, IAppointmentService appointmentService, IMapper mapper, IUriService uriService)
         {
             _unitOfWork = unitOfWork;
             _doctorService = doctorService;
             _patientService = patientService;
             _appointmentService = appointmentService;
             _mapper = mapper;
+            _uriService = uriService;
         }
         public void CreateIndex()
         {
@@ -49,17 +50,20 @@ namespace MedAppServices.ElasticSearch
             await _unitOfWork.DateSearch.DeleteIndexAsync(name);
         }
 
-        public List<string> GetUris(DateTime keyWord, int? skip, int? size, Type type)
+        public List<string> GetUrisWithType(DateTime keyWord, int? skip, int? size, Type type)
         {
             var result = _unitOfWork.DateSearch.OnGet(keyWord, indexName, skip, size, type);
             var results = result.Documents.ToList();
-            List<string> urls = new List<string>();
-            results.ForEach(_ => {
-                string urlFull = $"{url}{_.Path}{_.Id}";
-                urls.Add(urlFull);
-            });
+            var resultsUri = _mapper.Map<List<Date>, List<UriCreator>>(results);
+            return _uriService.CreateUris(resultsUri);
+        }
 
-            return urls;
+        public List<string> GetAllUris(DateTime keyWord, int? skip, int? size)
+        {
+            var result = _unitOfWork.DateSearch.OnGet(keyWord, indexName, skip, size, null);
+            var results = result.Documents.ToList();
+            var resultsUri = _mapper.Map<List<Date>, List<UriCreator>>(results);
+            return _uriService.CreateUris(resultsUri);
         }
 
         public async Task AddRangeToIndexAsync()

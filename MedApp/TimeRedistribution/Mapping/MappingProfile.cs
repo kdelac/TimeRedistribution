@@ -42,6 +42,12 @@ namespace TimeRedistribution.Mapping
                 .BeforeMap((d, p) => p.Path = "api/Appointment/")
                 .ReverseMap();
 
+            CreateMap<UriCreator, Date>()
+                .ReverseMap();
+
+            CreateMap<UriCreator, User>()
+                .ReverseMap();
+
 
         }
     }

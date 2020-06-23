@@ -3,6 +3,7 @@ using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Models.ElasticSearch;
 using MedAppCore.Services;
+using MedAppCore.Services.ElasticSearch;
 using MedAppData;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,17 @@ namespace MedAppServices
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDoctorService _doctorService;
-        private readonly IPatientService _patientService;        
+        private readonly IPatientService _patientService;
+        private readonly IUriService _uriService;
         private readonly IMapper _mapper;
         private readonly string indexName = "users";
-        private readonly string url = "https://localhost:44308/";
-        public UserSearchService(IUnitOfWork unitOfWork, IPatientService patientService, IDoctorService doctorService, IMapper mapper)
+        public UserSearchService(IUnitOfWork unitOfWork, IPatientService patientService, IDoctorService doctorService, IMapper mapper, IUriService uriService)
         {
             _unitOfWork = unitOfWork;
             _doctorService = doctorService;
             _patientService = patientService;
             _mapper = mapper;
+            _uriService = uriService;
         }
         public void CreateIndex()
         {
@@ -42,17 +44,20 @@ namespace MedAppServices
             await _unitOfWork.UserSearch.DeleteIndexAsync(indexName);
         }
 
-        public List<string> GetUris(string keyWord, int? skip, int? size, Type type)
+        public List<string> GetUrisWithType(string keyWord, int? skip, int? size, Type type)
         {
             var result = _unitOfWork.UserSearch.OnGet(keyWord, indexName, skip, size, type);
             var results = result.Documents.ToList();
-            List<string> urls = new List<string>();
-            results.ForEach(_ => {
-                string urlFull = $"{url}{_.Path}{_.Id}";
-                urls.Add(urlFull);
-            });
+            var resultsUri = _mapper.Map<List<User>, List<UriCreator>>(results);
+            return _uriService.CreateUris(resultsUri);
+        }
 
-            return urls;
+        public List<string> GetAllUris(string keyWord, int? skip, int? size)
+        {
+            var result = _unitOfWork.UserSearch.OnGet(keyWord, indexName, skip, size, null);
+            var results = result.Documents.ToList();
+            var resultsUri = _mapper.Map<List<User>, List<UriCreator>>(results);
+            return _uriService.CreateUris(resultsUri);
         }
 
         public async Task AddRangeToIndexAsync()
