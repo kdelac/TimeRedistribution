@@ -44,6 +44,11 @@ namespace MedAppServices
             await _unitOfWork.UserSearch.DeleteIndexAsync(indexName);
         }
 
+        public void CreateSerchIndex()
+        {
+            _unitOfWork.UserSearch.CreateSearchIndex(indexName);
+        }
+
         public List<string> GetUrisWithType(string keyWord, int? skip, int? size, Type type)
         {
             var result = _unitOfWork.UserSearch.OnGet(keyWord, indexName, skip, size, type);
@@ -66,12 +71,19 @@ namespace MedAppServices
             var patient = await _patientService.GetAll();
             var doctors = doctor.ToList();
             var patients = patient.ToList();
+
             var users = _mapper.Map<List<Doctor>, List<User>>(doctors);
-            users.ForEach(_ => _.Path = "api/Doctor/");
             await _unitOfWork.UserSearch.AddToIndex(users, indexName);
+
             var usersP = _mapper.Map<List<Patient>, List<User>>(patients);
-            usersP.ForEach(_ => _.Path = "api/Patient/");
             await _unitOfWork.UserSearch.AddToIndex(usersP, indexName);
+        }
+
+        public List<User> GetUrisAutocomplete(string keyWord)
+        {
+            var result = _unitOfWork.UserSearch.AutocompleteSearch(keyWord, indexName);
+            var results = result.Documents.ToList();
+            return results;
         }
     }
 }

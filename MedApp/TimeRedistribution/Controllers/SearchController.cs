@@ -5,6 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using AutoMapper;
 using MedAppCore.Models;
+using MedAppCore.Models.ElasticSearch;
 using MedAppCore.Services;
 using MedAppCore.Services.ElasticSearch;
 using Microsoft.AspNetCore.Http;
@@ -27,25 +28,31 @@ namespace TimeRedistribution.Controllers
             _dateSearchService = dateSearchService;
         }
 
-        [HttpGet("CreateIndex")]
+        [HttpGet("CreateIndex/Users")]
         public void CreateIndex()
         {
             _userSearchService.CreateIndex();
         }
 
-        [HttpGet("DeleteIndex")]
+        [HttpGet("CreateIndex/SearchUsers")]
+        public void CreateSearchIndex()
+        {
+            _userSearchService.CreateSerchIndex();
+        }
+
+        [HttpGet("DeleteIndex/Users")]
         public async Task DeleteIndex()
         {
             await _userSearchService.DeleteIndex();
         }
 
-        [HttpGet("DeleteFromIndex")]
+        [HttpGet("DeleteFromIndex/Users")]
         public async Task DeleteFromIndex()
         {
             await _userSearchService.DeleteFromIndex();
         }
 
-        [HttpGet("AddToIndex")]
+        [HttpGet("AddToIndex/Users")]
         public async Task AddDoctors()
         {
             await _userSearchService.AddRangeToIndexAsync();
@@ -55,6 +62,13 @@ namespace TimeRedistribution.Controllers
         public List<string> Search(string keyWord, int? skip, int? size)
         {
             var result =  _userSearchService.GetAllUris(keyWord, skip, size);
+            return result;
+        }
+
+        [HttpGet("Search/UsersAutocomplete")]
+        public List<User> SearchAutocomplete(string keyWord)
+        {
+            var result = _userSearchService.GetUrisAutocomplete(keyWord);
             return result;
         }
 

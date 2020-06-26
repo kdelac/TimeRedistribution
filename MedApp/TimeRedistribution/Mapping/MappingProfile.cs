@@ -20,10 +20,12 @@ namespace TimeRedistribution.Mapping
             CreateMap<Doctor, User>()
                 .BeforeMap((d, p) => p.Path = "api/Doctor/")
                 .BeforeMap((d, p) => p.Type = typeof(Doctor))
+                .BeforeMap((d, p) => p.Suggest = new Nest.CompletionField { Input = new[] { d.Name, d.Surname } })
                 .ReverseMap();
             CreateMap<Patient, User>()
                 .BeforeMap((d, p) => p.Type = typeof(Patient))
                 .BeforeMap((d, p) => p.Path = "api/Patient/")
+                .BeforeMap((d, p) => p.Suggest = new Nest.CompletionField { Input = new[] { d.Name, d.Surname } })
                 .ReverseMap();
 
             CreateMap<Patient, Date>()

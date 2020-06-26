@@ -1,4 +1,5 @@
-﻿using MedAppCore.Models.ElasticSearch;
+﻿using Elasticsearch.Net;
+using MedAppCore.Models.ElasticSearch;
 using MedAppCore.Repositories.ElasticSearch;
 using Nest;
 using System;
@@ -56,8 +57,31 @@ namespace MedAppData.Repositories.ElasticSearch
 
                 return result;
             }
+        }
 
-            
+        public ISearchResponse<User> AutocompleteSearch(string keyWord, string indexName)
+        {
+            ISearchResponse<User> searchResponse = ElasticClient.Search<User>(s => s
+                                     .Index(indexName)
+                                     .Suggest(su => su
+                                          .Completion("suggest", c => c
+                                               .Field(f => f.Suggest)
+                                               .Prefix(keyWord)
+                                               .Fuzzy(f => f
+                                                   .Fuzziness(Fuzziness.Auto)
+                                               )
+                                               .Size(10000))
+                                             ));
+            return searchResponse;
+        }
+
+
+
+        public void CreateSearchIndex(string indexName)
+        {
+            var createIndexDescriptor = ElasticClient.Indices.Create(indexName,
+            ind => ind.Map<User>(m => m
+                                .AutoMap(typeof(User))));
         }
 
         private ElasticClient ElasticClient
