@@ -34,7 +34,13 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
   <p>Pretraživanje je jako brzo i rezultati se odmah dobiju. Maksimalno se od jednom može dobiti 10000 rezultata. Ali ako se straniči to je uredu.</p>
   <li>koliko se troši u tvom case-u memorije i diska</li>
   <p>Na oko 12000 zapisa troši jako malo memorije i oko 3mb diska.</p>
-  <li>Milk</li>
 </ol>  
 <p>Sve u svemu jako brzo se izvršava pretraga. Ako iz baze nije potrebno dovlačiti sve podatke o nekoj osobi onda je sasvim uredu zapisati sve u indeks i sve te podatke poslati na frontend. Ne troši puno resursa i praktično je za korištenje. Ima puno opcija koje se mogu koristiti.</p>
+
+<h4>Autocomplete</h4>
+<p>Implementiran je autocomplete, muči me samo mpiranje atributa tipa CompletionField koje bi nako mapiranja u elasticksearchu trebalo biti tipa Completion, a on ga u indexu mapira kao text. Što se tiče rada s autocompletom prilično je jednostavno, ako se zada riječ ili slovo onda pretažuje po riječima koje su zadane u CompletionFildu.</p>
+<img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/class.png">
+<p>Na slici se vidi prikaz klase korisnika i polje tipa CompletionField na donjoj slici vidimo prikaz u kibani i da je type text, a trebao bi biti Completion.</p>
+<img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/kib.png">
+<p>Za provjeru je potrebno skinuti kibanu i elasticsearch ili ih pulati u docker. U kibani u konzoli se može provjeriti mapiranje indeksa s pozivanjem API-a "GET users/_mapping" u konzoli.</p>
 </body>
