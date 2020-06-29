@@ -43,9 +43,11 @@ namespace MedAppData.Repositories.ElasticSearch
                 );
         }
 
-        public async Task DeleteAllFromIndex()
+        public async Task DeleteAllFromIndex(string indexName)
         {
-            await Client.DeleteByQueryAsync<TEntity>(_ => _.MatchAll());
+            await Client.DeleteByQueryAsync<TEntity>(_ => _
+                                                .Index(indexName)
+                                                .MatchAll());
         }
     }
 }

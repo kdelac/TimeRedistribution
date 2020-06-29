@@ -37,7 +37,7 @@ namespace MedAppServices.ElasticSearch
 
         public async Task DeleteFromIndex()
         {
-            await _unitOfWork.DateSearch.DeleteAllFromIndex();
+            await _unitOfWork.DateSearch.DeleteAllFromIndex(indexName);
         }
 
         public async Task DeleteIndex()

@@ -8,6 +8,6 @@ namespace MedAppCore.Repositories.ElasticSearch
         void CreateIndex(string indexName);
         Task AddToIndex(List<TEntity> records, string indexName);
         Task DeleteIndexAsync(string indexName);
-        Task DeleteAllFromIndex();
+        Task DeleteAllFromIndex(string indexNames);
     }
 }

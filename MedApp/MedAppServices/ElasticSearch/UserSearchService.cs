@@ -36,7 +36,7 @@ namespace MedAppServices
 
         public async Task DeleteFromIndex()
         {
-            await _unitOfWork.UserSearch.DeleteAllFromIndex();
+            await _unitOfWork.UserSearch.DeleteAllFromIndex(indexName);
         }
 
         public async Task DeleteIndex()
