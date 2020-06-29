@@ -43,4 +43,7 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
 <p>Na slici se vidi prikaz klase korisnika i polje tipa CompletionField na donjoj slici vidimo prikaz u kibani i da je type text, a trebao bi biti Completion.</p>
 <img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/kib.png">
 <p>Za provjeru je potrebno skinuti kibanu i elasticsearch ili ih pulati u docker. U kibani u konzoli se može provjeriti mapiranje indeksa s pozivanjem API-a "GET users/_mapping" u konzoli.</p>
+
+<h5>Rješeno</h5>
+<p>Problem je bio u mapiranju i to u polju koje je tipa Type. Mapper nije mogao normalno mapirat zbog tog polja. Prebacio sam ga u string i sad radi sve kako treba. Pretraživanje je vrlo jednostavno kao što sam već rekao pretražuje se po riječima koje su spremljene u polje CompletionField. Postoji i fuzzines gdje definiramo koliko pogrešaka može biti u stringu kojeg napišemo. Npr. ako je 1 onda znaći da 1 solovo korisnik može pogriješiti i da će naći sve slične korisnike usprkos to jednoj pogrešci.</p>
 </body>
