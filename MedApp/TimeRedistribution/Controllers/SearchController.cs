@@ -34,12 +34,6 @@ namespace TimeRedistribution.Controllers
             _userSearchService.CreateIndex();
         }
 
-        [HttpGet("CreateIndex/SearchUsers")]
-        public void CreateSearchIndex()
-        {
-            _userSearchService.CreateSerchIndex();
-        }
-
         [HttpGet("DeleteIndex/Users")]
         public async Task DeleteIndex()
         {
@@ -66,7 +60,7 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpGet("Search/UsersAutocomplete")]
-        public List<User> SearchAutocomplete(string keyWord)
+        public List<string> SearchAutocomplete(string keyWord)
         {
             var result = _userSearchService.GetUrisAutocomplete(keyWord);
             return result;
@@ -75,7 +69,7 @@ namespace TimeRedistribution.Controllers
         [HttpGet("Search/Users/WithType")]
         public List<string> SearchWithType(string keyWord, int? skip, int? size)
         {
-            var result = _userSearchService.GetUrisWithType(keyWord, skip, size, typeof(Doctor));
+            var result = _userSearchService.GetUrisWithType(keyWord, skip, size, typeof(Doctor).ToString());
             return result;
         }
 
@@ -113,7 +107,7 @@ namespace TimeRedistribution.Controllers
         [HttpGet("Search/Date/WithType")]
         public List<string> SearchDateWithType(DateTime keyWord, int? skip, int? size)
         {
-            var result = _dateSearchService.GetUrisWithType(keyWord, skip, size, typeof(Doctor));
+            var result = _dateSearchService.GetUrisWithType(keyWord, skip, size, typeof(Doctor).ToString());
             return result;
         }
 

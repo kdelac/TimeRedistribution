@@ -11,7 +11,7 @@ namespace MedAppCore.Models.ElasticSearch
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Path { get; set; }
-        public Type Type { get; set; }
+        public string Type { get; set; }
         [Completion]
         public CompletionField Suggest { get; set; }
     }

@@ -9,6 +9,6 @@ namespace MedAppCore.Models.ElasticSearch
         public Guid Id { get; set; }
         public DateTime DateTime { get; set; }
         public string Path { get; set; }
-        public Type Type { get; set; }
+        public string Type { get; set; }
     }
 }

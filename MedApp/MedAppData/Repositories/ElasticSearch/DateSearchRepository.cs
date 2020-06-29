@@ -15,7 +15,7 @@ namespace MedAppData.Repositories.ElasticSearch
             : base(client)
         { }
 
-        public ISearchResponse<Date> OnGet(DateTime keyWord, string indexName, int? skip, int? size, Type type)
+        public ISearchResponse<Date> OnGet(DateTime keyWord, string indexName, int? skip, int? size, string type)
         {
             if (!size.HasValue && skip.HasValue)
             {

@@ -4,7 +4,10 @@ using MedAppCore.Repositories.ElasticSearch;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MedAppData.Repositories.ElasticSearch
 {
@@ -14,7 +17,7 @@ namespace MedAppData.Repositories.ElasticSearch
             : base(client)
         { }
 
-        public ISearchResponse<User> OnGet(string keyWord, string indexName, int? skip, int? size, Type type)
+        public ISearchResponse<User> OnGet(string keyWord, string indexName, int? skip, int? size, string type)
         {
             if (!size.HasValue && skip.HasValue)
             {
@@ -59,7 +62,7 @@ namespace MedAppData.Repositories.ElasticSearch
             }
         }
 
-        public ISearchResponse<User> AutocompleteSearch(string keyWord, string indexName)
+        public IEnumerable<User> AutocompleteSearch(string keyWord, string indexName)
         {
             ISearchResponse<User> searchResponse = ElasticClient.Search<User>(s => s
                                      .Index(indexName)
@@ -72,16 +75,17 @@ namespace MedAppData.Repositories.ElasticSearch
                                                )
                                                .Size(10000))
                                              ));
-            return searchResponse;
-        }
+           var suggestions =
+                from suggest in searchResponse.Suggest["suggest"]
+                from option in suggest.Options
+                select new User
+                {
+                    Id = option.Source.Id,
+                    Path = option.Source.Path
+                };
 
 
-
-        public void CreateSearchIndex(string indexName)
-        {
-            var createIndexDescriptor = ElasticClient.Indices.Create(indexName,
-            ind => ind.Map<User>(m => m
-                                .AutoMap(typeof(User))));
+            return suggestions;
         }
 
         private ElasticClient ElasticClient

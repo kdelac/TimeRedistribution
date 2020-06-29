@@ -50,7 +50,7 @@ namespace MedAppServices.ElasticSearch
             await _unitOfWork.DateSearch.DeleteIndexAsync(name);
         }
 
-        public List<string> GetUrisWithType(DateTime keyWord, int? skip, int? size, Type type)
+        public List<string> GetUrisWithType(DateTime keyWord, int? skip, int? size, string type)
         {
             var result = _unitOfWork.DateSearch.OnGet(keyWord, indexName, skip, size, type);
             var results = result.Documents.ToList();

@@ -12,9 +12,8 @@ namespace MedAppCore.Services
         Task DeleteIndex();
         Task DeleteFromIndex();
         List<string> GetAllUris(string keyWord, int? skip, int? size);
-        List<string> GetUrisWithType(string keyWord, int? skip, int? size, Type type);
-        List<User> GetUrisAutocomplete(string keyWord);
+        List<string> GetUrisWithType(string keyWord, int? skip, int? size, string type);
+        List<string> GetUrisAutocomplete(string keyWord);
         Task AddRangeToIndexAsync();
-        void CreateSerchIndex();
     }
 }
