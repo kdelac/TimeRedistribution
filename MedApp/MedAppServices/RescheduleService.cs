@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using MimeKit;
 using System.Runtime.CompilerServices;
+using Apache.NMS;
+using Apache.NMS.Util;
 
 namespace MedAppServices
 {
@@ -81,6 +83,7 @@ namespace MedAppServices
             appointmentToBeUpdated.DateTime = appointment.DateTime.Date + appointment.DateTime.TimeOfDay + appoitmentExtend;
             await _appointmentService.UpdateAppointment(appointmentToBeUpdated.DateTime, appointmentToBeUpdated.DoctorId, appointmentToBeUpdated.PatientId);
             //SendEmail(appointment.Patient, appointment.DateTime);
+            Posalji(appointment.Patient, appointment.DateTime);
         } 
 
         public bool CheckGap(Appointment appoitment, Appointment appoitmentNext, TimeSpan deley)
@@ -127,6 +130,23 @@ namespace MedAppServices
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public void Posalji(Patient patient, DateTime time)
+        {
+            ITextMessage objectMessage;
+            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:55555?wireFormat.maxInactivityDuration=0");
+            IConnection connection = connectionFactory.CreateConnection();
+            connection.Start();
+            ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
+            IDestination destination = SessionUtil.GetDestination(session, "novePoruke");
+            IMessageProducer messageProducer = session.CreateProducer(destination);
+
+            objectMessage = session.CreateTextMessage(patient.Email + ";" + time);
+
+            messageProducer.Send(objectMessage);
+            session.Close();
+            connection.Stop();
         }
     }
 }

@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+ activemq:
+  image: rmohr/activemq
+  expose:
+  - "55555"
+  ports:
+  - "5002:8161"
+  - "55555:61616/tcp"
+  networks:
+      - front-tier
+
+ mailer-service:
+  build: ./MailerWorker
+  depends_on: 
+   - activemq
+  restart: always
+  depends_on: [activemq]
+  networks:
+      - front-tier
+
+networks:
+  front-tier:

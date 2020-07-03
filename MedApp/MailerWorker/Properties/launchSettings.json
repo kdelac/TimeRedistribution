@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MailerWorker": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -19,13 +19,15 @@ namespace TimeRedistribution.Controllers
         private readonly IRescheduleService _rescheduleService;
         private readonly IMapper _mapper;
         private readonly IDodavanjeTermina _dodajTermin;
+        private readonly IPatientService _patientService;
 
-        public AppointmentController(IAppointmentService appointmentService, IMapper mapper, IRescheduleService rescheduleService, IDodavanjeTermina dodavanjeTermina)
+        public AppointmentController(IAppointmentService appointmentService, IMapper mapper, IRescheduleService rescheduleService, IDodavanjeTermina dodavanjeTermina, IPatientService patientService)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
             _rescheduleService = rescheduleService;
             _dodajTermin = dodavanjeTermina;
+            _patientService = patientService;
         }
 
         [HttpGet]
@@ -45,7 +47,13 @@ namespace TimeRedistribution.Controllers
         [HttpGet("Reschedule")]
         public async Task Reschedule()
         {
-             await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
+            //await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
+            var patients = await _patientService.GetAll();
+            var pat = patients.ToList();
+
+            pat.ForEach(_ => {
+                _rescheduleService.Posalji(_, _.DateOfBirth);
+            });       
         }
 
         [HttpPut("{doctorId}/{patientId}/NewUpdate")]
