@@ -46,4 +46,8 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
 
 <h5>Rješeno</h5>
 <p>Problem je bio u mapiranju i to u polju koje je tipa Type. Mapper nije mogao normalno mapirat zbog tog polja. Prebacio sam ga u string i sad radi sve kako treba. Pretraživanje je vrlo jednostavno kao što sam već rekao pretražuje se po riječima koje su spremljene u polje CompletionField. Postoji i fuzzines gdje definiramo koliko pogrešaka može biti u stringu kojeg napišemo. Npr. ako je 1 onda znaći da 1 solovo korisnik može pogriješiti i da će naći sve slične korisnike usprkos to jednoj pogrešci.</p>
+
+<h3>Slanje emaila</h3>
+<p>Napravio sam projekt tipa Worket pod nazivom MailerWorker. Radi na principu da cijelo vrijeme osluškuje port od activemq-a i kada poruka dođe na amq, program odmah u log zabilježi da je poruka došla, odnosno treba implementirati slanje email-a. U RescheduleService dodao sam metodu koja šalje event na activemq-kad se raspored promjeni. Što se sapajanja tiče u docker-compose file-u dfinirao sam 4. Prvi je activemq, koji radi na lokanom portu 8888, a spajanje workera na activemq korstim depends-on i zatim u connection stringu ne upisujem localhost nego naziv servisa koji sam definirao u docker-composeu i port koji acticemq koristi za osluškivanje: 'tcp://activemq:61616'.
+</p>
 </body>
