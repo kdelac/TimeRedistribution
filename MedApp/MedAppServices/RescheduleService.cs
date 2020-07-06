@@ -83,7 +83,7 @@ namespace MedAppServices
             appointmentToBeUpdated.DateTime = appointment.DateTime.Date + appointment.DateTime.TimeOfDay + appoitmentExtend;
             await _appointmentService.UpdateAppointment(appointmentToBeUpdated.DateTime, appointmentToBeUpdated.DoctorId, appointmentToBeUpdated.PatientId);
             //SendEmail(appointment.Patient, appointment.DateTime);
-            Posalji(appointment.Patient, appointment.DateTime);
+            Send(appointment.Patient, appointment.DateTime);
         } 
 
         public bool CheckGap(Appointment appoitment, Appointment appoitmentNext, TimeSpan deley)
@@ -132,7 +132,7 @@ namespace MedAppServices
             }
         }
 
-        public void Posalji(Patient patient, DateTime time)
+        public void Send(Patient patient, DateTime time)
         {
             ITextMessage objectMessage;
             IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888?wireFormat.maxInactivityDuration=0");

@@ -54,7 +54,7 @@ namespace TimeRedistribution.Controllers
             pat.ForEach(_ => {
                 if (brojac < 10)
                 {
-                    _rescheduleService.Posalji(_, _.DateOfBirth);
+                    _rescheduleService.Send(_, _.DateOfBirth);
                 }
                 brojac++;
             });       
