@@ -50,9 +50,13 @@ namespace TimeRedistribution.Controllers
             //await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
             var patients = await _patientService.GetAll();
             var pat = patients.ToList();
-
+            int brojac = 0;
             pat.ForEach(_ => {
-                _rescheduleService.Posalji(_, _.DateOfBirth);
+                if (brojac < 10)
+                {
+                    _rescheduleService.Posalji(_, _.DateOfBirth);
+                }
+                brojac++;
             });       
         }
 

@@ -135,7 +135,7 @@ namespace MedAppServices
         public void Posalji(Patient patient, DateTime time)
         {
             ITextMessage objectMessage;
-            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:55555?wireFormat.maxInactivityDuration=0");
+            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888?wireFormat.maxInactivityDuration=0");
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);

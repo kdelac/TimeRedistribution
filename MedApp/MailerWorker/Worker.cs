@@ -23,7 +23,7 @@ namespace MailerWorker
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation($"Radim");
-            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:55555");
+            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
