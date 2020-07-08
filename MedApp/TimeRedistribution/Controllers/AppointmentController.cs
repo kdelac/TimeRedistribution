@@ -47,17 +47,7 @@ namespace TimeRedistribution.Controllers
         [HttpGet("Reschedule")]
         public async Task Reschedule()
         {
-            //await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
-            var patients = await _patientService.GetAll();
-            var pat = patients.ToList();
-            int brojac = 0;
-            pat.ForEach(_ => {
-                if (brojac < 10)
-                {
-                    _rescheduleService.Send(_, _.DateOfBirth);
-                }
-                brojac++;
-            });       
+            await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
         }
 
         [HttpPut("{doctorId}/{patientId}/NewUpdate")]
@@ -114,9 +104,9 @@ namespace TimeRedistribution.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("DodajTermine")]
-        public async Task DodavanjeTermina()
+        public async Task DodavanjeTermina(int pocMin, int pocSat, int razmak)
         {
-            await _dodajTermin.Dodaj();
+            await _dodajTermin.Dodaj(pocMin, pocSat, razmak);
         }
     }
 }

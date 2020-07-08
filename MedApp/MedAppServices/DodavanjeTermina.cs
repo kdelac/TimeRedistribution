@@ -25,7 +25,7 @@ namespace MedAppServices
             _appointmentService = appointmentService;
         }
 
-        public async Task Dodaj()
+        public async Task Dodaj(int pocMin, int pocSat, int razmak)
         {
             var a = await _doctorService.GetAllWithAppointment();
             var b = await _patientService.GetAllWithAppointment();
@@ -40,14 +40,14 @@ namespace MedAppServices
                     www.Id = Guid.NewGuid();
                     www.DoctorId = _.Id;
                     www.PatientId = d.Id;
-                    www.DateTime = DateTime.Parse("2020-06-08T10:06:29.928Z");
+                    www.DateTime = DateTime.Now;
                     app.Add(www);
                 });
-                Provjera(app);
+                Provjera(app, pocMin, pocSat, razmak);
             });
         }
 
-        public void Provjera(List<Appointment> appointments)
+        public void Provjera(List<Appointment> appointments, int pocMin, int pocSat, int razmak)
         {
             List<Appointment> appointments1 = new List<Appointment>();
             TimeSpan brojac = new TimeSpan(0, 0, 0);
@@ -55,8 +55,8 @@ namespace MedAppServices
             appointments.ForEach(async _ => {
 
                 Appointment appointmentToSave = new Appointment();
-                TimeSpan first = new TimeSpan(10, 25, 0);
-                TimeSpan next = new TimeSpan(0, 5, 0);      
+                TimeSpan first = new TimeSpan(pocSat, pocMin, 0);
+                TimeSpan next = new TimeSpan(0,razmak, 0);      
 
                 if (appointments1.Count() == 0)
                 {
@@ -65,15 +65,7 @@ namespace MedAppServices
                     appointmentToSave.PatientId = _.PatientId;
                     appointmentToSave.Id = _.Id;
 
-                    if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
-                    {
-                        appointmentToSave.Status = "Completed";
-                    }
-
-                    if (appointmentToSave.DateTime.TimeOfDay > DateTime.Now.TimeOfDay)
-                    {
                         appointmentToSave.Status = "Waiting";
-                    }
 
                     appointments1.Add(appointmentToSave);
                 }
@@ -85,20 +77,8 @@ namespace MedAppServices
                     appointmentToSave.PatientId = _.PatientId;
                     appointmentToSave.Id = _.Id;
 
-                    if (appointmentToSave.DateTime.TimeOfDay < DateTime.Now.TimeOfDay)
-                    {
-                        appointmentToSave.Status = "Completed";
-                    }
-
-                    if (appointmentToSave.DateTime.TimeOfDay == DateTime.Now.TimeOfDay)
-                    {
-                        appointmentToSave.Status = "Pending";
-                    }
-
-                    if (appointmentToSave.DateTime.TimeOfDay > DateTime.Now.TimeOfDay)
-                    {
                         appointmentToSave.Status = "Waiting";
-                    }
+
 
                     appointments1.Add(appointmentToSave);
                 }

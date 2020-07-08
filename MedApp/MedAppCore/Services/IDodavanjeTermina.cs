@@ -11,6 +11,6 @@ namespace MedAppCore.Services
     /// <returns></returns>
     public interface IDodavanjeTermina
     {
-        Task Dodaj();
+        Task Dodaj(int pocMin, int pocSat, int razmak);
     }
 }

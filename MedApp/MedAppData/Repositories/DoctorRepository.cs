@@ -27,6 +27,7 @@ namespace MedAppData.Repositories
         {
             return await MedAppDbContext.Doctors
                 .Include(_ => _.Appointments)
+                .ThenInclude(_ => _.Patient)
                 .Where(_ => _.Appointments.Count > 0)
                 .ToListAsync();
         }

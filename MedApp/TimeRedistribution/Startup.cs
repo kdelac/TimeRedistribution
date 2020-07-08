@@ -15,11 +15,13 @@ using System;
 using Microsoft.AspNetCore.Http;
 using MedAppCore.Services.ElasticSearch;
 using MedAppServices.ElasticSearch;
+using System.Diagnostics;
 
 namespace TimeRedistribution
 {
     public class Startup
     {
+        private string server;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -66,11 +68,31 @@ namespace TimeRedistribution
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time");
             });
+
+            if (server != "localhost")
+            {
+                PrepDB.PrepPopulation(app);
+            }            
         }
 
         private void Services(IServiceCollection services)
         {
-            services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), x => x.MigrationsAssembly("MedAppData")));
+            server = Configuration["DBServer"] ?? "localhost";
+            var port = Configuration["DBPort"] ?? "1433";
+            var user = Configuration["DBUser"] ?? "SA";
+            var password = Configuration["DBPassword"] ?? "KRISTIJAn123";
+            var database = Configuration["Database"] ?? "TimeScheduel";
+
+            if (server == "localhost")
+            {
+                var constring = Configuration.GetConnectionString("Default");
+                Debug.WriteLine(constring);
+                services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(constring, x => x.MigrationsAssembly("MedAppData")));
+            }
+            else
+            {
+                services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer($"Server={server},{port};Database={database};User ID ={user};Password={password}", x => x.MigrationsAssembly("MedAppData")));
+            }
 
             #region elastic
 

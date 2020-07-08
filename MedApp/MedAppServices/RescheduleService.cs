@@ -53,25 +53,17 @@ namespace MedAppServices
 
         public async Task ChangeAppoitments(List<Appointment> appointments, TimeSpan deley)
         {
-            var prvi = appointments.First();
-            
-            if (appointments.Count() == 1)
+            await UpdateAppoitment(appointments[0], deley);
+            for (int i = 1; i < appointments.Count(); i++)
             {
-                await UpdateAppoitment(prvi, deley);
-                appointments.Remove(prvi);
-            }
-
-            if (appointments.Count > 1 && CheckGap(prvi, appointments[1], deley))
-            {
-                await UpdateAppoitment(prvi, deley);
-                appointments.Remove(prvi);
-            }
-
-            if (appointments.Count > 1 && !CheckGap(prvi, appointments[1], deley))
-            {
-                await UpdateAppoitment(prvi, deley);
-                appointments.Remove(prvi);
-                await ChangeAppoitments(appointments, deley);
+                if (appointments[i].DateTime-appointments[i-1].DateTime <= deley)
+                {
+                    await UpdateAppoitment(appointments[i], deley);
+                }
+                else
+                {
+                    break;
+                }
             }
         }
 
@@ -82,8 +74,7 @@ namespace MedAppServices
             appointmentToBeUpdated.PatientId = appointment.PatientId;
             appointmentToBeUpdated.DateTime = appointment.DateTime.Date + appointment.DateTime.TimeOfDay + appoitmentExtend;
             await _appointmentService.UpdateAppointment(appointmentToBeUpdated.DateTime, appointmentToBeUpdated.DoctorId, appointmentToBeUpdated.PatientId);
-            //SendEmail(appointment.Patient, appointment.DateTime);
-            Send(appointment.Patient, appointment.DateTime);
+            //Send(appointment.Patient, appointment.DateTime);
         } 
 
         public bool CheckGap(Appointment appoitment, Appointment appoitmentNext, TimeSpan deley)
@@ -135,7 +126,8 @@ namespace MedAppServices
         public void Send(Patient patient, DateTime time)
         {
             ITextMessage objectMessage;
-            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888?wireFormat.maxInactivityDuration=0");
+            //IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
+            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888");
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);

@@ -8,12 +8,12 @@ namespace MedAppCore.Services
 {
     public interface IUserSearchService
     {
-        void CreateIndex();
-        Task DeleteIndex();
-        Task DeleteFromIndex();
-        List<string> GetAllUris(string keyWord, int? skip, int? size);
-        List<string> GetUrisWithType(string keyWord, int? skip, int? size, string type);
-        List<string> GetUrisAutocomplete(string keyWord);
-        Task AddRangeToIndexAsync();
+        //void CreateIndex();
+        //Task DeleteIndex();
+        //Task DeleteFromIndex();
+        //List<string> GetAllUris(string keyWord, int? skip, int? size);
+        //List<string> GetUrisWithType(string keyWord, int? skip, int? size, string type);
+        //List<string> GetUrisAutocomplete(string keyWord);
+        //Task AddRangeToIndexAsync();
     }
 }
