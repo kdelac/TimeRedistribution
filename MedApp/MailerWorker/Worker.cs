@@ -21,8 +21,7 @@ namespace MailerWorker
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            _logger.LogInformation($"Radim");
+        {           
             IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
@@ -30,6 +29,7 @@ namespace MailerWorker
             IDestination destination = SessionUtil.GetDestination(session, "novePoruke");
             IMessageConsumer messageConsumer = session.CreateConsumer(destination);
             messageConsumer.Listener += new MessageListener(Message_Listener);
+            _logger.LogInformation($"Pocetak rada: {DateTime.Now.Hour}:{DateTime.Now.Minute}");
             await Task.Delay(5000, stoppingToken);
         }
 

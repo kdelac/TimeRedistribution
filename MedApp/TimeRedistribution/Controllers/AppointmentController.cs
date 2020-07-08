@@ -50,6 +50,12 @@ namespace TimeRedistribution.Controllers
             await _rescheduleService.Reschedule(5, DateTime.Now, "Waiting");
         }
 
+        [HttpGet("SendMessage")]
+        public void SendMessage(string message)
+        {
+            _rescheduleService.Send(message);
+        }
+
         [HttpPut("{doctorId}/{patientId}/NewUpdate")]
         public void UpdateAppointment(Guid doctorId, Guid patientId, DateTime date)
         {

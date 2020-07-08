@@ -24,7 +24,7 @@ namespace AppoitmentRedistribution
                 services.AddScoped<IAppointmentService, AppointmentService>();
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
                 //services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer("Server=localhost;Database=TimeScheduel;Trusted_Connection=True;"));
-                services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer($"Server=db,1433;Database=TimeScheduel;User ID=SA;Password=KRISTIJAn123"));
+                services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer($"Server=db,1433;Database=TimeScheduel;User ID=SA;Password=Passw0rd"));
                 services.AddScoped<IDoctorService, DoctorService>();
                 services.AddScoped<IPatientService, PatientService>();
             });

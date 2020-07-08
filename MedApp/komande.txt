@@ -1,0 +1,3 @@
+docker cp .\TimeScheduel.bak <idcontainera-sql>:/var/opt/mssql/data
+
+docker exec -it <idcontainera-sql> /opt/mssql-tools/bin/sqlcmd -U sa -P Passw0rd -Q"RESTORE DATABASE [TimeScheduel] FROM  DISK = N'/var/opt/mssql/data/TimeScheduel.bak' WITH  FILE = 1,  MOVE N'TimeScheduel' TO N'/var/opt/mssql/data/TimeScheduel.mdf',  MOVE N'TimeScheduel_log' TO N'/var/opt/mssql/data/TimeScheduel_log.ldf'"

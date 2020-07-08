@@ -9,6 +9,6 @@ namespace MedAppCore.Services
     public interface IRescheduleService
     {
         Task Reschedule(int deleyMin, DateTime date, string status);
-        void Send(Patient patient, DateTime time);
+        void Send(string message);
     }
 }

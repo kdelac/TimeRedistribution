@@ -123,18 +123,18 @@ namespace MedAppServices
             }
         }
 
-        public void Send(Patient patient, DateTime time)
+        public void Send(string message)
         {
             ITextMessage objectMessage;
-            //IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
-            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888");
+            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
+            //IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888");
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
             IDestination destination = SessionUtil.GetDestination(session, "novePoruke");
             IMessageProducer messageProducer = session.CreateProducer(destination);
 
-            objectMessage = session.CreateTextMessage(patient.Email + ";" + time);
+            objectMessage = session.CreateTextMessage(message);
 
             messageProducer.Send(objectMessage);
             session.Close();

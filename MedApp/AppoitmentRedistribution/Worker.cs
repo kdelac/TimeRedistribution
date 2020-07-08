@@ -34,7 +34,7 @@ namespace AppoitmentRedistribution
                     scope.ServiceProvider.GetRequiredService<IPatientService>();
                     scope.ServiceProvider.GetRequiredService<MedAppDbContext>();
                     await scoped.Reschedule(5, DateTime.Now, "Waiting");
-                    _logger.LogInformation("Prolaz");
+                    _logger.LogInformation($"Prolaz u: {DateTime.Now.Hour}:{DateTime.Now.Minute}");
                     await Task.Delay(1000, stoppingToken);
                 }
             }

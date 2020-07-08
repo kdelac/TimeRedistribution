@@ -51,12 +51,15 @@ services:
     image: "mcr.microsoft.com/mssql/server"
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "KRISTIJAn123"
+      SA_PASSWORD: "Passw0rd"
       MSSQL_PID: Express
     expose:
       - "1433"
     ports:
       - "1433:1433"
     volumes:
-      - /var/lib/mssql/data
+      - data-backup:/var/opt/mssql/data
     container_name: database-container 
+
+volumes:
+  data-backup:

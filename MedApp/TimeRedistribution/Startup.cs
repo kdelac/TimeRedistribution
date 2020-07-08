@@ -69,10 +69,10 @@ namespace TimeRedistribution
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time");
             });
 
-            if (server != "localhost")
-            {
-                PrepDB.PrepPopulation(app);
-            }            
+            //if (server != "localhost")
+            //{
+            //    PrepDB.PrepPopulation(app);
+            //}            
         }
 
         private void Services(IServiceCollection services)
@@ -80,7 +80,7 @@ namespace TimeRedistribution
             server = Configuration["DBServer"] ?? "localhost";
             var port = Configuration["DBPort"] ?? "1433";
             var user = Configuration["DBUser"] ?? "SA";
-            var password = Configuration["DBPassword"] ?? "KRISTIJAn123";
+            var password = Configuration["DBPassword"] ?? "Passw0rd";
             var database = Configuration["Database"] ?? "TimeScheduel";
 
             if (server == "localhost")
