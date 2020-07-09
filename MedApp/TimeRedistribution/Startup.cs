@@ -67,12 +67,7 @@ namespace TimeRedistribution
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time");
-            });
-
-            //if (server != "localhost")
-            //{
-            //    PrepDB.PrepPopulation(app);
-            //}            
+            });        
         }
 
         private void Services(IServiceCollection services)

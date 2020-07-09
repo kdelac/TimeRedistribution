@@ -20,6 +20,7 @@ services:
       dockerfile: ./AppoitmentRedistribution/Dockerfile
     depends_on:
       - "db"
+      - "activemq"
     
   activemq:
     image: rmohr/activemq
