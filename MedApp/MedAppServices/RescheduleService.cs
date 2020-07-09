@@ -74,7 +74,7 @@ namespace MedAppServices
             appointmentToBeUpdated.PatientId = appointment.PatientId;
             appointmentToBeUpdated.DateTime = appointment.DateTime.Date + appointment.DateTime.TimeOfDay + appoitmentExtend;
             await _appointmentService.UpdateAppointment(appointmentToBeUpdated.DateTime, appointmentToBeUpdated.DoctorId, appointmentToBeUpdated.PatientId);
-            //Send(appointment.Patient, appointment.DateTime);
+            Send(appointment.Patient.Email);
         } 
 
         public bool CheckGap(Appointment appoitment, Appointment appoitmentNext, TimeSpan deley)
