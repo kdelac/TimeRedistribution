@@ -11,19 +11,19 @@ namespace MedAppData
     public class UnitOfWork : IUnitOfWork
     {
         private readonly MedAppDbContext _context;
-        //private readonly ElasticClient _client;
+        private readonly ElasticClient _client;
         private PatientRepository _patientRepository;
         private DoctorRepository _doctorRepository;
         private AppointmentRepository _appointmentRepository;
         private DoctorPatientRepository _doctorPatientRepository;
 
-        //private UserSearchRepository _userSearchRepository;
-        //private DateSearchRepository _dateSearchRepository;
+        private UserSearchRepository _userSearchRepository;
+        private DateSearchRepository _dateSearchRepository;
 
-        public UnitOfWork(MedAppDbContext context)
+        public UnitOfWork(MedAppDbContext context, ElasticClient client)
         {
             _context = context;
-            //_client = client;
+            _client = client;
         }
 
 
@@ -35,9 +35,9 @@ namespace MedAppData
 
         public IPatientRepository Patients => _patientRepository = _patientRepository ?? new PatientRepository(_context);
 
-        //public IUserSearchRepository UserSearch => _userSearchRepository = _userSearchRepository ?? new UserSearchRepository(_client);
+        public IUserSearchRepository UserSearch => _userSearchRepository = _userSearchRepository ?? new UserSearchRepository(_client);
 
-        //public IDateSearchRepository DateSearch => _dateSearchRepository = _dateSearchRepository ?? new DateSearchRepository(_client);
+        public IDateSearchRepository DateSearch => _dateSearchRepository = _dateSearchRepository ?? new DateSearchRepository(_client);
 
         public async Task<int> Save()
         {

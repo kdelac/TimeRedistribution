@@ -91,9 +91,18 @@ namespace TimeRedistribution
 
             #region elastic
 
-            var connectionString = Configuration.GetConnectionString("elasticsearch");
+            string connectionString;
 
-            var settings = new ConnectionSettings(new Uri(connectionString));
+            if (server == "localhost")
+            {
+                connectionString = Configuration.GetConnectionString("elasticsearch");
+            }
+            else
+            {
+                connectionString = Configuration.GetConnectionString("elasticsearchDock");
+            }
+
+                var settings = new ConnectionSettings(new Uri(connectionString));
 
             services.AddSingleton(settings);
 
