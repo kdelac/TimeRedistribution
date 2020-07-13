@@ -7,6 +7,7 @@ using MedAppData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Nest;
 
 namespace AppoitmentRedistribution
 {
@@ -32,6 +33,7 @@ namespace AppoitmentRedistribution
                     scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
                     scope.ServiceProvider.GetRequiredService<IDoctorService>();
                     scope.ServiceProvider.GetRequiredService<IPatientService>();
+                    scope.ServiceProvider.GetRequiredService<ElasticClient>();
                     scope.ServiceProvider.GetRequiredService<MedAppDbContext>();
                     await scoped.Reschedule(5, DateTime.Now, "Waiting");
                     _logger.LogInformation($"Prolaz u: {DateTime.Now.Hour}:{DateTime.Now.Minute}");

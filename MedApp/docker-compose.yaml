@@ -36,15 +36,23 @@ services:
     depends_on:
       - activemq
     restart: always
-    
+
   mailer-service2:
     build: ./MailerWorker
     depends_on:
       - activemq
     restart: always
-    
+
   mailer-service3:
     build: ./MailerWorker
+    depends_on:
+      - activemq
+    restart: always
+
+  test-service:
+    build: 
+      context: .
+      dockerfile: ./TestProject/Dockerfile
     depends_on:
       - activemq
     restart: always

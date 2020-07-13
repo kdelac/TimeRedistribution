@@ -128,15 +128,19 @@ namespace MedAppServices
             ITextMessage objectMessage;
             IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
             //IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888");
+
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
-            ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
-            IDestination destination = SessionUtil.GetDestination(session, "novePoruke");
+            ISession session = connection.CreateSession();
+            IDestination destination = session.GetQueue("porukeQueue");
+            IDestination destination2 = session.GetQueue("porukeQueueTestni");
             IMessageProducer messageProducer = session.CreateProducer(destination);
+            IMessageProducer messageProducer2 = session.CreateProducer(destination2);
 
             objectMessage = session.CreateTextMessage(message);
 
             messageProducer.Send(objectMessage);
+            messageProducer2.Send(objectMessage);
             session.Close();
             connection.Stop();
         }

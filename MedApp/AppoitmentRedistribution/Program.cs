@@ -5,6 +5,8 @@ using MedAppServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nest;
+using System;
 
 namespace AppoitmentRedistribution
 {
@@ -27,6 +29,18 @@ namespace AppoitmentRedistribution
                 services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer($"Server=db,1433;Database=TimeScheduel;User ID=SA;Password=Passw0rd"));
                 services.AddScoped<IDoctorService, DoctorService>();
                 services.AddScoped<IPatientService, PatientService>();
+
+                var settings = new ConnectionSettings(new Uri("http://elasticsearch:9200"));
+
+                services.AddSingleton(settings);
+
+                services.AddScoped(s =>
+                {
+                    var connectionSettings = s.GetRequiredService<ConnectionSettings>();
+                    var client = new ElasticClient(connectionSettings);
+
+                    return client;
+                });
             });
     }
 
