@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Apache.NMS" Version="1.8.0" />
+    <PackageReference Include="Apache.NMS.ActiveMQ" Version="1.7.2" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Elasticsearch.Net" Version="7.7.1" />
     <PackageReference Include="itext7" Version="7.1.11" />

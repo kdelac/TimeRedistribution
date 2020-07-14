@@ -10,6 +10,7 @@ using MimeKit;
 using System.Runtime.CompilerServices;
 using Apache.NMS;
 using Apache.NMS.Util;
+using Apache.NMS.ActiveMQ.Commands;
 
 namespace MedAppServices
 {
@@ -132,15 +133,12 @@ namespace MedAppServices
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession();
-            IDestination destination = session.GetQueue("porukeQueue");
-            IDestination destination2 = session.GetQueue("porukeQueueTestni");
-            IMessageProducer messageProducer = session.CreateProducer(destination);
-            IMessageProducer messageProducer2 = session.CreateProducer(destination2);
+            ActiveMQQueue queue = new ActiveMQQueue("porukeQueue, porukeQueueTestni");
+            IMessageProducer messageProducer = session.CreateProducer();
 
             objectMessage = session.CreateTextMessage(message);
 
-            messageProducer.Send(objectMessage);
-            messageProducer2.Send(objectMessage);
+            messageProducer.Send(queue, objectMessage);
             session.Close();
             connection.Stop();
         }
