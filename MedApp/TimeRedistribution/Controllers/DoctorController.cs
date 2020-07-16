@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MedAppCore.Models;
 using MedAppCore.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeRedistribution.Resources;
 
@@ -22,6 +23,7 @@ namespace TimeRedistribution.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctors()
         {
@@ -83,6 +85,27 @@ namespace TimeRedistribution.Controllers
             await _doctorService.DeleteDoctor(doctor);
 
             return NoContent();
+        }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> RegisterDoctor(UserRegistrationModel userModel)
+        {
+            var user = _mapper.Map<ApplicationUser>(userModel);
+            var result = await _doctorService.CreateNewUser(user, userModel.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+
+                return Ok(result.Errors);
+            }
+
+            var role = await _doctorService.CreateRoleForUser(user);
+
+            return Ok(role);
         }
     }
 }

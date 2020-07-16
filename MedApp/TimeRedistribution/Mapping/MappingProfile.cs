@@ -50,6 +50,9 @@ namespace TimeRedistribution.Mapping
             CreateMap<UriCreator, User>()
                 .ReverseMap();
 
+            CreateMap<UserRegistrationModel, ApplicationUser>()
+            .ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
+
 
         }
     }

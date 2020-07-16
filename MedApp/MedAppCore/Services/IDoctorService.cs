@@ -1,4 +1,5 @@
 ﻿using MedAppCore.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,5 +17,7 @@ namespace MedAppCore.Services
         Task AddRangeAsync(IEnumerable<Doctor> doctors);
         Task<List<Doctor>> GetAllWithAppointmentExistAsync();
         Task<IEnumerable<Doctor>> GetAll();
+        Task<IdentityResult> CreateNewUser(ApplicationUser newDoctor, string password);
+        Task<IdentityResult> CreateRoleForUser(ApplicationUser newDoctor);
     }
 }

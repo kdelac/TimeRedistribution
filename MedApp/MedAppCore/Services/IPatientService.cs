@@ -1,4 +1,5 @@
 ﻿using MedAppCore.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +16,7 @@ namespace MedAppCore.Services
         Task DeletePatient(Patient patient);
         Task AddRangeAsync(IEnumerable<Patient> patients);
         Task<IEnumerable<Patient>> GetAll();
+        Task<IdentityResult> CreateNewUser(ApplicationUser newDoctor, string password);
+        Task<IdentityResult> CreateRoleForUser(ApplicationUser newDoctor);
     }
 }

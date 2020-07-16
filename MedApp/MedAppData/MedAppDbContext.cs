@@ -1,24 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MedAppCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using MedAppCore.Models;
+using Microsoft.SqlServer.Management.Smo;
+using MedAppCore.Models.Configuration;
 
 namespace MedAppData
 {
-    public class MedAppDbContext : DbContext
+    public class MedAppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<Patient> Patients { get; set; }
-        public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<DoctorPatient> DoctorPatients { get; set; }
-
-        public MedAppDbContext(DbContextOptions<MedAppDbContext> options)
+        public MedAppDbContext(DbContextOptions options)
             : base(options)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Appointment>()
                 .HasKey(bc => new { bc.DoctorId, bc.PatientId });
             #region Appoitment
@@ -34,6 +34,8 @@ namespace MedAppData
 
             modelBuilder.Entity<Appointment>()
                 .HasIndex(p => new { p.DateTime, p.Status });
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             #endregion
 
             #region DoctorPatient
@@ -53,5 +55,10 @@ namespace MedAppData
             #endregion
 
         }
+
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<DoctorPatient> DoctorPatients { get; set; }
     }
 }

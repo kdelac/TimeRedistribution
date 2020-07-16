@@ -15,7 +15,10 @@ using System;
 using Microsoft.AspNetCore.Http;
 using MedAppCore.Services.ElasticSearch;
 using MedAppServices.ElasticSearch;
-using System.Diagnostics;
+using MedAppCore.Models;
+using Microsoft.AspNetCore.Identity;
+using MedAppCore.Repositories;
+using MedAppData.Repositories;
 
 namespace TimeRedistribution
 {
@@ -67,7 +70,9 @@ namespace TimeRedistribution
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time");
-            });        
+            });
+
+            app.UseIdentityServer();
         }
 
         private void Services(IServiceCollection services)
@@ -81,13 +86,16 @@ namespace TimeRedistribution
             if (server == "localhost")
             {
                 var constring = Configuration.GetConnectionString("Default");
-                Debug.WriteLine(constring);
                 services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(constring, x => x.MigrationsAssembly("MedAppData")));
+                services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<MedAppDbContext>();
             }
             else
             {
                 services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer($"Server={server},{port};Database={database};User ID ={user};Password={password}", x => x.MigrationsAssembly("MedAppData")));
             }
+
+
 
             #region elastic
 
@@ -122,6 +130,7 @@ namespace TimeRedistribution
 
 
             #endregion
+            services.AddIdentityServer();
 
             services.AddSwaggerGen(options =>
             {
@@ -153,6 +162,8 @@ namespace TimeRedistribution
             services.AddTransient<IUserSearchService, UserSearchService>();
             services.AddTransient<IDateSearchService, DateSearchService>();
             services.AddTransient<IUriService, UriService>();
+
+            services.AddTransient<IUserRepository<ApplicationUser>, UserRepository<ApplicationUser>>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka

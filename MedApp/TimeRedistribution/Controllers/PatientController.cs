@@ -87,5 +87,26 @@ namespace TimeRedistribution.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> RegisterDoctor(UserRegistrationModel userModel)
+        {
+            var user = _mapper.Map<ApplicationUser>(userModel);
+            var result = await _patientService.CreateNewUser(user, userModel.Password);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+
+                return Ok(result.Errors);
+            }
+
+            var role = await _patientService.CreateRoleForUser(user);
+
+            return Ok(role);
+        }
     }
 }

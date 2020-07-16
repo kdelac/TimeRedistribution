@@ -1,6 +1,8 @@
 ﻿using MedAppCore;
 using MedAppCore.Models;
+using MedAppCore.Repositories;
 using MedAppCore.Services;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +13,13 @@ namespace MedAppServices
     public class PatientService : IPatientService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserRepository<ApplicationUser> _userRepository;
+        private readonly string role = "Patient";
 
-        public PatientService(IUnitOfWork unitOfWork)
+        public PatientService(IUnitOfWork unitOfWork, IUserRepository<ApplicationUser> userRepository)
         {
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
 
         public async Task<Patient> CreatePatient(Patient newPatient)
@@ -60,6 +65,18 @@ namespace MedAppServices
         public async Task<IEnumerable<Patient>> GetAll()
         {
             return await _unitOfWork.Patients.GetAllAsync();
+        }
+
+        public async Task<IdentityResult> CreateNewUser(ApplicationUser newDoctor, string password)
+        {
+            var newUser = await _userRepository.AddAsync(newDoctor, password);
+            return newUser;
+        }
+
+        public async Task<IdentityResult> CreateRoleForUser(ApplicationUser newDoctor)
+        {
+            var newUser = await _userRepository.AddToRoleAsync(newDoctor, role);
+            return newUser;
         }
     }
 }
