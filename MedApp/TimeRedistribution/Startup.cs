@@ -31,7 +31,15 @@ namespace TimeRedistribution
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {   
+        {
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", config => {
+                    config.RequireHttpsMetadata = false;
+                    config.Authority = "https://localhost:44322/";
+
+                    config.Audience = "companyApi";
+                });
+
             services.AddControllers();            
 
             services.AddControllersWithViews()
@@ -54,7 +62,8 @@ namespace TimeRedistribution
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();            
 
             app.UseCors("enableCORS");
 

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MedAppCore.Models;
 using MedAppCore.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeRedistribution.Resources;
 
@@ -22,6 +23,7 @@ namespace TimeRedistribution.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctors()
         {
