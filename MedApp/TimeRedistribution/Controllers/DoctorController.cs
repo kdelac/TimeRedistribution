@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Controllers
@@ -23,8 +23,9 @@ namespace TimeRedistribution.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+        
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctors()
         {
             var doctors = await _doctorService.GetAllWithAppointment();

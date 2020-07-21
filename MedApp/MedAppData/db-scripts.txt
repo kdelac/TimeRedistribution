@@ -1,0 +1,10 @@
+﻿add-migration <name> -c MedAppDbContext -o Migrations/AppMigrations
+
+add-migration <name> -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+add-migration <name> -c PersistedGrantDbContext -o Migrations/IdentityServer/PersistedGrantDb
+
+
+update-database -c MedAppDbContext
+
+update-database -c PersistedGrantDbContext
+update-database -c ConfigurationDbContext

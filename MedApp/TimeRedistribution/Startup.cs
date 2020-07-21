@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using MedAppCore.Services.ElasticSearch;
 using MedAppServices.ElasticSearch;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TimeRedistribution
 {
@@ -32,12 +33,16 @@ namespace TimeRedistribution
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("Bearer")
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer("Bearer", config => {
                     config.RequireHttpsMetadata = false;
                     config.Authority = "https://localhost:44322/";
 
-                    config.Audience = "companyApi";
+                    config.Audience = "ClientApi";
                 });
 
             services.AddControllers();            
@@ -63,6 +68,7 @@ namespace TimeRedistribution
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();            
 
             app.UseCors("enableCORS");

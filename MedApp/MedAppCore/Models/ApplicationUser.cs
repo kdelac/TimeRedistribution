@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MedAppCore.Models
 {
-    public class ApplicationUser : IdentityRole
+    public class ApplicationUser : IdentityUser
     {
     }
 }

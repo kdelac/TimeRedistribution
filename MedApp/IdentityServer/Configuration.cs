@@ -30,8 +30,10 @@ namespace IdentityServer
                     Claims = new List<Claim>
                     {
                         new Claim("given_name", "Mick"),
-                        new Claim("family_name", "Mining")
-                    }
+                        new Claim("family_name", "Mining"),
+                        new Claim("employee", "EmployeeOnly")
+                    },
+                                        
                 },
                 new TestUser
                 {
@@ -45,37 +47,37 @@ namespace IdentityServer
                     }
                 }
             };
-        
-
-        public static IEnumerable<ApiResource> GetApis() =>
-            new List<ApiResource> { 
-                new ApiResource("ApiOne"),
-            };
 
         public static IEnumerable<Client> GetClients() =>
             new List<Client>
             {
                 new Client
                 {
-                    ClientId = "company-employee",
-                    ClientSecrets = new [] { new Secret("codemazesecret".Sha512()) },
+                    ClientId = "clientApi_id",
+                    ClientSecrets =  
+                    {
+                        new Secret("clientApi_secret".Sha256())
+                    },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, "companyApi" }
-                }
+                    AllowedScopes = { "ClientApi", IdentityServerConstants.StandardScopes.OpenId }
+                },
             };
-        
-        public static IEnumerable<ApiScope> GetApiScopes() =>
-            new List<ApiScope> { new ApiScope("companyApi", "CompanyEmployee API")
-            };
-        
+
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
-                new ApiResource("companyApi", "CompanyEmployee API")
+                new ApiResource("ClientApi", "Client API")
                 {
-                    Scopes = { "companyApi" }
+                    Scopes = { "ClientApi" }
                 }
             };
+
+        public static IEnumerable<ApiScope> GetApiScopes() =>
+            new List<ApiScope>
+            {
+                new ApiScope("ClientApi")
+            };
+
 
 
     }
