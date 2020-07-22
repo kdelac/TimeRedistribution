@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using MedAppCore.Services.ElasticSearch;
 using MedAppServices.ElasticSearch;
 using System.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TimeRedistribution
 {
@@ -32,12 +33,17 @@ namespace TimeRedistribution
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {   
-            services.AddControllers();            
+            services.AddControllers();
 
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.RequireHttpsMetadata = false;
+
+                options.Authority = "https://localhost:44399/";
+
+                options.Audience = "api1";
+            });
 
             Services(services);
         }
@@ -54,6 +60,7 @@ namespace TimeRedistribution
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors("enableCORS");

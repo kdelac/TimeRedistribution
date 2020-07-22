@@ -5,13 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200601092822_test.cs" />
-    <Compile Remove="Migrations\20200601092822_test.Designer.cs" />
-    <Compile Remove="Migrations\20200601093006_a.cs" />
-    <Compile Remove="Migrations\20200601093006_a.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="IdentityServer4" Version="4.0.3" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">

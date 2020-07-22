@@ -3,10 +3,11 @@ using MedAppCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MedAppData
 {
-    public class MedAppDbContext : DbContext
+    public class MedAppDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
@@ -19,6 +20,8 @@ namespace MedAppData
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Appointment>()
                 .HasKey(bc => new { bc.DoctorId, bc.PatientId });
             #region Appoitment
