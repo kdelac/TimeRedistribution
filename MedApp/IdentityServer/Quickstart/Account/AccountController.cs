@@ -32,30 +32,37 @@ namespace IdentityServerHost.Quickstart.UI
     [AllowAnonymous]
     public class AccountController : Controller
     {
+        private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        //When working with dtabase uncomment this
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            TestUserStore users = null
+            //UserManager<ApplicationUser> userManager,
+            //SignInManager<ApplicationUser> signInManager
+            )
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
+            _users = users ??  new TestUserStore(TestUsers.Users);
+
 
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
-            _userManager = userManager;
-            _signInManager = signInManager;
+            //When working with dtabase uncomment this
+            //_userManager = userManager;
+            ///_signInManager = signInManager;
         }
 
         /// <summary>
@@ -115,12 +122,22 @@ namespace IdentityServerHost.Quickstart.UI
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+                //When working with dtabase uncomment this
+                //var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+
                 // validate username/password against in-memory store
-                if (result.Succeeded)
+                //When working with in-memory store uncomment this
+                if (_users.ValidateCredentials(model.Username, model.Password))
+
+                //When working with dtabase uncomment this
+                //if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByNameAsync(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
+                    //When working with dtabase uncomment this
+                    //var user = await _userManager.FindByNameAsync(model.Username);
+                    //await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
+
+                    var user = _users.FindByUsername(model.Username);
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
 
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
@@ -135,9 +152,15 @@ namespace IdentityServerHost.Quickstart.UI
                     };
 
                     // issue authentication cookie with subject ID and username
-                    var isuser = new IdentityServerUser(user.Id)
+                    //When working with dtabase uncomment this
+                    //var isuser = new IdentityServerUser(user.Id)
+                    //{
+                    //    DisplayName = user.UserName
+                    //};
+
+                    var isuser = new IdentityServerUser(user.SubjectId)
                     {
-                        DisplayName = user.UserName
+                        DisplayName = user.Username
                     };
 
                     await HttpContext.SignInAsync(isuser, props);
@@ -213,7 +236,11 @@ namespace IdentityServerHost.Quickstart.UI
             if (User?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
-                await _signInManager.SignOutAsync();
+                //When working with inmemory stores uncomment this
+                await HttpContext.SignOutAsync();
+                //When working with dtabase uncomment this
+                //await _signInManager.SignOutAsync();
+
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }

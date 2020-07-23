@@ -13,7 +13,7 @@ namespace IdentityServer
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,25 +22,9 @@ namespace IdentityServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string constring = Configuration.GetConnectionString("Default");
+            //WorkingWithDatabase(services);
+            WorkingWithInMemoryData(services);
 
-            services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(constring, x => x.MigrationsAssembly("MedAppData")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<MedAppDbContext>();
-
-            services.AddIdentityServer()
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b => b.UseSqlServer(constring,
-                        sql => sql.MigrationsAssembly("MedAppData"));
-                })
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b => b.UseSqlServer(constring,
-                        sql => sql.MigrationsAssembly("MedAppData"));
-                })
-                .AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();
         }
@@ -63,6 +47,40 @@ namespace IdentityServer
             {
                 endpoints.MapDefaultControllerRoute();
             });
+        }
+
+        private void WorkingWithDatabase(IServiceCollection services)
+        {
+            string constring = Configuration.GetConnectionString("Default");
+
+            services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer(constring, x => x.MigrationsAssembly("MedAppData")));
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<MedAppDbContext>();
+
+            services.AddIdentityServer()
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(constring,
+                        sql => sql.MigrationsAssembly("MedAppData"));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(constring,
+                        sql => sql.MigrationsAssembly("MedAppData"));
+                })
+                .AddDeveloperSigningCredential();
+        }
+
+        private void WorkingWithInMemoryData(IServiceCollection services)
+        {
+            services.AddIdentityServer()
+                .AddInMemoryApiScopes(InMemoryConfiguration.ApiScopes)
+                .AddInMemoryApiResources(InMemoryConfiguration.ApiResources)
+                .AddInMemoryIdentityResources(InMemoryConfiguration.IdentityResources)
+                .AddTestUsers(InMemoryConfiguration.Users)
+                .AddInMemoryClients(InMemoryConfiguration.Clients)
+                .AddDeveloperSigningCredential();
         }
     }
 }

@@ -39,11 +39,13 @@ namespace MvcClient
             {
                 opt.SignInScheme = "Cookies";
                 opt.Authority = "https://localhost:44399";
-                opt.ClientId = "mvc-client";
-                opt.ResponseType = "code id_token";
+                opt.ClientId = "mvc-client-implicit";
+                opt.ResponseType = "code";
                 opt.SaveTokens = true;
-                opt.ClientSecret = "MVCSecret";
+                opt.UsePkce = true;
                 opt.GetClaimsFromUserInfoEndpoint = true;
+                opt.Scope.Clear();
+                opt.Scope.Add("openid");
                 opt.Scope.Add("api1");
             });
 

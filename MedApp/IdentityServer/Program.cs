@@ -15,7 +15,7 @@ namespace IdentityServer
         {
             CreateHostBuilder(args)
                 .Build()
-                .MigrateDatabase()
+                //.MigrateDatabase()
                 .Run();
         }
 

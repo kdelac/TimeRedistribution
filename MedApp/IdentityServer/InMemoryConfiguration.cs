@@ -82,6 +82,26 @@ namespace IdentityServer
                         },
                     ClientSecrets = { new Secret("MVCSecret".Sha512()) },
                     PostLogoutRedirectUris = new List<string> { "https://localhost:44383/signout-callback-oidc" }
+                },
+                new Client
+                {
+                    ClientName = "MVC Client Implicit",
+
+                    ClientId = "mvc-client-implicit",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
+
+                    RedirectUris = new List<string>{ "https://localhost:44383/signin-oidc" },
+                    PostLogoutRedirectUris = new List<string> { "https://localhost:44383/signout-callback-oidc" },
+
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
+                        },
+
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false
                 }
             };
 
