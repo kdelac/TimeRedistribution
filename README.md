@@ -58,4 +58,8 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
 <h3>ActiveMQ</h3>
 <p>U projektu sam iskoristio Composite destinations za slanje poruka na ActiveMQ korištenje je vrlo jednostavno, slučaj je bio da na više servisa treba poslat istu poruku. To bi se moglo ostvariti pomnoću topica, ali ako imamo više istanci servisa, sve istance bi dobile istu tu poruku, a to ne želimo. Prvi pristup mi je bio napravit dva ili više Queue-a i onda pomoću svakog zasebno poslati dvije poruke. Pomoću composit destinationa postavljamo jednu poruku s više odredišta. Poruke se primaju kao običan queue. Kao odredište se može postaviti i queue i topic, ako je to potrebno. U mom slučaju rade se dva queue-a i svaki servis zasebno priba samo jednu poruku, nije bitno koliko istanci tog servisa postoji.
 </p>
+
+<h3>Identity Server</h3>
+<p>Dodana su dva nova projekta u solution jedan je za identityserver4, a drugi je web mvc aplikacija koja koristit identity server. U identity serveru napravljena je klasa u kojoj su definirani podaci pomoću kojih se vrši autentifikacija. U njoj su 3 različita klijenta, prvi samo koristi clientcredentialse da zaštiti pristupanje api-u. Drugi klijent koristit hybrid flow za autorizaciju. Treći koristi implicit flow, odnosno Authorisation Code flow s PKCE-om koji služi za dodatnu sigurnost. Implicit flow najbolji je u kada se koristi s nativnim aplikacijama i sa SPA. U projekt je implementirano i povezivanje u bazu pomoću kojega sve podatke, klijente, role, claimove, možemo spremiti u bazu. U mvc projektu je implementiran openIDconnect ponoću kojega definiramo sve podatke koji nam omogućavaju autorizaciju. Koriste se dva scopa od kojih je jedan za pristup api-u.
+</p>
 </body>
