@@ -142,6 +142,11 @@ namespace MedAppServices
             session.Close();
             connection.Stop();
         }
+
+        public void AddingAppointment(AppoitmentAdd patient)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

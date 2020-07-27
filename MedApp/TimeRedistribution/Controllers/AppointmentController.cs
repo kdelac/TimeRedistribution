@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Apache.NMS;
+using Apache.NMS.ActiveMQ.Commands;
 using AutoMapper;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Controllers
@@ -69,6 +72,34 @@ namespace TimeRedistribution.Controllers
             await _appointmentService.CreateAppointment(appointmentResuource);
 
             return Ok(appointmentResuource);
+        }
+
+        [HttpPost("AddAppointment")]
+        public async Task<ActionResult<Appointment>> AddAppoitment(AppoitmentAdd appoitmentAdd)
+        {
+            try
+            {
+                IObjectMessage objectMessage;
+                IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:61616");
+
+                IConnection connection = connectionFactory.CreateConnection();
+                Apache.NMS.ISession session = connection.CreateSession();
+                ActiveMQQueue queue = new ActiveMQQueue("createAppoitment");
+                IMessageProducer messageProducer = session.CreateProducer();
+
+                objectMessage = session.CreateObjectMessage(appoitmentAdd);
+
+                messageProducer.Send(queue, objectMessage);
+                session.Close();
+                connection.Stop();
+            }
+            catch (Exception)
+            {
+                return NotFound();                
+            }
+            
+
+            return Ok();
         }
 
         [HttpPut("{doctorId}/{patientId}")]
