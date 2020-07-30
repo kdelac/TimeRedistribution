@@ -17,25 +17,24 @@ namespace MailerWorker
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        public IServiceScopeFactory _serviceScopeFactory;
         private readonly string url = "tcp://localhost:61616";
         private IConnectionFactory connectionFactory;
         private IConnection connection;
         private ISession session;
+        private readonly string SEND_EMAIL = "sendMAil";
 
-        public Worker(ILogger<Worker> logger, IServiceScopeFactory serviceScopeFactory)
+        public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
             connectionFactory = new NMSConnectionFactory(url);
             connection = connectionFactory.CreateConnection();
             connection.Start();
             session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
-            _serviceScopeFactory = serviceScopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            IDestination destinationStatus = session.GetQueue("status");
+            IDestination destinationStatus = session.GetQueue(SEND_EMAIL);
             IMessageConsumer messageConsumerStatus = session.CreateConsumer(destinationStatus);
             messageConsumerStatus.Listener += new MessageListener(Message_ListenerStatus);
             await Task.Delay(5000, stoppingToken);
@@ -44,42 +43,7 @@ namespace MailerWorker
         protected void Message_ListenerStatus(IMessage receivedMsg)
         {
             IObjectMessage message = receivedMsg as IObjectMessage;
-            TransactionSetup transactionSetup = (TransactionSetup)message.Body;
-
-            try
-            {
-                if (transactionSetup.AppoitmentCreated == Status.success)
-                {
-                    _logger.LogInformation("Posla sam mail ne!");
-
-                    IObjectMessage objectMessage;
-
-                    transactionSetup.MailSent = Status.success;
-
-                    ISession session = connection.CreateSession();
-                    ActiveMQQueue queue = new ActiveMQQueue("status");
-                    IMessageProducer messageProducer = session.CreateProducer();
-
-                    objectMessage = session.CreateObjectMessage(transactionSetup);
-
-                    messageProducer.Send(queue, objectMessage);
-                }
-                
-            }
-            catch (Exception)
-            {
-                IObjectMessage objectMessage;
-
-                transactionSetup.MailSent = Status.failed;
-
-                ISession session = connection.CreateSession();
-                ActiveMQQueue queue = new ActiveMQQueue("status");
-                IMessageProducer messageProducer = session.CreateProducer();
-
-                objectMessage = session.CreateObjectMessage(transactionSetup);
-
-                messageProducer.Send(queue, objectMessage);
-            }
+            _logger.LogInformation(message.ToString());
         }
     }
 }

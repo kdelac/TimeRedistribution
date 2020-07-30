@@ -16,11 +16,13 @@ namespace TimeRedistribution.Controllers
     {
         private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
+        private readonly IAmqService _amqService;
 
-        public DoctorController(IDoctorService doctorService, IMapper mapper)
+        public DoctorController(IDoctorService doctorService, IMapper mapper, IAmqService amqService)
         {
             _doctorService = doctorService;
             _mapper = mapper;
+            _amqService = amqService;
         }
 
         [HttpGet]
@@ -38,12 +40,15 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Doctor>> CreateDoctor(DoctorResource doctor)
+        public async Task<ActionResult<Doctor>> CreateDoctor(TransactionSetup doctor)
         {
-            var doctorResuource = _mapper.Map<DoctorResource, Doctor>(doctor);
-            await _doctorService.CreateDoctor(doctorResuource);
+            //_amqService.SendEvent(doctor);
+
+            return null;
             
-            return Ok(doctorResuource);
+            //await _doctorService.CreateDoctor(doctorResuource);
+            
+            //return Ok(doctorResuource);
         }
 
         [HttpPost("AddMultiple")]

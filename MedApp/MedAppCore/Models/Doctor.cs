@@ -11,6 +11,7 @@ namespace MedAppCore.Models
         {
             Appointments = new Collection<Appointment>();
             DoctorPatients = new Collection<DoctorPatient>();
+            Bills = new Collection<Bill>();
         }
 
         public Guid Id { get; set; }
@@ -19,5 +20,6 @@ namespace MedAppCore.Models
         public DateTime DateOfBirth { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<DoctorPatient> DoctorPatients { get; set; }
+        public ICollection<Bill> Bills { get; set; }
     }
 }

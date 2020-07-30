@@ -110,6 +110,33 @@ namespace MedAppData.Migrations
                     b.ToTable("Appointments");
                 });
 
+            modelBuilder.Entity("MedAppCore.Models.Bill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Total")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Bills");
+                });
+
             modelBuilder.Entity("MedAppCore.Models.Doctor", b =>
                 {
                     b.Property<Guid>("Id")
@@ -166,6 +193,49 @@ namespace MedAppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("MedAppCore.Models.TransactionSetup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AppoitmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("EventRaised")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TransactionStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSetups");
+                });
+
+            modelBuilder.Entity("MedAppCore.Models.TransactionSetupEnd", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AppoitmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BillId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TransactionStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSetupEnds");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -309,6 +379,21 @@ namespace MedAppData.Migrations
 
                     b.HasOne("MedAppCore.Models.Patient", "Patient")
                         .WithMany("Appointments")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MedAppCore.Models.Bill", b =>
+                {
+                    b.HasOne("MedAppCore.Models.Doctor", "Doctor")
+                        .WithMany("Bills")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MedAppCore.Models.Patient", "Patient")
+                        .WithMany("Bills")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

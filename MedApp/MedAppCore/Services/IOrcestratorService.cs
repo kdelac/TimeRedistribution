@@ -1,8 +1,10 @@
-﻿namespace MedAppCore
+﻿using System;
+
+namespace MedAppCore
 {
     public interface IOrcestratorService
     {
-        void CreateAppoitment();
-        void CheckStatus();
+        void LogStrat();
+        void Listening();
     }
 }

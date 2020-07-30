@@ -10,6 +10,5 @@ namespace MedAppCore.Services
     {
         Task Reschedule(int deleyMin, DateTime date, string status);
         void Send(string message);
-        void AddingAppointment(AppoitmentAdd patient);
     }
 }

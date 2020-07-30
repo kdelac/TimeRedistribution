@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Apache.NMS;
-using Apache.NMS.ActiveMQ.Commands;
 using AutoMapper;
+using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Controllers
@@ -23,14 +19,29 @@ namespace TimeRedistribution.Controllers
         private readonly IMapper _mapper;
         private readonly IDodavanjeTermina _dodajTermin;
         private readonly IPatientService _patientService;
+        private readonly IOrcestratorService _orcestratorService;
+        private readonly ILogService _logService;
+        private readonly IAmqService _amqService;
+        private readonly string EVENT_NAME_STATUS = "appoitmentStatus";
 
-        public AppointmentController(IAppointmentService appointmentService, IMapper mapper, IRescheduleService rescheduleService, IDodavanjeTermina dodavanjeTermina, IPatientService patientService)
+        public AppointmentController(
+            IAppointmentService appointmentService, 
+            IMapper mapper,
+            IRescheduleService rescheduleService, 
+            IDodavanjeTermina dodavanjeTermina, 
+            IPatientService patientService,
+            IOrcestratorService orcestratorService,
+            ILogService logService,
+            IAmqService amqService)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
             _rescheduleService = rescheduleService;
             _dodajTermin = dodavanjeTermina;
             _patientService = patientService;
+            _orcestratorService = orcestratorService;
+            _logService = logService;
+            _amqService = amqService;
         }
 
         [HttpGet]
@@ -66,40 +77,25 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Appointment>> CreateAppointment(AppointmentResource appointment)
+        public async Task<ActionResult<Appointment>> CreateAppointment(Appointment appointment)
         {
-            var appointmentResuource = _mapper.Map<AppointmentResource, Appointment>(appointment);
-            await _appointmentService.CreateAppointment(appointmentResuource);
-
-            return Ok(appointmentResuource);
-        }
-
-        [HttpPost("AddAppointment")]
-        public async Task<ActionResult<Appointment>> AddAppoitment(AppoitmentAdd appoitmentAdd)
-        {
-            try
+            //var appointmentResuource = _mapper.Map<AppointmentResource, Appointment>(appointment);
+            var result = await _appointmentService.CreateAppointment(appointment);
+            if (result != null)
             {
-                IObjectMessage objectMessage;
-                IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:61616");
-
-                IConnection connection = connectionFactory.CreateConnection();
-                Apache.NMS.ISession session = connection.CreateSession();
-                ActiveMQQueue queue = new ActiveMQQueue("createAppoitment");
-                IMessageProducer messageProducer = session.CreateProducer();
-
-                objectMessage = session.CreateObjectMessage(appoitmentAdd);
-
-                messageProducer.Send(queue, objectMessage);
-                session.Close();
-                connection.Stop();
+                TransactionSetup transactionSetup = new TransactionSetup();
+                transactionSetup.TransactionStatus = Status.Start;
+                transactionSetup.EventRaised = false;
+                if (_amqService.SendEvent(transactionSetup, EVENT_NAME_STATUS))
+                {
+                    transactionSetup.EventRaised = true;
+                }
+                
+                transactionSetup.AppoitmentId = result.Id;
+                await _logService.CreateLog(transactionSetup);
             }
-            catch (Exception)
-            {
-                return NotFound();                
-            }
-            
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPut("{doctorId}/{patientId}")]

@@ -157,12 +157,15 @@ namespace TimeRedistribution
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IRescheduleService, RescheduleService>();
             services.AddTransient<IDoctorPatientService, DoctorPatientService>();
+            services.AddScoped<ILogService, LogService>();
 
             services.AddTransient<ISignService, SignService>();
 
             services.AddTransient<IUserSearchService, UserSearchService>();
             services.AddTransient<IDateSearchService, DateSearchService>();
             services.AddTransient<IUriService, UriService>();
+
+            services.AddScoped<IAmqService, AmqService>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka

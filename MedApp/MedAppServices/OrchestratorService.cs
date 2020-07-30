@@ -1,11 +1,16 @@
 ﻿using Apache.NMS;
 using Apache.NMS.ActiveMQ.Commands;
 using Apache.NMS.ActiveMQ.Threads;
+using iText.StyledXmlParser.Css.Resolve.Shorthand.Impl;
 using MedAppCore;
+using MedAppCore.Client;
 using MedAppCore.Models;
+using MedAppCore.Services;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -13,112 +18,97 @@ namespace MedAppServices
 {
     public class OrchestratorService : IOrcestratorService
     {
-        static HttpClient client = new HttpClient();
+        private readonly ILogService _logService;
+        private readonly IAmqService _amqService;
+        private readonly IApiCall _apiCall;
+        private readonly string EVENT_NAME_STATUS = "appoitmentStatus";
+        private readonly string SEND_EMAIL = "sendMAil";
         private readonly string url = "tcp://localhost:61616";
-        private IConnectionFactory connectionFactory;
-        private IConnection connection;
-        private ISession session;
+        private readonly IConnectionFactory connectionFactory;
+        private readonly IConnection connection;
+        private readonly ISession session;
 
-        public OrchestratorService()
+
+        public OrchestratorService(
+            ILogService logService,
+            IAmqService amqService,
+            IApiCall apiCall)
         {
-            client.BaseAddress = new Uri("https://localhost:44308/");
             connectionFactory = new NMSConnectionFactory(url);
             connection = connectionFactory.CreateConnection();
             connection.Start();
             session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
+            _logService = logService;
+            _amqService = amqService;
+            _apiCall = apiCall;
         }
 
 
-        public async void CreateAppoitment()
+        public async void LogStrat()
         {
-            IDestination destination = session.GetQueue("createAppoitment");
-            IMessageConsumer messageConsumer = session.CreateConsumer(destination);
-            messageConsumer.Listener += new MessageListener(Message_ListenerCreateAppointment);           
-        }
+            var transactionSetup = await _logService.GetAll();
+            var transactions = transactionSetup.ToList();
 
-
-        protected async void Message_ListenerCreateAppointment(IMessage receivedMsg)
-        {
-            IObjectMessage message = receivedMsg as IObjectMessage;
-            AppoitmentAdd appoitmentAdd = (AppoitmentAdd)message.Body;
-
-            Appointment appointment = new Appointment();
-            appointment.DoctorId = appoitmentAdd.DoctorId;
-            appointment.PatientId = appoitmentAdd.PatientId;
-            appointment.DateTime = appoitmentAdd.DateTime;
-            HttpResponseMessage response = await client.PostAsJsonAsync(
-                "api/appointment", appointment);
-
-            if (response.IsSuccessStatusCode)
+            if (transactions.Count != 0)
             {
-                IObjectMessage objectMessage;
+                transactions.ForEach( _ =>
+                {
+                    if (_.TransactionStatus == Status.Start && !_.EventRaised)
+                    {
+                        _amqService.SendEvent(_, EVENT_NAME_STATUS);
+                    }
 
-                var resultString = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<Appointment>(resultString);
-
-                TransactionSetup transactionSetup = new TransactionSetup();
-
-                transactionSetup.Id = result.Id;
-                transactionSetup.AppoitmentCreated = Status.success;
-
-                ISession session = connection.CreateSession();
-                ActiveMQQueue queue = new ActiveMQQueue("status");
-                IMessageProducer messageProducer = session.CreateProducer();
-
-                objectMessage = session.CreateObjectMessage(transactionSetup);
-
-                messageProducer.Send(queue, objectMessage);
-            }
-            else
-            {
-                IObjectMessage objectMessage;
-
-                TransactionSetup transactionSetup = new TransactionSetup();
-
-                transactionSetup.AppoitmentCreated = Status.failed;
-
-                ISession session = connection.CreateSession();
-                ActiveMQQueue queue = new ActiveMQQueue("status");
-                IMessageProducer messageProducer = session.CreateProducer();
-
-                objectMessage = session.CreateObjectMessage(transactionSetup);
-
-                messageProducer.Send(queue, objectMessage);
-            }
+                    if (_.TransactionStatus == Status.BilligSucces && !_.EventRaised)
+                    {
+                        _amqService.SendEvent(_, EVENT_NAME_STATUS);
+                    }
+                });
+            }           
         }
 
-
-        public void CheckStatus()
+        public async void Listening()
         {
-            IDestination destination = session.GetQueue("status");
-            IMessageConsumer messageConsumer = session.CreateConsumer(destination);
-            messageConsumer.Listener += new MessageListener(Message_ListenerStatus);
-            
+            IDestination destinationStatus = session.GetQueue(EVENT_NAME_STATUS);
+            IMessageConsumer messageConsumerStatus = session.CreateConsumer(destinationStatus);
+            var resutl = messageConsumerStatus.Receive();
+            IObjectMessage message = resutl as IObjectMessage;
+            messageConsumerStatus.Listener += new MessageListener(Message_ListenerStatus);
         }
 
-        protected void Message_ListenerStatus(IMessage receivedMsg)
+        protected async void Message_ListenerStatus(IMessage receivedMsg)
         {
             IObjectMessage message = receivedMsg as IObjectMessage;
-            TransactionSetup transactionSetup = (TransactionSetup)message.Body;
+            var msg = message as TransactionSetup;
 
-            if (Status.failed == transactionSetup.AppoitmentCreated)
+            if (msg.TransactionStatus == Status.Start)
             {
-                //Failed to create appointment
-            }            
+                var bill = new Bill();
+                var result = _apiCall.Create(bill, Urls.BaseUrlBilling, Urls.UrlToCreateBill);
+                if (result.IsCompletedSuccessfully)
+                {
+                    if (_amqService.SendEvent(msg, SEND_EMAIL))
+                    {
+                        msg.EventRaised = true;
+                    }
+                    else
+                    {
+                        msg.EventRaised = false;
+                    }                    
 
-            if (Status.failed == transactionSetup.BillCreated)
-            {
-                //Failed to create bill
-                //Delete created appoitment
-                //Poziv apija za brisanje apoitmenta...
-                //_appointmentService.Delete(transactionSetup.Id);
+                    var log = await _logService.GetLogByAppoitmentId(msg.AppoitmentId);
+                    msg.TransactionStatus = Status.BilligSucces;
+                    await _logService.UpdateLog(msg, log);
+                }
             }
 
-            if (Status.failed == transactionSetup.MailSent)
+            if (msg.TransactionStatus == Status.BilligSucces)
             {
-                //Failed to send mail
-                //Delete created appoitment
-                //Delete created bill
+                msg.TransactionStatus = Status.SendEmail;
+                if (_amqService.SendEvent(msg, SEND_EMAIL))
+                {
+                    var tr = await _logService.GetLogByAppoitmentId(msg.AppoitmentId);
+                    await _logService.UpdateLog(tr, msg);
+                }
             }
         }
     }

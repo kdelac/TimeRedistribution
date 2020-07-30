@@ -13,6 +13,9 @@ namespace MedAppData
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<DoctorPatient> DoctorPatients { get; set; }
+        public DbSet<TransactionSetupEnd> TransactionSetupEnds { get; set; }
+        public DbSet<TransactionSetup> TransactionSetups { get; set; }
+        public DbSet<Bill> Bills { get; set; }
 
         public MedAppDbContext(DbContextOptions<MedAppDbContext> options)
             : base(options)
@@ -55,6 +58,15 @@ namespace MedAppData
                 .HasForeignKey(bc => bc.PatientId);
             #endregion
 
+            modelBuilder.Entity<Bill>()
+                .HasOne(bc => bc.Patient)
+                .WithMany(c => c.Bills)
+                .HasForeignKey(bc => bc.PatientId);
+
+            modelBuilder.Entity<Bill>()
+                .HasOne(bc => bc.Doctor)
+                .WithMany(c => c.Bills)
+                .HasForeignKey(bc => bc.DoctorId);
         }
     }
 }
