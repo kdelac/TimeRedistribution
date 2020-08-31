@@ -21,6 +21,7 @@ namespace MedAppServices.Client
 
         public async Task<HttpResponseMessage> Create<TEntity>(TEntity entity, string baseUrl, string pathUrl)
         {
+            _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
 
@@ -32,6 +33,7 @@ namespace MedAppServices.Client
 
         public async Task<TEntity> GetById<TEntity>(string baseUrl, string pathUrl, string id)
         {
+            _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
 
@@ -42,6 +44,7 @@ namespace MedAppServices.Client
 
         public async Task<HttpStatusCode> Delete(string baseUrl, string pathUrl, string id)
         {
+            _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
 

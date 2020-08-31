@@ -28,6 +28,7 @@ namespace MedAppServices
         private readonly IConnectionFactory connectionFactory;
         private readonly IConnection connection;
         private readonly ISession session;
+        private bool flag = false;
 
 
         public OrchestratorService(
@@ -47,24 +48,27 @@ namespace MedAppServices
 
         public async void LogStrat()
         {
-            var transactionSetup = await _logService.GetAll();
-            var transactions = transactionSetup.ToList();
-
-            if (transactions.Count != 0)
+            if (flag == false)
             {
-                transactions.ForEach(_ =>
-               {
-                   if (_.TransactionStatus == Status.Start && !_.EventRaised)
-                   {
-                       _amqService.SendEvent(_, EVENT_NAME_STATUS);
-                   }
+                var transactionSetup = await _logService.GetAll();
+                var transactions = transactionSetup.ToList();
 
-                   if (_.TransactionStatus == Status.BilligSucces && !_.EventRaised)
-                   {
-                       _amqService.SendEvent(_, EVENT_NAME_STATUS);
-                   }
-               });
-            }
+                if (transactions.Count != 0)
+                {
+                    transactions.ForEach(_ =>
+                    {
+                        if (_.TransactionStatus == Status.Start && !_.EventRaised)
+                        {
+                            _amqService.SendEvent(_, EVENT_NAME_STATUS);
+                        }
+
+                        if (_.TransactionStatus == Status.BilligSucces && !_.EventRaised)
+                        {
+                            _amqService.SendEvent(_, EVENT_NAME_STATUS);
+                        }
+                    });
+                }
+            }            
         }
 
         public void Listening()
@@ -79,11 +83,13 @@ namespace MedAppServices
             IObjectMessage message = receivedMsg as IObjectMessage;
             var msg = message.Body as TransactionSetup;
 
+            flag = true;
+
             if (msg.TransactionStatus == Status.Start)
             {
                 var bill = new Bill();
-                var result = _apiCall.Create(bill, Urls.BaseUrlBilling, Urls.UrlToCreateBill);
-                if (result.IsCompletedSuccessfully)
+                var result = await _apiCall.Create(bill, Urls.BaseUrlBilling, Urls.UrlToCreateBill);
+                if (result.IsSuccessStatusCode)
                 {
                     msg.TransactionStatus = Status.BilligSucces;
                     
@@ -94,8 +100,9 @@ namespace MedAppServices
                     msg.TransactionStatus = Status.Failed;
                     
                     await SendEvent(msg);
-                    
-                    await _apiCall.Delete(Urls.BaseUrlCreateAppointment, Urls.UrlToBaseAppointment, msg.AppoitmentId.ToString());                    
+
+                    await _apiCall.Delete(Urls.BaseUrlCreateAppointment, Urls.UrlToBaseAppointment, msg.AppoitmentId.ToString());
+                    flag = false;
                 }
             }
 
@@ -115,6 +122,7 @@ namespace MedAppServices
             if (msg.TransactionStatus == Status.Failed || msg.TransactionStatus == Status.Succes)
             {
                 _amqService.SendEvent(msg, COMPLETION);
+               
             }
             else
             {
@@ -126,16 +134,20 @@ namespace MedAppServices
                 {
                     msg.EventRaised = false;
                 }
+                
             }
-            
             return await UpdateLog(msg);
+
+
+
         }
 
         private async Task<TransactionSetup> UpdateLog(TransactionSetup msg)
         {
             var id = new Guid(msg.AppoitmentId.ToString());
             var log = await _logService.GetLogByAppoitmentId(id);
-            await _logService.UpdateLog(msg, log);
+            await _logService.UpdateLog(log, msg);
+            flag = false;
             return log;
         }
     }

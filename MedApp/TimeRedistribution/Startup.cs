@@ -172,12 +172,12 @@ namespace TimeRedistribution
 
             services.AddScoped<IAmqService, AmqService>();
 
-            //services.AddScoped<IOrcestratorService, OrchestratorService>();
-            //services.AddHttpClient<IApiCall, ApiCall>()
-            //        .SetHandlerLifetime(TimeSpan.FromMinutes(5))
-            //        .AddPolicyHandler(GetRetryPolicy());
+            services.AddScoped<IOrcestratorService, OrchestratorService>();
+            services.AddHttpClient<IApiCall, ApiCall>()
+                    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+                    .AddPolicyHandler(GetRetryPolicy());
 
-            services.AddScoped<IApiCall, ApiCall>();
+            services.AddTransient<IApiCall, ApiCall>();
 
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka

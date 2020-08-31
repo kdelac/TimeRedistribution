@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MedAppCore\MedAppCore.csproj" />
     <ProjectReference Include="..\MedAppData\MedAppData.csproj" />
     <ProjectReference Include="..\MedAppServices\MedAppServices.csproj" />
   </ItemGroup>
