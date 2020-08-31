@@ -1,6 +1,7 @@
 ﻿using Apache.NMS;
 using Apache.NMS.ActiveMQ.Commands;
 using iText.Forms.Xfdf;
+using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using Microsoft.Extensions.Logging;
@@ -19,7 +20,7 @@ namespace MedAppServices
 
         public AmqService()
         {
-            connectionFactory = new NMSConnectionFactory(url);
+            connectionFactory = new NMSConnectionFactory(Urls.ActiveMQ);
             connection = connectionFactory.CreateConnection();
             connection.Start();
             session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);

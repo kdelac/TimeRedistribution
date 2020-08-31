@@ -6,7 +6,7 @@ using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using Microsoft.AspNetCore.Mvc;
-using TimeRedistribution.Resources;
+using a = TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Controllers
 {
@@ -19,7 +19,6 @@ namespace TimeRedistribution.Controllers
         private readonly IMapper _mapper;
         private readonly IDodavanjeTermina _dodajTermin;
         private readonly IPatientService _patientService;
-        private readonly IOrcestratorService _orcestratorService;
         private readonly ILogService _logService;
         private readonly IAmqService _amqService;
         private readonly string EVENT_NAME_STATUS = "appoitmentStatus";
@@ -39,7 +38,6 @@ namespace TimeRedistribution.Controllers
             _rescheduleService = rescheduleService;
             _dodajTermin = dodavanjeTermina;
             _patientService = patientService;
-            _orcestratorService = orcestratorService;
             _logService = logService;
             _amqService = amqService;
         }
@@ -77,36 +75,39 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Appointment>> CreateAppointment(Appointment appointment)
+        public async Task<ActionResult<Appointment>> CreateAppointment(a.AppointmentResource appointment)
         {
-            //var appointmentResuource = _mapper.Map<AppointmentResource, Appointment>(appointment);
-            var result = await _appointmentService.CreateAppointment(appointment);
+            var appointmentResuource = _mapper.Map<a.AppointmentResource, Appointment>(appointment);
+            var result = await _appointmentService.CreateAppointment(appointmentResuource);
             if (result != null)
             {
                 TransactionSetup transactionSetup = new TransactionSetup();
                 transactionSetup.TransactionStatus = Status.Start;
-                transactionSetup.EventRaised = false;
-                if (_amqService.SendEvent(transactionSetup, EVENT_NAME_STATUS))
-                {
-                    transactionSetup.EventRaised = true;
-                }
-                
+                transactionSetup.EventRaised = true;
                 transactionSetup.AppoitmentId = result.Id;
                 await _logService.CreateLog(transactionSetup);
+                if (!_amqService.SendEvent(transactionSetup, EVENT_NAME_STATUS))
+                {
+                    transactionSetup.EventRaised = false;
+                    var id = new Guid(result.Id.ToString());
+                    var log = await _logService.GetLogByAppoitmentId(id);
+                    await _logService.UpdateLog(transactionSetup, log);
+                }               
+
             }
 
             return Ok(result);
         }
 
         [HttpPut("{doctorId}/{patientId}")]
-        public async Task<ActionResult<Appointment>> UpdateAppointment(Guid doctorId, Guid patientId, [FromBody] AppointmentResource saveAppointment)
+        public async Task<ActionResult<Appointment>> UpdateAppointment(Guid doctorId, Guid patientId, [FromBody] a.AppointmentResource saveAppointment)
         {
             var appointmentToBeUpdate = await _appointmentService.GetAppointmentForDoctorAndPatient(doctorId, patientId);
 
             if (appointmentToBeUpdate == null)
                 return NotFound();
 
-            var appointmentResuource = _mapper.Map<AppointmentResource, Appointment>(saveAppointment);
+            var appointmentResuource = _mapper.Map<a.AppointmentResource, Appointment>(saveAppointment);
 
             await _appointmentService.UpdateAppointment(appointmentToBeUpdate, appointmentResuource);
 
@@ -116,6 +117,22 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAppointment(Guid id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var appointment = await _appointmentService.GetAppointmentById(id);
+
+            if (appointment == null)
+                return NotFound();
+
+            await _appointmentService.DeleteAppointment(appointment);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{doctorId}/{patientId}")]
         public async Task<IActionResult> DeleteAppointment(Guid doctorId, Guid patientId)
         {
             if (doctorId == null && patientId == null)

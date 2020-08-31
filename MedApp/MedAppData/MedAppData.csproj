@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200730072851_changesonmodels.cs" />
     <Compile Remove="Migrations\20200730072851_changesonmodels.Designer.cs" />
+    <Compile Remove="Migrations\20200803104458_rand.cs" />
+    <Compile Remove="Migrations\20200803104458_rand.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

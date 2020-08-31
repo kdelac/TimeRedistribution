@@ -8,7 +8,8 @@ namespace MedAppCore.Models
     {
         public Guid Id { get; set; }
         public Status TransactionStatus { get; set; }
-        public Guid AppoitmentId { get; set; }
-        public Guid BillId { get; set; }
+        public Guid? AppoitmentId { get; set; }
+        public Guid? BillId { get; set; }
+        public DateTime Date { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace MailerWorker
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
-            connectionFactory = new NMSConnectionFactory(url);
+            connectionFactory = new NMSConnectionFactory(Urls.ActiveMQ);
             connection = connectionFactory.CreateConnection();
             connection.Start();
             session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);

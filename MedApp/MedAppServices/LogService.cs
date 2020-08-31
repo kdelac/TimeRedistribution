@@ -15,9 +15,12 @@ namespace MedAppServices
         {
             _unitOfWork = unitOfWork;
         }
-        public Task<TransactionSetup> CreateLog(TransactionSetup newLog)
+        public async Task<TransactionSetup> CreateLog(TransactionSetup newLog)
         {
-            throw new NotImplementedException();
+            newLog.Id = Guid.NewGuid();
+            await _unitOfWork.LogRepository.AddAsync(newLog);
+            await _unitOfWork.Save();
+            return newLog;
         }
 
         public Task DeleteLog(TransactionSetup log)
@@ -25,19 +28,29 @@ namespace MedAppServices
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TransactionSetup>> GetAll()
+        public async Task<IEnumerable<TransactionSetup>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.LogRepository.GetAllAsync();
+        }
+        
+        public async Task<IEnumerable<TransactionSetup>> GetAllWhere()
+        {
+            return await _unitOfWork.LogRepository.GetAllWhereAsync();
         }
 
-        public Task<TransactionSetup> GetLogByAppoitmentId(Guid? id)
+        public async Task<TransactionSetup> GetLogByAppoitmentId(Guid id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.LogRepository.GetByAppoitmentIdAsync(id);
         }
 
-        public Task UpdateLog(TransactionSetup logToBeUpdated, TransactionSetup log)
+        public async Task UpdateLog(TransactionSetup logToBeUpdated, TransactionSetup log)
         {
-            throw new NotImplementedException();
+            logToBeUpdated.AppoitmentId = log.AppoitmentId;
+            logToBeUpdated.BillId = log.BillId;
+            logToBeUpdated.EventRaised = log.EventRaised;
+            logToBeUpdated.TransactionStatus = log.TransactionStatus;
+
+            await _unitOfWork.Save();
         }
     }
 }

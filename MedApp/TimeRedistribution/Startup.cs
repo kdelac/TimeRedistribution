@@ -17,6 +17,11 @@ using MedAppCore.Services.ElasticSearch;
 using MedAppServices.ElasticSearch;
 using System.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using MedAppCore.Client;
+using MedAppServices.Client;
+using Polly;
+using System.Net.Http;
+using Polly.Extensions.Http;
 
 namespace TimeRedistribution
 {
@@ -167,11 +172,27 @@ namespace TimeRedistribution
 
             services.AddScoped<IAmqService, AmqService>();
 
+            //services.AddScoped<IOrcestratorService, OrchestratorService>();
+            //services.AddHttpClient<IApiCall, ApiCall>()
+            //        .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+            //        .AddPolicyHandler(GetRetryPolicy());
+
+            services.AddScoped<IApiCall, ApiCall>();
+
             /// <summary>
             /// Pomocno, samo u svrhu pregleda podataka
             /// </summary>
             /// <returns></returns>
             services.AddTransient<IDodavanjeTermina, DodavanjeTermina>();
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
+                                                                            retryAttempt)));
         }
     }
 }

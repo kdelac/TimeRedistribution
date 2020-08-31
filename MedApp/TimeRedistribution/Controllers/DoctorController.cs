@@ -40,15 +40,12 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Doctor>> CreateDoctor(TransactionSetup doctor)
+        public async Task<ActionResult<Doctor>> CreateDoctor(DoctorResource doctor)
         {
-            //_amqService.SendEvent(doctor);
+            var doctorResuource = _mapper.Map<DoctorResource, Doctor>(doctor);
+            await _doctorService.CreateDoctor(doctorResuource);
 
-            return null;
-            
-            //await _doctorService.CreateDoctor(doctorResuource);
-            
-            //return Ok(doctorResuource);
+            return Ok(doctorResuource);
         }
 
         [HttpPost("AddMultiple")]

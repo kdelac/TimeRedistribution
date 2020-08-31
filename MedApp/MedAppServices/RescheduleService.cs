@@ -127,7 +127,7 @@ namespace MedAppServices
         public void Send(string message)
         {
             ITextMessage objectMessage;
-            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
+            IConnectionFactory connectionFactory = new NMSConnectionFactory(Urls.ActiveMQ);
             //IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://localhost:8888");
 
             IConnection connection = connectionFactory.CreateConnection();

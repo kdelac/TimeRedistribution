@@ -43,9 +43,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Appointment appointment)
+        public async Task<ActionResult> Post(AppointmentResource appointment)
         {
-            var result = await _apiCall.Create(appointment, Urls.BaseUrlCreateAppointment, Urls.UrlToCreateAppointment);
+            var result = await _apiCall.Create(appointment, Urls.BaseUrlCreateAppointment, Urls.UrlToBaseAppointment);
 
             if (result.IsSuccessStatusCode)
             {

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TimeRedistribution.Resources;
+using a = TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Mapping
 {
@@ -13,9 +13,9 @@ namespace TimeRedistribution.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Doctor, DoctorResource>().ReverseMap();
-            CreateMap<Patient, PatientResource>().ReverseMap();
-            CreateMap<Appointment, AppointmentResource>().ReverseMap();
+            CreateMap<Doctor, a.DoctorResource>().ReverseMap();
+            CreateMap<Patient, a.PatientResource>().ReverseMap();
+            CreateMap<Appointment, a.AppointmentResource>().ReverseMap();
 
             CreateMap<Doctor, User>()
                 .BeforeMap((d, p) => p.Path = "api/Doctor/")

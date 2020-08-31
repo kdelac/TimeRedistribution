@@ -67,6 +67,9 @@ namespace MedAppData
                 .HasOne(bc => bc.Doctor)
                 .WithMany(c => c.Bills)
                 .HasForeignKey(bc => bc.DoctorId);
+
+            modelBuilder.Entity<TransactionSetup>()
+                .ToTable("TransactionSetups");
         }
     }
 }

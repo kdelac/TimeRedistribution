@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MedAppCore.Models
 {
-    public enum Status { Start, NewBill, BilligSucces, SendEmail,Succes, Failed };
+    public enum Status { Start, NewBill, BilligSucces, SendEmail, Succes, Failed };
 
     [Serializable]
     public class TransactionSetup

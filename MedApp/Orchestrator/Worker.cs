@@ -42,7 +42,8 @@ namespace Orchestrator
                 _logger.LogInformation($"Prolaz u: {DateTime.Now.Hour}:{DateTime.Now.Minute}");
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    scoped.LogStrat();
+                    await Task.Delay(1000, stoppingToken);
+                    _logger.LogInformation($"Prolaz u: {DateTime.Now.Hour}:{DateTime.Now.Minute}");
                     await Task.Delay(10000, stoppingToken);
                 }                           
             }           

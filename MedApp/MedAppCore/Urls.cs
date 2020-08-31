@@ -8,8 +8,9 @@ namespace MedAppCore
     {
         public static string BaseUrlBilling { get; set; } = "https://localhost:44315/";
         public static string BaseUrlCreateAppointment { get; set; } = "https://localhost:44308/"; 
-        public static string UrlToCreateBill { get; set; } = "/api/Appointment"; 
-        public static string UrlToCreateAppointment { get; set; } = "/api/Appointment"; 
+        public static string UrlToCreateBill { get; set; } = "/api/Bill"; 
+        public static string UrlToBaseAppointment { get; set; } = "/api/Appointment"; 
+        public static string ActiveMQ { get; set; } = "tcp://localhost:6666"; 
 
     }
 }
