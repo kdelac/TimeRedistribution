@@ -29,6 +29,12 @@ namespace TimeRedistribution.Controllers
         public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctors()
         {
             var doctors = await _doctorService.GetAllWithAppointment();
+
+            if (doctors == null)
+            {
+                return NotFound();
+            }
+
             return Ok(doctors);
         }
 
@@ -36,6 +42,11 @@ namespace TimeRedistribution.Controllers
         public async Task<ActionResult<Doctor>> GetDoctor(Guid id)
         {
             var doctor = await _doctorService.GetDoctorById(id);
+
+            if (doctor == null)
+            {
+                return NotFound();
+            }
             return Ok(doctor);
         }
 

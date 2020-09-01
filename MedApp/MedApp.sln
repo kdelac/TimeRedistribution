@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcClient", "MvcClient\MvcC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orchestrator", "Orchestrator\Orchestrator.csproj", "{DC5F8B92-0135-4614-AFBA-205A67C03378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Billing", "Billing\Billing.csproj", "{E77C0B57-2399-4EC1-AB71-A61B44212BB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Billing", "Billing\Billing.csproj", "{E77C0B57-2399-4EC1-AB71-A61B44212BB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{76FEBE2A-DD03-4268-8271-E2DB955A4209}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{76FEBE2A-DD03-4268-8271-E2DB955A4209}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestTimeRedistribution", "UnitTestTimeRedistribution\UnitTestTimeRedistribution.csproj", "{2DC6353E-7030-4589-B0FC-BDCB30AC4A01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{76FEBE2A-DD03-4268-8271-E2DB955A4209}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76FEBE2A-DD03-4268-8271-E2DB955A4209}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76FEBE2A-DD03-4268-8271-E2DB955A4209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC6353E-7030-4589-B0FC-BDCB30AC4A01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC6353E-7030-4589-B0FC-BDCB30AC4A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC6353E-7030-4589-B0FC-BDCB30AC4A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC6353E-7030-4589-B0FC-BDCB30AC4A01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
