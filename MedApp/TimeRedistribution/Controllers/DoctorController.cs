@@ -6,6 +6,8 @@ using MedAppCore.Models;
 using MedAppCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Polly;
+using Polly.Timeout;
 using TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Controllers
@@ -17,12 +19,14 @@ namespace TimeRedistribution.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
         private readonly IAmqService _amqService;
+        private readonly IAsyncPolicy _policy;
 
-        public DoctorController(IDoctorService doctorService, IMapper mapper, IAmqService amqService)
+        public DoctorController(IDoctorService doctorService, IMapper mapper, IAmqService amqService, IAsyncPolicy asyncPolicy)
         {
             _doctorService = doctorService;
             _mapper = mapper;
             _amqService = amqService;
+            _policy = asyncPolicy;
         }
 
         [HttpGet]
@@ -36,6 +40,30 @@ namespace TimeRedistribution.Controllers
             }
 
             return Ok(doctors);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctorsPolly()
+        {
+            IEnumerable<Doctor> doctors = null;
+
+            try
+            {
+                _ = _policy.ExecuteAsync(async () =>
+
+                {
+                    doctors = await _doctorService.GetAllWithAppointment();
+                });
+
+                
+                return Ok(doctors);
+            }
+            catch (TimeoutException ex)
+            {
+                return NotFound();
+            }
+            
+
         }
 
         [HttpGet("{id}")]
@@ -86,9 +114,6 @@ namespace TimeRedistribution.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDoctor(Guid id)
         {
-            if (id == null)
-                return BadRequest();
-
             var doctor = await _doctorService.GetDoctorById(id);
 
             if (doctor == null)
