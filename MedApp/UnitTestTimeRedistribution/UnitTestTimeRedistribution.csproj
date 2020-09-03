@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MedAppServices\MedAppServices.csproj" />
     <ProjectReference Include="..\TimeRedistribution\TimeRedistribution.csproj" />
   </ItemGroup>
 
