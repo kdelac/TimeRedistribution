@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using MedAppCore.Client;
@@ -16,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace WebApi
 {
@@ -104,7 +107,20 @@ namespace WebApi
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<IApiCall, ApiCall>();
+            services.AddHttpClient<IApiCall, ApiCall>()
+                    .SetHandlerLifetime(TimeSpan.FromSeconds(5))
+                    .AddPolicyHandler(GetRetryPolicy());
+
+            services.AddTransient<IApiCall, ApiCall>();
         }
-    }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
+                                                                            retryAttempt)));
+        }
+    }    
 }
