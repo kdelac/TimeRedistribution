@@ -12,7 +12,7 @@ namespace UnitTestTimeRedistribution
     public class DoctorServiceTest
     {
         [Fact]
-        public void GetAllDoctorsTest()
+        public void GetAll_reeturns_doctor_list_and_check_list_count()
         {
             Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
             DoctorService doctorService = new DoctorService(unitOfWork.Object);
@@ -40,7 +40,7 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public void GetByIdTest()
+        public void GetById_check_id_and_name_matching()
         {
             Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
             DoctorService doctorService = new DoctorService(unitOfWork.Object);
@@ -64,7 +64,7 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public void GetByIdTest_NoOne()
+        public void GetById_returns_null()
         {
             Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
             DoctorService doctorService = new DoctorService(unitOfWork.Object);

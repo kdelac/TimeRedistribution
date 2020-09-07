@@ -31,7 +31,7 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public void GetAllDoctors_CheckType()
+        public void Get_all_doctors_returns_ienumerable()
         {
             var result = _controller.GetAllDoctors();
             // Assert
@@ -39,7 +39,7 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public async Task GetAllDoctors_ShouldReturnNothing()
+        public async Task GetAllDoctors_returns_not_founds_result()
         {  
             _mockService.Setup(_ => _.GetAllWithAppointment()).ReturnsAsync(() => null);
 
@@ -51,7 +51,7 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public async Task DeleteDoctor_Test()
+        public async Task DeleteDoctor_return_nocontet_if_delet_succes()
         {
             var guid = Guid.NewGuid();
             Doctor doctor = new Doctor {
@@ -72,7 +72,7 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public async Task DeleteDoctor_Test2()
+        public async Task DeleteDoctor_returns_notfound()
         {
             var guid = Guid.NewGuid();
 
@@ -87,9 +87,8 @@ namespace UnitTestTimeRedistribution
         }
 
         [Fact]
-        public void WhenTimeoutReached()
+        public void Get_all_doctors_throws_exception_on_db_timeout()
         {
-            Task<IEnumerable<Doctor>> doctors = null;
             var guid = Guid.NewGuid();
             List<Doctor> doctorss = new List<Doctor>() {
                 new Doctor
