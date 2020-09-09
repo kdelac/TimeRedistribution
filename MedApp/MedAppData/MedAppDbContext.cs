@@ -16,6 +16,8 @@ namespace MedAppData
         public DbSet<TransactionSetupEnd> TransactionSetupEnds { get; set; }
         public DbSet<TransactionSetup> TransactionSetups { get; set; }
         public DbSet<Bill> Bills { get; set; }
+        public DbSet<Application> Applications { get; set; }
+        public DbSet<Ordination> Ordinations { get; set; }
 
         public MedAppDbContext(DbContextOptions<MedAppDbContext> options)
             : base(options)
@@ -70,6 +72,11 @@ namespace MedAppData
 
             modelBuilder.Entity<TransactionSetup>()
                 .ToTable("TransactionSetups");
+
+            modelBuilder.Entity<Application>()
+                .HasOne(bc => bc.Ordination)
+                .WithMany(bc => bc.Applications)
+                .HasForeignKey(bc => bc.OrdinationId);
         }
     }
 }

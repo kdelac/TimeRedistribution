@@ -17,6 +17,8 @@ namespace MedAppCore
         IDoctorPatientRepository DoctorPatients { get; }
         IBillingRepository Billings { get; }
         ILogRepository LogRepository { get; }
+        IApplicationRepository Applications { get; }
+        IOrdinationRepository Ordinations { get; }
         Task<int> Save();
     }
 }

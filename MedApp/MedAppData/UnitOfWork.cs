@@ -18,6 +18,8 @@ namespace MedAppData
         private DoctorPatientRepository _doctorPatientRepository;
         private BillingRepository _billingRepository;
         private LogRepository _logRepository;
+        private ApplicationRepository _applicationRepository;
+        private OrdinationRepository _ordinationRepository;
 
         //private UserSearchRepository _userSearchRepository;
         //private DateSearchRepository _dateSearchRepository;
@@ -35,6 +37,8 @@ namespace MedAppData
         public IPatientRepository Patients => _patientRepository = _patientRepository ?? new PatientRepository(_context);
         public IBillingRepository Billings => _billingRepository = _billingRepository ?? new BillingRepository(_context);
         public ILogRepository LogRepository => _logRepository = _logRepository ?? new LogRepository(_context);
+        public IApplicationRepository Applications => _applicationRepository = _applicationRepository ?? new ApplicationRepository(_context);
+        public IOrdinationRepository Ordinations => _ordinationRepository = _ordinationRepository ?? new OrdinationRepository(_context);
 
         //public IUserSearchRepository UserSearch => _userSearchRepository = _userSearchRepository ?? new UserSearchRepository(_client);
 
