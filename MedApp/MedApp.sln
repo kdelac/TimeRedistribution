@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestTimeRedistribution"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TimeRedistributionDb", "TimeRedistributionDb\TimeRedistributionDb.sqlproj", "{E9BA1036-3670-4CD0-B980-7CBF18C09E42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR", "SignalR\SignalR.csproj", "{67FFA81A-3B2B-4BD2-9189-0310C44FDCAE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{E9BA1036-3670-4CD0-B980-7CBF18C09E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9BA1036-3670-4CD0-B980-7CBF18C09E42}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9BA1036-3670-4CD0-B980-7CBF18C09E42}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{67FFA81A-3B2B-4BD2-9189-0310C44FDCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67FFA81A-3B2B-4BD2-9189-0310C44FDCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67FFA81A-3B2B-4BD2-9189-0310C44FDCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67FFA81A-3B2B-4BD2-9189-0310C44FDCAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
