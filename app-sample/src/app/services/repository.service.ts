@@ -1,0 +1,39 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RepositoryService {
+  private envUrl: string = environment.urlAddress;
+
+  constructor(private http: HttpClient) { }
+
+  public getData = (route: string) => {
+    return this.http.get(this.createCompleteRoute(route, this.envUrl));
+  }
+
+  public create = (route: string, body) => {
+    return this.http.post(this.createCompleteRoute(route, this.envUrl), body, this.generateHeaders());
+  }
+
+  public update = (route: string, body) => {
+    return this.http.put(this.createCompleteRoute(route, this.envUrl), body, this.generateHeaders());
+  }
+
+  public delete = (route: string) => {
+    return this.http.delete(this.createCompleteRoute(route, this.envUrl));
+  }
+
+  private createCompleteRoute = (route: string, envAddress: string) => {
+    return `${envAddress}/${route}`;
+  }
+
+  private generateHeaders = () => {
+    return {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    }
+  }
+
+}
