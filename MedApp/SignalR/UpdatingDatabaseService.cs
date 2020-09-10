@@ -18,23 +18,21 @@ namespace SignalR
         private IHubContext<NoPHub> _signalrHub;
         private readonly ILoginEventHandler _loginevent;
         private readonly ILogoutEventHandler _logoutevent;
-        private readonly IOrdinationService _ordinationService;
-        private readonly IApplicationService _applicationService;
-        private IServiceScopeFactory Services { get; }
+
+        private IServiceProvider Services { get; }
 
 
         public UpdatingDatabaseService(
+            IServiceProvider services,
             IHubContext<NoPHub> signalrHub,
             ILoginEventHandler loginevent,
-            ILogoutEventHandler logoutevent,
-            IOrdinationService ordinationService,
-            IApplicationService applicationService)
+            ILogoutEventHandler logoutevent)
         {
             _signalrHub = signalrHub;
             _loginevent = loginevent;
             _logoutevent = logoutevent;
-            _ordinationService = ordinationService;
-            _applicationService = applicationService;
+            Services = services;
+
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -65,29 +63,40 @@ namespace SignalR
 
         private async Task AddApplication(RecivedLoginMessageEvent e)
         {
-            var ordination = await _ordinationService.GetOrdinationById(Guid.Parse(e.OrdinationId.ToString()));
-            Application application = new Application();
-            application.Id = Guid.NewGuid();
-            application.Ordination = ordination;
-            application.OrdinationId = ordination.Id;
-            application.PatientId = Guid.Parse(e.PatientId.ToString());
-            application.TimeOfApplication = DateTime.Now;
-            application.Position = Status2.Out;
-
-            var inside = await _applicationService.NumberInside(ordination.Id);
-
-            
-            if (ordination.MaxIn < inside)
+            using (var scope = Services.CreateScope())
             {
-                application.Position = Status2.In;
-                inside++;
+                var _ordinationService =
+                    scope.ServiceProvider
+                        .GetRequiredService<IOrdinationService>();
+
+                var _applicationService = scope.ServiceProvider
+                        .GetRequiredService<IApplicationService>();
+
+
+                var ordination = await _ordinationService.GetOrdinationById(Guid.Parse(e.OrdinationId.ToString()));
+                Application application = new Application();
+                application.Id = Guid.NewGuid();
+                application.Ordination = ordination;
+                application.OrdinationId = ordination.Id;
+                application.PatientId = Guid.Parse(e.PatientId.ToString());
+                application.TimeOfApplication = DateTime.Now;
+                application.Position = Status2.Out;
+
+                var inside = await _applicationService.NumberInside(ordination.Id);
+
+
+                if (ordination.MaxIn > inside)
+                {
+                    application.Position = Status2.In;
+                    inside++;
+                }
+
+                await _applicationService.CreateApplication(application);
+
+                var outside = await _applicationService.NumberOutside(ordination.Id);
+
+                await _signalrHub.Clients.All.SendAsync("ava", inside, outside);
             }
-
-            await _applicationService.CreateApplication(application);
-
-            var outside = await _applicationService.NumberOutside(ordination.Id);
-
-            await _signalrHub.Clients.All.SendAsync("ava", inside, outside);
         }
 
         private async Task RemoveApplication(ReciveLogoutMessageEvent e)
