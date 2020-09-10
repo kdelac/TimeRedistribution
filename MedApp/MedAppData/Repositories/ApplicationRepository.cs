@@ -15,12 +15,6 @@ namespace MedAppData.Repositories
             : base(context)
         { }
 
-        public async Task DeleteAppoitmentWithPatientId(Guid patientId)
-        {
-            var application = await MedAppDbContext.Applications.FirstOrDefaultAsync(_ => _.PatientId == patientId);
-            MedAppDbContext.Applications.Remove(application);
-        }
-
         public async Task<int> GetNumberInside(Guid ordinationId)
         {
             var br = await MedAppDbContext.Applications.Where(_ => _.OrdinationId == ordinationId && _.Position == Status2.In).ToListAsync();
@@ -33,6 +27,16 @@ namespace MedAppData.Repositories
             var br = await MedAppDbContext.Applications.Where(_ => _.OrdinationId == ordinationId && _.Position == Status2.Out).ToListAsync();
             var numberof = br.Count();
             return numberof;
+        }
+
+        public async Task<Application> GetAppoitmentWithPatientId(Guid patientId)
+        {
+            return await MedAppDbContext.Applications.FirstOrDefaultAsync(_ => _.PatientId == patientId);
+        }
+
+        public async Task<Application> GetAppoitmentFirstDate()
+        {
+            return await MedAppDbContext.Applications.OrderBy(_ => _.TimeOfApplication).FirstOrDefaultAsync(_ => _.Position == Status2.Out);
         }
 
         private MedAppDbContext MedAppDbContext

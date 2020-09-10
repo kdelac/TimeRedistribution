@@ -2,6 +2,7 @@
 using MedAppCore.Models;
 using MedAppCore.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MedAppServices
@@ -22,10 +23,25 @@ namespace MedAppServices
             return newApplication;
         }
 
-        public async Task DeleteApplication(Guid patientId)
+        public async Task DeleteApplication(Application application)
         {
-            await _unitOfWork.Applications.DeleteAppoitmentWithPatientId(patientId);
+            _unitOfWork.Applications.Remove(application);
             await _unitOfWork.Save();
+        }
+
+        public async Task<IEnumerable<Application>> GetAll()
+        {
+            return await _unitOfWork.Applications.GetAllAsync();
+        }
+
+        public async Task<Application> GetApplicationByPatientId(Guid id)
+        {
+            return await _unitOfWork.Applications.GetAppoitmentWithPatientId(id);
+        }
+
+        public async Task<Application> GetAppoitmentFirstDate()
+        {
+            return await _unitOfWork.Applications.GetAppoitmentFirstDate();
         }
 
         public async Task<int> NumberInside(Guid ordinationId)
@@ -36,6 +52,13 @@ namespace MedAppServices
         public async Task<int> NumberOutside(Guid ordinationId)
         {
             return await _unitOfWork.Applications.GetNumberOutside(ordinationId);
+        }
+
+        public async Task UpdateApplication(Application applicationToBeUpdated, Status2 status)
+        {
+            applicationToBeUpdated.Position = status;
+
+            await _unitOfWork.Save();
         }
     }
 }

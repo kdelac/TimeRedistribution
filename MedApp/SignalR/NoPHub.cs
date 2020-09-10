@@ -37,10 +37,5 @@ namespace SignalR
 
             return Task.CompletedTask;
         }
-
-        public async Task SendMessages(int numberW, int numberO)
-        {
-            await Clients.All.SendAsync("ReceiveMessages", numberW, numberO);
-        }
     }
 }

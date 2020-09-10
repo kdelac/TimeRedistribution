@@ -37,43 +37,46 @@ namespace SignalR
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
-
-
-                _loginevent.Subscribe(subscriberName: typeof(RecivedLoginMessageEvent).Name,
-                                    action: async (e) =>
-                                    {
-                                        if (e is RecivedLoginMessageEvent)
-                                        {
-                                            await AddApplication(e);
-                                        }
-                                    });
-
+            _loginevent.Subscribe(subscriberName: typeof(RecivedLoginMessageEvent).Name,
+                action: async (e) =>
+                {
+                    if (e is RecivedLoginMessageEvent)
+                    {
+                        await AddApplication(e);
+                    }
+                });
+            
             _logoutevent.Subscribe(subscriberName: typeof(ReciveLogoutMessageEvent).Name,
-                                    action: async (e) =>
-                                    {
-                                        if (e is ReciveLogoutMessageEvent)
-                                        {
-                                            await RemoveApplication(e);
-                                        }
-                                    });
-
+                action: async (e) =>
+                {
+                    if (e is ReciveLogoutMessageEvent)
+                    {
+                        await RemoveApplication(e);
+                    }
+                });
+            
             return Task.CompletedTask;
         }
 
         private async Task AddApplication(RecivedLoginMessageEvent e)
         {
-            using (var scope = Services.CreateScope())
+            using var scope = Services.CreateScope();
+
+            var _ordinationService =
+               scope.ServiceProvider
+                   .GetRequiredService<IOrdinationService>();
+
+            var _applicationService = scope.ServiceProvider
+                    .GetRequiredService<IApplicationService>();
+
+            var ordination = await _ordinationService
+                .GetOrdinationById(Guid.Parse(e.OrdinationId.ToString()));
+
+            var outside = await _applicationService
+                .NumberOutside(ordination.Id);
+
+            if (ordination.MaxOut > outside)
             {
-                var _ordinationService =
-                    scope.ServiceProvider
-                        .GetRequiredService<IOrdinationService>();
-
-                var _applicationService = scope.ServiceProvider
-                        .GetRequiredService<IApplicationService>();
-
-
-                var ordination = await _ordinationService.GetOrdinationById(Guid.Parse(e.OrdinationId.ToString()));
                 Application application = new Application();
                 application.Id = Guid.NewGuid();
                 application.Ordination = ordination;
@@ -90,20 +93,67 @@ namespace SignalR
                     application.Position = Status2.In;
                     inside++;
                 }
+                else
+                {
+                    outside++;
+                }
 
                 await _applicationService.CreateApplication(application);
 
-                var outside = await _applicationService.NumberOutside(ordination.Id);
-
-                await _signalrHub.Clients.All.SendAsync("ava", inside, outside);
+                await _signalrHub.Clients.All
+                    .SendAsync("NumberOfPeople", inside, outside);
+            }
+            else
+            {
+                await _signalrHub.Clients.All
+                    .SendAsync("MaxNumberReached", e.PatientId.ToString(), e.OrdinationId.ToString());
             }
         }
 
         private async Task RemoveApplication(ReciveLogoutMessageEvent e)
         {
-            await System.Console.Out.WriteLineAsync($"Logout: {e.PatientId} and ordination: {e.OrdinationId}");
+            using var scope = Services.CreateScope();
 
-            await _signalrHub.Clients.All.SendAsync("ava", e.PatientId, e.OrdinationId);
-        }
+            var _ordinationService =
+                scope.ServiceProvider
+                    .GetRequiredService<IOrdinationService>();
+
+            var _applicationService = scope.ServiceProvider
+                    .GetRequiredService<IApplicationService>();
+
+            var application = await _applicationService
+                .GetApplicationByPatientId(Guid.Parse(e.PatientId.ToString()));
+
+            var ordination = await _ordinationService
+                .GetOrdinationById(Guid.Parse(e.OrdinationId.ToString()));
+
+            if (application != null)
+            {
+                await _applicationService
+                    .DeleteApplication(application);
+                await _signalrHub.Clients.All
+                    .SendAsync("RemovedFromWaitingList", e.PatientId.ToString(), e.OrdinationId.ToString());
+            }
+
+            var inside = await _applicationService
+                .NumberInside(Guid.Parse(e.OrdinationId));
+
+            var outside = await _applicationService
+                .NumberOutside(ordination.Id);
+
+            if (ordination.MaxIn > inside && outside > 0)
+            {
+                var toBeUpdated = await _applicationService
+                    .GetAppoitmentFirstDate();
+                await _applicationService
+                    .UpdateApplication(toBeUpdated, Status2.In);
+                inside++;
+            }
+
+            
+
+            await _signalrHub.Clients.All
+                    .SendAsync("NumberOfPeople", inside, outside);
+        }    
     }
 }

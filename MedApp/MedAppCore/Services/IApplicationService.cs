@@ -11,6 +11,10 @@ namespace MedAppCore.Services
         Task<int> NumberInside(Guid ordinationId);
         Task<int> NumberOutside(Guid ordinationId);
         Task<Application> CreateApplication(Application newApplication);
-        Task DeleteApplication(Guid patientId);
+        Task DeleteApplication(Application application);
+        Task<Application> GetApplicationByPatientId(Guid id);
+        Task<Application> GetAppoitmentFirstDate();
+        Task UpdateApplication(Application applicationToBeUpdated, Status2 status);
+        Task<IEnumerable<Application>> GetAll();
     }
 }

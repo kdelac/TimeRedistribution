@@ -162,6 +162,7 @@ namespace TimeRedistribution
             services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IRescheduleService, RescheduleService>();
             services.AddTransient<IDoctorPatientService, DoctorPatientService>();
+            services.AddTransient<IApplicationService, ApplicationService>();
             services.AddScoped<ILogService, LogService>();
 
             services.AddTransient<ISignService, SignService>();

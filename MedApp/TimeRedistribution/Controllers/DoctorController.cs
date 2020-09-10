@@ -42,7 +42,7 @@ namespace TimeRedistribution.Controllers
             return Ok(doctors);
         }
 
-        [HttpGet]
+        [HttpGet("DoctorsPolly")]
         public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctorsPolly()
         {
             IEnumerable<Doctor> doctors = null;
