@@ -183,7 +183,7 @@ namespace SignalR
         private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
         {
             //Implementacija što se događa kad se promjene podaci u bazi
-
+            Console.WriteLine($"OnDependencyChange Event fired. SqlNotificationEventArgs: Info={e.Info}, Source={e.Source}, Type={e.Type}");
             DbListener();
         }
     }
