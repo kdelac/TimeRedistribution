@@ -3,6 +3,7 @@ using MedAppCore.Models;
 using MedAppCore.Services;
 using MedAppData;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SignalR.Interfaces;
@@ -10,6 +11,7 @@ using SignalR.Models;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace SignalR
 {
@@ -18,6 +20,7 @@ namespace SignalR
         private IHubContext<NoPHub> _signalrHub;
         private readonly ILoginEventHandler _loginevent;
         private readonly ILogoutEventHandler _logoutevent;
+        string connectionString = "";
 
         private IServiceProvider Services { get; }
 
@@ -26,17 +29,19 @@ namespace SignalR
             IServiceProvider services,
             IHubContext<NoPHub> signalrHub,
             ILoginEventHandler loginevent,
-            ILogoutEventHandler logoutevent)
+            ILogoutEventHandler logoutevent,
+            IConfiguration configuration)
         {
             _signalrHub = signalrHub;
             _loginevent = loginevent;
             _logoutevent = logoutevent;
             Services = services;
-
+            connectionString = configuration.GetConnectionString("Default");
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            DbListener();
             _loginevent.Subscribe(subscriberName: typeof(RecivedLoginMessageEvent).Name,
                 action: async (e) =>
                 {
@@ -45,7 +50,7 @@ namespace SignalR
                         await AddApplication(e);
                     }
                 });
-            
+
             _logoutevent.Subscribe(subscriberName: typeof(ReciveLogoutMessageEvent).Name,
                 action: async (e) =>
                 {
@@ -54,7 +59,7 @@ namespace SignalR
                         await RemoveApplication(e);
                     }
                 });
-            
+
             return Task.CompletedTask;
         }
 
@@ -150,10 +155,36 @@ namespace SignalR
                 inside++;
             }
 
-            
+
 
             await _signalrHub.Clients.All
                     .SendAsync("NumberOfPeople", inside, outside);
-        }    
+        }
+
+        public void DbListener()
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+
+            conn.Open();
+
+            SqlDependency.Start(connectionString);
+
+            string commandText = "SELECT Id, TimeOfApplication, Position, PatientId, OrdinationId FROM dbo.Applications";
+
+            SqlCommand cmd = new SqlCommand(commandText, conn);
+
+            SqlDependency dependency = new SqlDependency(cmd);
+
+            dependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+        }
+
+        private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
+        {
+            //Implementacija što se događa kad se promjene podaci u bazi
+
+            DbListener();
+        }
     }
 }

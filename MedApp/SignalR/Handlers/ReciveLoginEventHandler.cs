@@ -1,4 +1,6 @@
-﻿using SignalR.Interfaces;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using SignalR.Interfaces;
 using SignalR.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,10 @@ namespace SignalR.Handlers
         private readonly Subject<RecivedLoginMessageEvent> _subject;
         private readonly Dictionary<string, IDisposable> _subscribers;
 
-        public ReciveLoginEventHandler()
+        
+
+        public ReciveLoginEventHandler(
+            )
         {
             _subject = new Subject<RecivedLoginMessageEvent>();
             _subscribers = new Dictionary<string, IDisposable>();
@@ -52,6 +57,6 @@ namespace SignalR.Handlers
             {
                 subscriber.Value.Dispose();
             }
-        }
+        }        
     }
 }

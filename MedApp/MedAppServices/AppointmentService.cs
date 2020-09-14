@@ -1,6 +1,8 @@
 ﻿using MedAppCore;
 using MedAppCore.Models;
 using MedAppCore.Services;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +14,9 @@ namespace MedAppServices
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AppointmentService(IUnitOfWork unitOfWork)
+        public AppointmentService(
+            IUnitOfWork unitOfWork
+            )
         {
             _unitOfWork = unitOfWork;
         }
