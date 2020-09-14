@@ -169,7 +169,7 @@ namespace SignalR
 
             SqlDependency.Start(connectionString);
 
-            string commandText = "SELECT Id, TimeOfApplication, Position, PatientId, OrdinationId FROM dbo.Applications";
+            string commandText = "SELECT OrdinationId, NumberIn, NumberOut  FROM [dbo].[Waitings]";
 
             SqlCommand cmd = new SqlCommand(commandText, conn);
 
@@ -178,6 +178,11 @@ namespace SignalR
             dependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
 
             SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine($"OrdinationId: {reader["OrdinationId"]}, NumberIn: {reader["NumberIn"]}, NumberOut: {reader["NumberOut"]}");
+            }
         }
 
         private void dbChangeNotification(object sender, SqlNotificationEventArgs e)

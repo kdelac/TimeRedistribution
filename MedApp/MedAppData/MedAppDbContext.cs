@@ -18,6 +18,7 @@ namespace MedAppData
         public DbSet<Bill> Bills { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<Ordination> Ordinations { get; set; }
+        public DbSet<Waiting> Waitings { get; set; }
 
         public MedAppDbContext(DbContextOptions<MedAppDbContext> options)
             : base(options)
@@ -77,6 +78,10 @@ namespace MedAppData
                 .HasOne(bc => bc.Ordination)
                 .WithMany(bc => bc.Applications)
                 .HasForeignKey(bc => bc.OrdinationId);
+
+            modelBuilder.Entity<Waiting>()
+                .HasOne(_ => _.Ordination)
+                .WithOne(_ => _.Waiting);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace MedAppCore.Models
         public string Name { get; set; }
         public int MaxIn { get; set; }
         public int MaxOut { get; set; }
+        public Waiting Waiting { get; set; }
         public ICollection<Application> Applications { get; set; }
     }
 }
