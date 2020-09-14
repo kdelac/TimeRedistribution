@@ -13,37 +13,71 @@ namespace MedAppData.Migrations
                                     AS  
                                     BEGIN
 
-									IF (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 0 GROUP BY OrdinationId) 
-									IS null AND (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 1 GROUP BY OrdinationId) IS NOT null
+
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM inserted)) 
+									IS null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM inserted)) IS NOT null
 									BEGIN
 									UPDATE Waitings SET NumberIn = 0, 
-									NumberOut = (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 1 GROUP BY OrdinationId) WHERE 
+									NumberOut = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM inserted)) WHERE 
 									OrdinationId = (SELECT OrdinationId FROM inserted)
 									END
 
-									IF (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 0 GROUP BY OrdinationId)
-									IS NOT null AND (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 1 GROUP BY OrdinationId) IS NOT null
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM inserted))
+									IS NOT null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM inserted)) IS NOT null
 									BEGIN
-									UPDATE Waitings SET NumberIn = (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 0 GROUP BY OrdinationId), 
-									NumberOut = (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 1 GROUP BY OrdinationId) WHERE 
+									UPDATE Waitings SET NumberIn = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM inserted)), 
+									NumberOut = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM inserted)) WHERE 
 									OrdinationId = (SELECT OrdinationId FROM inserted)
 									END
 
-									IF (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 0 GROUP BY OrdinationId)
-									IS null AND (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 1 GROUP BY OrdinationId) IS null
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM inserted))
+									IS null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM inserted)) IS null
 									BEGIN
 									UPDATE Waitings SET NumberIn = 0, 
 									NumberOut = 0 WHERE 
 									OrdinationId = (SELECT OrdinationId FROM inserted)
 									END
 
-									IF (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 0 GROUP BY OrdinationId)
-									IS NOT null AND (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 1 GROUP BY OrdinationId) IS null
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM inserted))
+									IS NOT null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM inserted)) IS null
 									BEGIN
-									UPDATE Waitings SET NumberIn = (SELECT COUNT(Position) AS NumberOfProducts FROM inserted Where Position = 0 GROUP BY OrdinationId), 
+									UPDATE Waitings SET NumberIn = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM inserted)), 
 									NumberOut = 0 WHERE 
 									OrdinationId = (SELECT OrdinationId FROM inserted)
-									END						
+									END		
+									
+
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM deleted)) 
+									IS null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM deleted)) IS NOT null
+									BEGIN
+									UPDATE Waitings SET NumberIn = 0, 
+									NumberOut = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM deleted)) WHERE 
+									OrdinationId = (SELECT OrdinationId FROM deleted)
+									END
+
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM deleted))
+									IS NOT null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM deleted)) IS NOT null
+									BEGIN
+									UPDATE Waitings SET NumberIn = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM deleted)), 
+									NumberOut = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM deleted)) WHERE 
+									OrdinationId = (SELECT OrdinationId FROM deleted)
+									END
+
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM deleted))
+									IS null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM deleted)) IS null
+									BEGIN
+									UPDATE Waitings SET NumberIn = 0, 
+									NumberOut = 0 WHERE 
+									OrdinationId = (SELECT OrdinationId FROM deleted)
+									END
+
+									IF (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM deleted))
+									IS NOT null AND (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 1 AND OrdinationId = (SELECT OrdinationId FROM deleted)) IS null
+									BEGIN
+									UPDATE Waitings SET NumberIn = (SELECT COUNT(Position) AS NumberOfProducts FROM Applications Where Position = 0 AND OrdinationId = (SELECT OrdinationId FROM deleted)), 
+									NumberOut = 0 WHERE 
+									OrdinationId = (SELECT OrdinationId FROM deleted)
+									END		
                                     END");
         }
 

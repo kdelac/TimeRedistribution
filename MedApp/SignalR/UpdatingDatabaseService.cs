@@ -12,6 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace SignalR
 {
@@ -179,6 +180,7 @@ namespace SignalR
 
             SqlDataReader reader = cmd.ExecuteReader();
 
+            List<object> lista = new List<object>();
             while (reader.Read())
             {
                 Console.WriteLine($"OrdinationId: {reader["OrdinationId"]}, NumberIn: {reader["NumberIn"]}, NumberOut: {reader["NumberOut"]}");
