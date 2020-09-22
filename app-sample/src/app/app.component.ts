@@ -19,6 +19,7 @@ constructor(
 
 ngOnInit(): void {
   this.signalRService.startConnection();
+
   this.signalRService.dataListenerNumberOfPeople();
   this.signalRService.dataListenerMaxNumberReached();
 

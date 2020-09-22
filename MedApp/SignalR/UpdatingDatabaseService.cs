@@ -183,13 +183,14 @@ namespace SignalR
             List<object> lista = new List<object>();
             while (reader.Read())
             {
+                //Implementacija što se događa kad se promjene podaci u bazi
                 Console.WriteLine($"OrdinationId: {reader["OrdinationId"]}, NumberIn: {reader["NumberIn"]}, NumberOut: {reader["NumberOut"]}");
             }
         }
 
         private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
         {
-            //Implementacija što se događa kad se promjene podaci u bazi
+            
             Console.WriteLine($"OnDependencyChange Event fired. SqlNotificationEventArgs: Info={e.Info}, Source={e.Source}, Type={e.Type}");
             DbListener();
         }

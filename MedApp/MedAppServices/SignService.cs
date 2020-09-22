@@ -1,16 +1,12 @@
 ﻿
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
-using iText.Layout;
 using iText.Signatures;
 using MedAppCore.Models;
 using MedAppCore.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Pkcs;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace MedAppServices
 {

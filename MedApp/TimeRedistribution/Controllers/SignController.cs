@@ -32,9 +32,9 @@ namespace TimeRedistribution.Controllers
         public void SignDocument([FromForm]SigningDocument file)
         {
             file.Location = "Varaždin";
-            file.destinationSave = "C:\\Users\\Kristijan\\Desktop";
-            file.CertificatDestination = "C:\\Users\\Kristijan\\Desktop\\cert.pfx";
-            file.Password = "1234";
+            file.destinationSave = @"C:\Users\CSVarazdin\Documents\GitHub\TimeRedistribution\MedApp\SecretToken\";
+            file.CertificatDestination = @"C:\Users\CSVarazdin\Documents\GitHub\TimeRedistribution\MedApp\SecretToken\mediion.com.p12";
+            file.Password = "Cert1f1kat";
             _signService.SignDocument(file);
             //return Ok();
         }
