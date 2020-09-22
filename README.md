@@ -76,4 +76,9 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
 <p>
   U SignalR projektu nalazi se SignalR, RxNET. Pomoću projekta prate se klijenti u ordinaciji. Kada korisnik stisne tipku za prijavu u ordinaciju pomoću SignalR web socket šalju se njegov id i id ordinacije u koju se želi prijaviti. Zatim se pomoću rxNeta publisha event. Nakon što se event publisho u backgroun servisu se subscriba na taj event i kada se dogodi u bazi se odradi upis prijave ili odjave. Ovisi koji je gumb stisnut SignalR šalje različite podatke i događa se prijava ili odjava iz ordinacije. U bazi se provjerava koliko je ljudi u ordinaciji, a koliko čeka vani. Ako je dosegnut naksimalan broj pacijenata tog dana oglašava se obavjest, svakom prijavom pacijent dobije novo stanje. Ako je u ordinaciji dvoje, a maksimalno u ordinaciji može bit dvoje novi pacijent stavlja se na listu čekanja. Kada se neko odjavi briše se s popisa prijavljenih. Ako je pacijent bio u ordinaciji onda se briše i uzima se jedan iz reda čekanja, gleda se po vremenu dolaska.  Sve se odvija pomoću rxNeta koji publisha evente i zatim se subscrajba na njih. Sve se odvijea pomoću event handlera.
 </p>
+
+<h3>gRPC</h3>
+<p>
+  gRPC služi za komunikaciju između klijenta i poslužitelja. Dobar je i za komunikaciju između dva servisa. Može imati jednosmjernu vezu gdje se podaci samo pošalju. Može imati streaming podataka sa servera prema klijentu i obratno, a može i streamati podatke u oba smjera istovremeno. gRPC se može koristiti na velikom broju platformi i zbog toga je dobar za korištenje. Poziva se kao funkcija i vrlo je lak za korištenje. Servis se definira u .proto datoteci. Klijen je u mogućnosti specificirati koliko želi čekati da mu servis vrati podatke. Pošto se se podaci enkodiraju nisu čitljivi kao kod HTTP requestova.
+</p>
 </body>
