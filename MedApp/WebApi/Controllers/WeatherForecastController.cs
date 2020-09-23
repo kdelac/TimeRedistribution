@@ -36,11 +36,5 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
-
-        //[HttpPost("String")]
-        //public async Task<string> GetString(Guid doctorId, Guid patientId)
-        //{
-        //    return Task.CompletedTask;
-        //}
     }
 }
