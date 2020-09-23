@@ -174,9 +174,9 @@ namespace TimeRedistribution
             services.AddScoped<IAmqService, AmqService>();
 
             services.AddScoped<IOrcestratorService, OrchestratorService>();
-            services.AddHttpClient<IApiCall, ApiCall>()
-                    .SetHandlerLifetime(TimeSpan.FromSeconds(5))
-                    .AddPolicyHandler(GetRetryPolicy());
+            //services.AddHttpClient<IApiCall, ApiCall>()
+            //        .SetHandlerLifetime(TimeSpan.FromSeconds(5))
+            //        .AddPolicyHandler(GetRetryPolicy());
 
             services.AddTransient<IApiCall, ApiCall>();
 

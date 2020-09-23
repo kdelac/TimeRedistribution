@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,6 +9,12 @@
     <PackageReference Include="Apache.NMS.ActiveMQ" Version="1.7.2" />
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="Elasticsearch.Net" Version="7.8.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.31.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.32.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="itext7" Version="7.1.11" />
     <PackageReference Include="MailKit" Version="2.8.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
@@ -21,6 +27,10 @@
   <ItemGroup>
     <ProjectReference Include="..\MedAppCore\MedAppCore.csproj" />
     <ProjectReference Include="..\MedAppData\MedAppData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

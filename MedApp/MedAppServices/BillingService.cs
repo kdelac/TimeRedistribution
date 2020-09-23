@@ -12,9 +12,9 @@ namespace MedAppServices
         {
             _unitOfWork = unitOfWork;
         }
-        public Task<Bill> CreateBill(Bill newBill)
+        public  int CreateBill(Bill newBill)
         {
-            throw new NotImplementedException();
+            return 2;
         }
 
         public Task DeleteBill(Bill bill)

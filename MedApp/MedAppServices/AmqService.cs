@@ -13,7 +13,6 @@ namespace MedAppServices
 {
     public class AmqService : IAmqService
     {
-        private readonly string url = "tcp://localhost:61616";
         private IConnectionFactory connectionFactory;
         private IConnection connection;
         private ISession session;

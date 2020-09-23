@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Apache.NMS;
-using Apache.NMS.Util;
 using Microsoft.Extensions.Hosting;
+using MedAppCore;
 using Microsoft.Extensions.Logging;
 
 namespace TestProject
@@ -22,7 +20,7 @@ namespace TestProject
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            IConnectionFactory connectionFactory = new NMSConnectionFactory("tcp://activemq:61616");
+            IConnectionFactory connectionFactory = new NMSConnectionFactory(Urls.ActiveMQ);
             IConnection connection = connectionFactory.CreateConnection();
             connection.Start();
             ISession session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);

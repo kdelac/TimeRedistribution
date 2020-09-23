@@ -1,18 +1,12 @@
 ﻿using Apache.NMS;
-using Apache.NMS.ActiveMQ.Commands;
-using Apache.NMS.ActiveMQ.Threads;
-using iText.StyledXmlParser.Css.Resolve.Shorthand.Impl;
+using Grpc.Net.Client;
+using GrpcAppointment;
 using MedAppCore;
 using MedAppCore.Client;
 using MedAppCore.Models;
 using MedAppCore.Services;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MedAppServices
@@ -88,17 +82,37 @@ namespace MedAppServices
             if (msg.TransactionStatus == Status.Start)
             {
                 var bill = new Bill();
-                var result = await _apiCall.Create(bill, Urls.BaseUrlBilling, Urls.UrlToCreateBill);
-                if (result.IsSuccessStatusCode)
+
+                //Http client
+                //var result = await _apiCall.Create(bill, Urls.BaseUrlBilling, Urls.UrlToCreateBill);
+                //if (result.IsSuccessStatusCode)
+                //{
+                //    msg.TransactionStatus = Status.BilligSucces;
+
+                //    await SendEvent(msg);
+                //}
+                //else
+                //{
+                //    msg.TransactionStatus = Status.Failed;
+
+                //    await SendEvent(msg);
+
+                //    await _apiCall.Delete(Urls.BaseUrlCreateAppointment, Urls.UrlToBaseAppointment, msg.AppoitmentId.ToString());
+                //    flag = false;
+                //}
+
+
+                //gRPC client
+                if (await CreateBill())
                 {
                     msg.TransactionStatus = Status.BilligSucces;
-                    
+
                     await SendEvent(msg);
                 }
                 else
                 {
                     msg.TransactionStatus = Status.Failed;
-                    
+
                     await SendEvent(msg);
 
                     await _apiCall.Delete(Urls.BaseUrlCreateAppointment, Urls.UrlToBaseAppointment, msg.AppoitmentId.ToString());
@@ -137,9 +151,6 @@ namespace MedAppServices
                 
             }
             return await UpdateLog(msg);
-
-
-
         }
 
         private async Task<TransactionSetup> UpdateLog(TransactionSetup msg)
@@ -149,6 +160,16 @@ namespace MedAppServices
             await _logService.UpdateLog(log, msg);
             flag = false;
             return log;
+        }
+
+
+        private async Task<bool> CreateBill()
+        {
+            using var channel = GrpcChannel.ForAddress(Urls.gRPCAppoitment);
+            var client = new Greeter.GreeterClient(channel);
+            var replay = await client.SayHelloAsync(new HelloRequest());
+
+            return replay.Message;
         }
     }
 }

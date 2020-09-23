@@ -32,7 +32,7 @@ namespace Orchestrator
                     services.AddScoped<IUnitOfWork, UnitOfWork>();
                     services.AddScoped<ILogService, LogService>();
                     services.AddScoped<IApiCall, ApiCall>();
-                    services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer("Server=localhost;Database=TimeScheduelIdentity;Trusted_Connection=True;"));
+                    services.AddDbContext<MedAppDbContext>(options => options.UseSqlServer("Server = localhost, 1433; Database = TimeScheduel; User ID = SA; Password = Passw0rd;"));
                     services.AddHostedService<Worker>();
 
                     var settings = new Nest.ConnectionSettings(new Uri("http://elasticsearch:9200"));

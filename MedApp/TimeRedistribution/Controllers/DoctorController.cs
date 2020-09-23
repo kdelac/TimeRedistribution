@@ -19,14 +19,14 @@ namespace TimeRedistribution.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
         private readonly IAmqService _amqService;
-        private readonly IAsyncPolicy _policy;
+        //private readonly IAsyncPolicy _policy;
 
-        public DoctorController(IDoctorService doctorService, IMapper mapper, IAmqService amqService, IAsyncPolicy asyncPolicy)
+        public DoctorController(IDoctorService doctorService, IMapper mapper, IAmqService amqService)
         {
             _doctorService = doctorService;
             _mapper = mapper;
             _amqService = amqService;
-            _policy = asyncPolicy;
+            //_policy = asyncPolicy;
         }
 
         [HttpGet]
@@ -42,29 +42,29 @@ namespace TimeRedistribution.Controllers
             return Ok(doctors);
         }
 
-        [HttpGet("DoctorsPolly")]
-        public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctorsPolly()
-        {
-            IEnumerable<Doctor> doctors = null;
+        //[HttpGet("DoctorsPolly")]
+        //public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctorsPolly()
+        //{
+        //    IEnumerable<Doctor> doctors = null;
 
-            try
-            {
-                _ = _policy.ExecuteAsync(async () =>
+        //    try
+        //    {
+        //        _ = _policy.ExecuteAsync(async () =>
 
-                {
-                    doctors = await _doctorService.GetAllWithAppointment();
-                });
+        //        {
+        //            doctors = await _doctorService.GetAllWithAppointment();
+        //        });
 
                 
-                return Ok(doctors);
-            }
-            catch (TimeoutException ex)
-            {
-                return NotFound();
-            }
+        //        return Ok(doctors);
+        //    }
+        //    catch (TimeoutException ex)
+        //    {
+        //        return NotFound();
+        //    }
             
 
-        }
+        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Doctor>> GetDoctor(Guid id)

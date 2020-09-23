@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Grpc.Net.Client;
+using GrpcAppointment;
 using MedAppCore;
 using MedAppCore.Client;
 using MedAppCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MimeKit.Encodings;
 
 namespace WebApi.Controllers
 {
@@ -33,5 +36,11 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
+        //[HttpPost("String")]
+        //public async Task<string> GetString(Guid doctorId, Guid patientId)
+        //{
+        //    return Task.CompletedTask;
+        //}
     }
 }

@@ -11,6 +11,9 @@ namespace MedAppCore
         public static string UrlToCreateBill { get; set; } = "/api/Bill"; 
         public static string UrlToBaseAppointment { get; set; } = "/api/Appointment"; 
         public static string ActiveMQ { get; set; } = "tcp://localhost:6666"; 
+        
+
+        public static string gRPCAppoitment { get; set; } = "https://localhost:5654";
 
     }
 }
