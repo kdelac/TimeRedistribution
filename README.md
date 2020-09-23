@@ -79,6 +79,9 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
 
 <h3>gRPC</h3>
 <p>
+  gRPC je framework koji koristi RPC(Remote procedure call), praktičan je zato što se može implementirati sa većinom dostupnih tehnologija.   
   gRPC služi za komunikaciju između klijenta i poslužitelja. Dobar je i za komunikaciju između dva servisa. Može imati jednosmjernu vezu gdje se podaci samo pošalju. Može imati streaming podataka sa servera prema klijentu i obratno, a može i streamati podatke u oba smjera istovremeno. gRPC se može koristiti na velikom broju platformi i zbog toga je dobar za korištenje. Poziva se kao funkcija i vrlo je lak za korištenje. Servis se definira u .proto datoteci. Klijen je u mogućnosti specificirati koliko želi čekati da mu servis vrati podatke. Pošto se se podaci enkodiraju nisu čitljivi kao kod HTTP requestova.
+  Pomoću gRPC-a aplikacija može direkto pozivati netode s drugog servera kao da je metoda lokalna. Omogućava lakšu implementaciju aplikacija koje imaju servise na više servera.
+  Za implementaciju je potreban .proto file u kojemu su definirane metode i funkcije koje se koriste. I klijentska i serverska strana moraju imati isti .proto file kako bi se metode mogle koristit.
 </p>
 </body>
