@@ -27,7 +27,7 @@ namespace UnitTestTimeRedistribution
             _amqrMock = new Mock<IAmqService>();
             _mockService = new Mock<IDoctorService>();
             _mockPolly = new Mock<IAsyncPolicy>();
-            _controller = new DoctorController(_mockService.Object, _mapperMock.Object, _amqrMock.Object, _mockPolly.Object);
+            //_controller = new DoctorController(_mockService.Object, _mapperMock.Object, _amqrMock.Object, _mockPolly.Object);
         }
 
         [Fact]
