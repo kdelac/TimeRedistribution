@@ -85,6 +85,9 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
   Za implementaciju je potreban .proto file u kojemu su definirane metode i funkcije koje se koriste. I klijentska i serverska strana moraju imati isti .proto file kako bi se metode mogle koristit.
   Problem kod ovoga je što se ne može deployat na azure zbog toga što koristi http/2. Za sad još nije izašala verzija da bi se moglo deployat na Azure.
   
+  Prednosti RPC-a što ima komunikaciju prema serveru preko proceduralnih poziva, može se koristiti u distribuiranom okruženju, ali i lokalno, nisu čitljive poruke krajnjem korisniku, lagano je prepraviti kod i kako bi poboljšao preformanse izostavlja neke od protokola.
+  Nedostatci: korsite se failovi za definiranje, svaki sustav mora imati isti fail kako bi radio, lako dođe do neuspjeha zbog komunikacije s raznim tehnologijama, nema standardnu implementaciju pa zbog toga može biti implementiran na razne načine.
+  
   Implementirao sam gRPC servis koji kreira novi račun. U .proto fileu definirane su metode koje se koriste. Taj isti .proto file kopirao sam u servise i pomoću njega implementirao klijentsku stranu. U servisu sam morao samo pozvati metodu za kreiranje billinga.
 </p>
 </body>
