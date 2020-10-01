@@ -18,14 +18,12 @@ namespace TimeRedistribution.Controllers
     {
         private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
-        private readonly IAmqService _amqService;
         //private readonly IAsyncPolicy _policy;
 
-        public DoctorController(IDoctorService doctorService, IMapper mapper, IAmqService amqService)
+        public DoctorController(IDoctorService doctorService, IMapper mapper)
         {
             _doctorService = doctorService;
             _mapper = mapper;
-            _amqService = amqService;
             //_policy = asyncPolicy;
         }
 

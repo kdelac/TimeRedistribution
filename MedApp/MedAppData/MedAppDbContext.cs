@@ -82,6 +82,15 @@ namespace MedAppData
             modelBuilder.Entity<Waiting>()
                 .HasOne(_ => _.Ordination)
                 .WithOne(_ => _.Waiting);
+
+            modelBuilder.Entity<Appointment>()
+                .HasIndex(_ => new { _.DoctorId, _.PatientId, _.Id });
+
+            modelBuilder.Entity<Doctor>()
+                .HasIndex(_ => _.Id);
+
+            modelBuilder.Entity<Patient>()
+                .HasIndex(_ => _.Id);
         }
     }
 }

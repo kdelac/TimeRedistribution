@@ -20,7 +20,7 @@ namespace TimeRedistribution.Controllers
         private readonly IDodavanjeTermina _dodajTermin;
         private readonly IPatientService _patientService;
         private readonly ILogService _logService;
-        private readonly IAmqService _amqService;
+        //private readonly IAmqService _amqService;
         private readonly string EVENT_NAME_STATUS = "appoitmentStatus";
 
         public AppointmentController(
@@ -29,9 +29,8 @@ namespace TimeRedistribution.Controllers
             IRescheduleService rescheduleService, 
             IDodavanjeTermina dodavanjeTermina, 
             IPatientService patientService,
-            IOrcestratorService orcestratorService,
-            ILogService logService,
-            IAmqService amqService)
+            ILogService logService
+            /*IAmqService amqService*/)
         {
             _appointmentService = appointmentService;
             _mapper = mapper;
@@ -39,7 +38,7 @@ namespace TimeRedistribution.Controllers
             _dodajTermin = dodavanjeTermina;
             _patientService = patientService;
             _logService = logService;
-            _amqService = amqService;
+            //_amqService = amqService;
         }
 
         [HttpGet]
@@ -79,22 +78,22 @@ namespace TimeRedistribution.Controllers
         {
             var appointmentResuource = _mapper.Map<a.AppointmentResource, Appointment>(appointment);
             var result = await _appointmentService.CreateAppointment(appointmentResuource);
-            if (result != null)
-            {
-                TransactionSetup transactionSetup = new TransactionSetup();
-                transactionSetup.TransactionStatus = Status.Start;
-                transactionSetup.EventRaised = true;
-                transactionSetup.AppoitmentId = result.Id;
-                await _logService.CreateLog(transactionSetup);
-                if (!_amqService.SendEvent(transactionSetup, EVENT_NAME_STATUS))
-                {
-                    transactionSetup.EventRaised = false;
-                    var id = new Guid(result.Id.ToString());
-                    var log = await _logService.GetLogByAppoitmentId(id);
-                    await _logService.UpdateLog(transactionSetup, log);
-                }               
+            //if (result != null)
+            //{
+            //    TransactionSetup transactionSetup = new TransactionSetup();
+            //    transactionSetup.TransactionStatus = Status.Start;
+            //    transactionSetup.EventRaised = true;
+            //    transactionSetup.AppoitmentId = result.Id;
+            //    await _logService.CreateLog(transactionSetup);
+            //    if (!_amqService.SendEvent(transactionSetup, EVENT_NAME_STATUS))
+            //    {
+            //        transactionSetup.EventRaised = false;
+            //        var id = new Guid(result.Id.ToString());
+            //        var log = await _logService.GetLogByAppoitmentId(id);
+            //        await _logService.UpdateLog(transactionSetup, log);
+            //    }               
 
-            }
+            //}
 
             return Ok(result);
         }
