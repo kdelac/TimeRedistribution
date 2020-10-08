@@ -96,4 +96,11 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
 <p>
 JMeter je aplikacija koja između ostalog služi za ispitivanje brzine API-ja. U JMetru sam napravio nekoliko poziva apija. Napravio sam jedan poziv za doktore, jedan za pacijente jer njihov id je potreban kod kreiranja appointmenta. U jmetru je napravljeno i kreiranje appoitmenta, zatim se dohvate svi appoitmenti uzme jedan radnom id pa se potom brise taj appointment. U Jmetru ima mnogo parametara koji se mogu pratiti kod izvršavanja apija. Svaki je imao određenu propusnost pa sam kako bi ubrzao proces na nekoliko tablica stavio indexe. Nakon što sam postavio indaexe na tablicu doktora, pacijenta i appointmenta dobio sam bolje rezultate nego bez tih idexa. Probao sam ubrzati i sa storanim proceduurama, ali iz nekog razloga sustav radi sporije. JMetar je dobra aplikacija jer u njoj možemo provjeriti nedostatke apija.
 </p>
+
+<h3>Nosql</h3>
+<p>
+U kodu je složen rad s nosql podacima. Napravljen je context za spajanje na mongodb i neki generički repozitori za crud operacije. Dodao sam indexe u bazu i znatno se povečala brzina pretraživanja po određeno atributu. Čak i 300 puta se ubrza proces pretraživanja po nekom atributu ako se stavi index. Kombinacijom indexa još se može ubrzati proces pretraživanja. Na 1,3milijuna podataka pretraživanje po atributu je trajalo nekoliko sekundi, nakon što sam stavio index ubrzalo se na manje od 10ms za isti atribut.
+</p>
+</body>
+
 </body>
