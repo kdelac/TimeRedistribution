@@ -1,4 +1,6 @@
-﻿using System;
+﻿using iText.IO.Util;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace MedAppCore.Models
 {
@@ -19,5 +21,29 @@ namespace MedAppCore.Models
         public Guid PatientId { get; set; }
         public DateTime DateTime { get; set; }
         public string Status { get; set; }
+    }
+
+    public enum AppointmentStatus { 
+        Waiting,
+        InProgress,
+        Finished
+    }
+
+    public class AppointmentBase
+    {
+        [BsonId]
+        public Guid Id { get; set; }
+        public Guid DoctorId { get; set; }
+        public Guid PatientId { get; set; }
+        public DateTime DateTime { get; set; }
+        public AppointmentStatus Status { get; set; }
+    }
+
+    public class AppointmentBaseResource
+    {
+        public Guid DoctorId { get; set; }
+        public Guid PatientId { get; set; }
+        public DateTime DateTime { get; set; }
+        public AppointmentStatus Status { get; set; }
     }
 }

@@ -21,5 +21,10 @@ namespace MedAppCore.Services
         Task<List<Appointment>> GetAllForDateAndStatus(DateTime dateTime, string status);
         Task UpdateAppointment(DateTime date, Guid doctorId, Guid patientId);
         Task<Appointment> GetAppointmentById(Guid id);
+        Task<AppointmentBase> CreateAppointmentMongo(AppointmentBase newAppointment);
+        Task DeleteAppointmentMongo(AppointmentBase appointment);
+        Task<IEnumerable<AppointmentBase>> GetAllMogno();
+        Task<AppointmentBase> GetAppointmentByIdMongo(Guid id);
+        Task UpdateAppointmentMongo(AppointmentBase appointmentToBeUpdated, AppointmentBase appointment);
     }
 }

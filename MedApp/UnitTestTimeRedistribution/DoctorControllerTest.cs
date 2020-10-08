@@ -62,7 +62,7 @@ namespace UnitTestTimeRedistribution
             };
 
 
-            _mockService.Setup(repo => repo.GetDoctorById(guid)).ReturnsAsync(doctor);
+            //_mockService.Setup(repo => repo.GetDoctorById(guid)).ReturnsAsync(doctor);
             _mockService.Setup(repo => repo.DeleteDoctor(doctor)).Returns(Task.CompletedTask);
 
             var actionResult = await _controller.DeleteDoctor(guid);
@@ -77,7 +77,7 @@ namespace UnitTestTimeRedistribution
             var guid = Guid.NewGuid();
 
             Doctor doctor = null;
-            _mockService.Setup(repo => repo.GetDoctorById(guid)).ReturnsAsync(doctor);
+            //_mockService.Setup(repo => repo.GetDoctorById(guid)).ReturnsAsync(doctor);
             _mockService.Setup(repo => repo.DeleteDoctor(doctor)).Returns(Task.CompletedTask);
 
             var actionResult = await _controller.DeleteDoctor(guid);

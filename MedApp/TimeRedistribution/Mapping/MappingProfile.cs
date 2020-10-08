@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using MedAppCore.Models;
 using MedAppCore.Models.ElasticSearch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using a = TimeRedistribution.Resources;
 
 namespace TimeRedistribution.Mapping
@@ -50,7 +46,15 @@ namespace TimeRedistribution.Mapping
             CreateMap<UriCreator, User>()
                 .ReverseMap();
 
+            #region mongo
 
+            CreateMap<Users, UsersResource>()
+                .ReverseMap();
+
+            CreateMap<AppointmentBase, AppointmentBaseResource>()
+                .ReverseMap();
+
+            #endregion
         }
     }
 }

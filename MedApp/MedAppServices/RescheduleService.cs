@@ -1,15 +1,12 @@
 ﻿using MedAppCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using MedAppCore.Models;
 using MedAppCore.Services;
 using System.Threading.Tasks;
 using System.Linq;
 using MimeKit;
-using System.Runtime.CompilerServices;
 using Apache.NMS;
-using Apache.NMS.Util;
 using Apache.NMS.ActiveMQ.Commands;
 
 namespace MedAppServices

@@ -38,15 +38,13 @@ namespace TimeRedistribution.Controllers
             return Ok(patient);
         }
 
-
         [HttpPost]
-        public async Task<ActionResult<Patient>> CreatePatient(PatientResource patient)
+        public async Task<ActionResult<Patient>> CreatePatient(PatientResource patientResource)
         {
-            var patientResource = _mapper.Map<PatientResource, Patient>(patient);
-            await _patientService.CreatePatient(patientResource);
-
-            return Ok(patientResource);
-        }
+            var patient = _mapper.Map<PatientResource, Patient>(patientResource);
+            await _patientService.CreatePatient(patient);
+            return Ok(patient);
+        }        
 
         [HttpPost("AddMultiple")]
         public async Task CreateMultiplePatients(IEnumerable<PatientResource> patients)
@@ -87,5 +85,38 @@ namespace TimeRedistribution.Controllers
 
             return NoContent();
         }
+
+        #region Mongo
+
+        [HttpPost("Mongo")]
+        public async Task<ActionResult<Users>> CreatePatientMongo(UsersResource patientResource)
+        {
+            var patient = _mapper.Map<UsersResource, Users>(patientResource);
+            await _patientService.CreatePatientMongo(patient);
+
+            return Ok(patient);
+        }
+
+        [HttpGet("Mongo")]
+        public ActionResult<IEnumerable<Users>> GetAllPatientsMongo()
+        {
+            var pat = _patientService.GetAllMongo();
+            return Ok(pat);
+        }
+
+        [HttpPost("AddMultipleMongo")]
+        public async Task CreateMultipleDoctorsMongo(IEnumerable<UsersResource> patientResources)
+        {
+            var patients = _mapper.Map<IEnumerable<UsersResource>, IEnumerable<Users>>(patientResources);
+            _patientService.AddRangeAsyncMongo(patients);
+        }
+
+        [HttpGet("Mongo/{id}")]
+        public async Task<ActionResult<Users>> GetPatientMongo(Guid id)
+        {
+            var patient = await _patientService.GetPatientByIdMongo(id);
+            return Ok(patient);
+        }
+        #endregion
     }
 }

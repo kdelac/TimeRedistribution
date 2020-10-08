@@ -108,7 +108,7 @@
           <stringProp name="HTTPSampler.port">44308</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/api/Doctor</stringProp>
+          <stringProp name="HTTPSampler.path">/api/Doctor/Mongo</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -134,7 +134,7 @@
           <stringProp name="HTTPSampler.port">44308</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/api/Patient</stringProp>
+          <stringProp name="HTTPSampler.path">/api/Patient/Mongo</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -160,7 +160,7 @@
           <stringProp name="HTTPSampler.port">44308</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/api/Doctor/${doctorId}</stringProp>
+          <stringProp name="HTTPSampler.path">/api/Doctor/Mongo/${doctorId}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -181,7 +181,7 @@
   &quot;doctorId&quot;: &quot;${doctorId}&quot;,&#xd;
   &quot;patientId&quot;: &quot;${patientId}&quot;,&#xd;
   &quot;dateTime&quot;: &quot;2020-09-28T12:28:48.627Z&quot;,&#xd;
-  &quot;status&quot;: &quot;string&quot;&#xd;
+  &quot;status&quot;: &quot;0&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -191,7 +191,7 @@
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">https://localhost:44308/api/Appointment</stringProp>
+          <stringProp name="HTTPSampler.path">https://localhost:44308/api/Appointment/Mongo</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -211,7 +211,7 @@
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">https://localhost:44308/api/Appointment</stringProp>
+          <stringProp name="HTTPSampler.path">https://localhost:44308/api/Appointment/Mongo</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -237,7 +237,7 @@
           <stringProp name="HTTPSampler.port">44308</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/api/Appointment/${appointmentId}</stringProp>
+          <stringProp name="HTTPSampler.path">/api/Appointment/Mongo/${appointmentId}</stringProp>
           <stringProp name="HTTPSampler.method">DELETE</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>

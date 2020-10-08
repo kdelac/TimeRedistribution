@@ -1,5 +1,6 @@
 ﻿using MedAppCore;
 using MedAppCore.Models;
+using MedAppCore.Services;
 using MedAppServices;
 using Moq;
 using System;
@@ -15,7 +16,9 @@ namespace UnitTestTimeRedistribution
         public void GetAll_reeturns_doctor_list_and_check_list_count()
         {
             Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
-            DoctorService doctorService = new DoctorService(unitOfWork.Object);
+            Mock<IMongoUnitOfWork> monguofw = new Mock<IMongoUnitOfWork>();
+            Mock<IUsersService> users = new Mock<IUsersService>();
+            DoctorService doctorService = new DoctorService(unitOfWork.Object, monguofw.Object, users.Object);
 
             List<Doctor> doctors = new List<Doctor>()
             {
@@ -43,7 +46,9 @@ namespace UnitTestTimeRedistribution
         public void GetById_check_id_and_name_matching()
         {
             Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
-            DoctorService doctorService = new DoctorService(unitOfWork.Object);
+            Mock<IMongoUnitOfWork> monguofw = new Mock<IMongoUnitOfWork>();
+            Mock<IUsersService> users = new Mock<IUsersService>();
+            DoctorService doctorService = new DoctorService(unitOfWork.Object, monguofw.Object, users.Object);
 
             var doctorId = Guid.NewGuid();
             var name = "Kristijan";
@@ -67,7 +72,9 @@ namespace UnitTestTimeRedistribution
         public void GetById_returns_null()
         {
             Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
-            DoctorService doctorService = new DoctorService(unitOfWork.Object);
+            Mock<IMongoUnitOfWork> monguofw = new Mock<IMongoUnitOfWork>();
+            Mock<IUsersService> users = new Mock<IUsersService>();
+            DoctorService doctorService = new DoctorService(unitOfWork.Object, monguofw.Object, users.Object);
 
             var doctorId = Guid.NewGuid();
             Doctor doc = null;

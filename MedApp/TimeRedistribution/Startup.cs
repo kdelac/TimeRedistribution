@@ -22,6 +22,8 @@ using MedAppServices.Client;
 using Polly;
 using System.Net.Http;
 using Polly.Extensions.Http;
+using MedAppCore.MongoDB;
+using Microsoft.Extensions.Options;
 
 namespace TimeRedistribution
 {
@@ -156,7 +158,10 @@ namespace TimeRedistribution
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddSingleton<IMongoDBContext, MongoDBContext>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMongoUnitOfWork, MongoUnitOfWork>();
             services.AddTransient<IDoctorService, DoctorService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
@@ -164,6 +169,7 @@ namespace TimeRedistribution
             services.AddTransient<IDoctorPatientService, DoctorPatientService>();
             services.AddTransient<IApplicationService, ApplicationService>();
             services.AddScoped<ILogService, LogService>();
+            services.AddScoped<IUsersService, UsersService>();
 
             services.AddTransient<ISignService, SignService>();
 

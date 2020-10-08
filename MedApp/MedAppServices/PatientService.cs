@@ -3,6 +3,7 @@ using MedAppCore.Models;
 using MedAppCore.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,17 @@ namespace MedAppServices
     public class PatientService : IPatientService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMongoUnitOfWork _mongoUnitOfWork;
+        private readonly IUsersService _usersService;
 
-        public PatientService(IUnitOfWork unitOfWork)
+        public PatientService(
+            IUnitOfWork unitOfWork,
+            IMongoUnitOfWork mongoUnitOfWork,
+            IUsersService usersService)
         {
             _unitOfWork = unitOfWork;
+            _mongoUnitOfWork = mongoUnitOfWork;
+            _usersService = usersService;
         }
 
         public async Task<Patient> CreatePatient(Patient newPatient)
@@ -60,6 +68,35 @@ namespace MedAppServices
         public async Task<IEnumerable<Patient>> GetAll()
         {
             return await _unitOfWork.Patients.GetAllAsync();
+        }        
+
+        #region mongo
+        public async Task<Users> CreatePatientMongo(Users newPatient)
+        {
+            newPatient.Role = Role.Patient;
+            await _mongoUnitOfWork.Users.Create(newPatient);
+            return newPatient;
         }
+
+        public async Task<Users> GetPatientByIdMongo(Guid id)
+        {
+            return await _mongoUnitOfWork.Users.Get(id);
+        }
+
+        public List<Users> GetAllMongo()
+        {
+            return _usersService.GetAllPatients();
+        }
+
+        public void AddRangeAsyncMongo(IEnumerable<Users> patients)
+        {
+            patients.ToList().ForEach(async _ =>
+            {
+                _.Role = Role.Patient;
+                await _mongoUnitOfWork.Users.Create(_);
+            });
+        }
+
+        #endregion
     }
 }

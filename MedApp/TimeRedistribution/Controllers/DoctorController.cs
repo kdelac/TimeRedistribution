@@ -77,12 +77,12 @@ namespace TimeRedistribution.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Doctor>> CreateDoctor(DoctorResource doctor)
+        public async Task<ActionResult<Doctor>> CreateDoctor(DoctorResource doctorResource)
         {
-            var doctorResuource = _mapper.Map<DoctorResource, Doctor>(doctor);
-            await _doctorService.CreateDoctor(doctorResuource);
+            var doctor = _mapper.Map<DoctorResource, Doctor>(doctorResource);
+            await _doctorService.CreateDoctor(doctor);
 
-            return Ok(doctorResuource);
+            return Ok(doctor);
         }
 
         [HttpPost("AddMultiple")]
@@ -121,5 +121,45 @@ namespace TimeRedistribution.Controllers
 
             return NoContent();
         }
+
+        #region mongo
+
+        [HttpGet("Mongo")]
+        public ActionResult<IEnumerable<Users>> GetAllDoctorsMongo()
+        {
+            var doctors = _doctorService.GetAllMongo();
+
+            if (doctors == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(doctors);
+        }
+
+        [HttpPost("Mongo")]
+        public async Task<ActionResult<Users>> CreateDoctorMongo(UsersResource doctorResource)
+        {
+            var doctor = _mapper.Map<UsersResource, Users>(doctorResource);
+            await _doctorService.CreateDoctorMongo(doctor);
+
+            return Ok(doctor);
+        }
+
+        [HttpPost("AddMultipleMongo")]
+        public async Task CreateMultipleDoctorsMongo(IEnumerable<UsersResource> doctorsResources)
+        {
+            var doctors = _mapper.Map<IEnumerable<UsersResource>, IEnumerable<Users>>(doctorsResources);
+            _doctorService.AddRangeAsyncMongo(doctors);
+        }
+
+        [HttpGet("Mongo/{id}")]
+        public async Task<ActionResult<Users>> GetDoctorMongo(Guid id)
+        {
+            var patient = await _doctorService.GetDoctorByIdMongo(id);
+            return Ok(patient);
+        }
+
+        #endregion
     }
 }

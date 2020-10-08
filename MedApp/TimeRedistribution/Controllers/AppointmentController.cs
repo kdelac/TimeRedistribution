@@ -20,6 +20,8 @@ namespace TimeRedistribution.Controllers
         private readonly IDodavanjeTermina _dodajTermin;
         private readonly IPatientService _patientService;
         private readonly ILogService _logService;
+        private readonly IUsersService _usersService;
+
         //private readonly IAmqService _amqService;
         private readonly string EVENT_NAME_STATUS = "appoitmentStatus";
 
@@ -29,7 +31,8 @@ namespace TimeRedistribution.Controllers
             IRescheduleService rescheduleService, 
             IDodavanjeTermina dodavanjeTermina, 
             IPatientService patientService,
-            ILogService logService
+            ILogService logService,
+            IUsersService usersService
             /*IAmqService amqService*/)
         {
             _appointmentService = appointmentService;
@@ -38,6 +41,7 @@ namespace TimeRedistribution.Controllers
             _dodajTermin = dodavanjeTermina;
             _patientService = patientService;
             _logService = logService;
+            _usersService = usersService;
             //_amqService = amqService;
         }
 
@@ -146,6 +150,56 @@ namespace TimeRedistribution.Controllers
 
             return NoContent();
         }
+
+        #region mongo
+        [HttpGet("Mongo")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAllAppointmentsMongo()
+        {
+            var apointments = await _appointmentService.GetAllMogno();
+            return Ok(apointments);
+        }
+
+        [HttpPost("Mongo")]
+        public async Task<ActionResult<AppointmentBase>> CreateAppointmentMongo(AppointmentBaseResource appointmentResuource)
+        {
+            var doctor = await _usersService.GetUserById(appointmentResuource.DoctorId);
+            var patient = await _usersService.GetUserById(appointmentResuource.PatientId);
+
+            if (doctor.Role == Role.Doctor && patient.Role == Role.Patient)
+            {
+                var appointment = _mapper.Map<AppointmentBaseResource, AppointmentBase>(appointmentResuource);
+                var result = await _appointmentService.CreateAppointmentMongo(appointment);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
+            }       
+        }
+
+        [HttpDelete("Mongo/{id}")]
+        public async Task<IActionResult> DeleteAppointmentMongo(Guid id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var appointment = await _appointmentService.GetAppointmentByIdMongo(id);
+
+            if (appointment == null)
+                return NotFound();
+
+            await _appointmentService.DeleteAppointmentMongo(appointment);
+
+            return NoContent();
+        }
+
+        [HttpGet("Mongo/{id}")]
+        public async Task<ActionResult<Appointment>> GetAppointmentMongo(Guid id)
+        {
+            var appointment = await _appointmentService.GetAppointmentByIdMongo(id);
+            return Ok(appointment);
+        }
+        #endregion
 
 
         /// <summary>

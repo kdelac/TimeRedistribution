@@ -13,12 +13,24 @@ namespace MedAppServices
     public class AppointmentService : IAppointmentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMongoUnitOfWork _mongounitOfWork;
+        private readonly IDoctorService _doctorService;
+        private readonly IPatientService _patientService;
+        private readonly IUsersService _usersService;
 
         public AppointmentService(
-            IUnitOfWork unitOfWork
+            IUnitOfWork unitOfWork,
+            IMongoUnitOfWork mongoUnitOfWork,
+            IDoctorService doctorService,
+            IPatientService patientService,
+            IUsersService usersService
             )
         {
             _unitOfWork = unitOfWork;
+            _mongounitOfWork = mongoUnitOfWork;
+            _doctorService = doctorService;
+            _patientService = patientService;
+            _usersService = usersService;
         }
 
         public async Task AddRangeAsync(IEnumerable<Appointment> appointments)
@@ -98,5 +110,36 @@ namespace MedAppServices
         {
             return await _unitOfWork.Appointments.GetAppointmentById(id);
         }
+
+        #region mongo
+        public async Task<AppointmentBase> CreateAppointmentMongo(AppointmentBase newAppointment)
+        {
+            await _mongounitOfWork.Appointments.Create(newAppointment);
+            return newAppointment;
+        }
+
+        public async Task DeleteAppointmentMongo(AppointmentBase appointment)
+        {
+            await _mongounitOfWork.Appointments.Delete(appointment.Id);
+        }
+
+        public async Task<IEnumerable<AppointmentBase>> GetAllMogno()
+        {
+            return await _mongounitOfWork.Appointments.Get();
+        }
+
+        public async Task<AppointmentBase> GetAppointmentByIdMongo(Guid id)
+        {
+            return await _mongounitOfWork.Appointments.Get(id);
+        }
+        public async Task UpdateAppointmentMongo(AppointmentBase appointmentToBeUpdated, AppointmentBase appointment)
+        {
+            appointmentToBeUpdated.Status = appointment.Status;
+            appointmentToBeUpdated.DateTime = appointment.DateTime;
+
+            await _mongounitOfWork.Appointments.Update(appointmentToBeUpdated.Id, appointment);
+        }
+        #endregion
+
     }
 }
