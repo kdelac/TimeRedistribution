@@ -13,6 +13,7 @@ using SecretToken;
 using System;
 using System.IO;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Web;
@@ -192,9 +193,15 @@ namespace Proba
         }       
 
         public static void SignPdf(string certificate, string signature)
-        {
+        {            
             byte[] signatureBytes = ConvertToBytes(signature);
             byte[] certificateBytes = ConvertToBytes(certificate);
+            byte[] ch = ConvertToBytes(chain);
+
+
+            var datasplited = chain.Split("=");
+            var a = HttpUtility.UrlDecode(datasplited[1]);
+            Console.WriteLine(a);
 
             X509Certificate x509Certificate = new X509CertificateParser().ReadCertificate(certificateBytes);
 
@@ -231,23 +238,12 @@ namespace Proba
         }
 
         public static byte[] ConvertToBytes(string data)
-        {
-            var datasplited = data.Split("=");
+        {           
+            var datasplited = data.Split("=");           
+            var base64string = HttpUtility.UrlDecode(datasplited[1]);
+            base64string = base64string.Replace("=;", "");
 
-            return Convert.FromBase64String(
-                datasplited[1]
-                .Replace("%23", "#")
-                .Replace("%24", "$")
-                .Replace("%26", "&")
-                .Replace("%2B", "+")
-                .Replace("%2C", ",")
-                .Replace("%2F", "/")
-                .Replace("%3A", ":")
-                .Replace("%3B", ";")
-                .Replace("%3D", "=")
-                .Replace("%3F", "?")
-                .Replace("%40", "@")
-                );
+            return Convert.FromBase64String(base64string);
         }
 
         private class ExternalPrecalculatedSignatureContainer : ExternalBlankSignatureContainer
