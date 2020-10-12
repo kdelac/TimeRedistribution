@@ -196,7 +196,6 @@ namespace Proba
         {            
             byte[] signatureBytes = ConvertToBytes(signature);
             byte[] certificateBytes = ConvertToBytes(certificate);
-            byte[] ch = ConvertToBytes(chain);
 
 
             var datasplited = chain.Split("=");
