@@ -16,7 +16,8 @@ namespace SecretToken
         public override byte[] Sign(Stream data)
         {
             SHA256 sha = new SHA256CryptoServiceProvider();
-            Hash = sha.ComputeHash(data);
+            String hashAlgorithm = DigestAlgorithms.SHA256;
+            Hash = DigestAlgorithms.Digest(data, DigestAlgorithms.GetMessageDigest(hashAlgorithm));
             return new byte[0];
         }
 
