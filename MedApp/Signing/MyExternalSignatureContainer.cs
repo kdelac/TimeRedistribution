@@ -27,10 +27,9 @@ namespace Signing
             {
                 String hashAlgorithm = DigestAlgorithms.SHA256;
                 PdfPKCS7 sgn = new PdfPKCS7(null, chain, hashAlgorithm, false);
-                byte[] hashh = DigestAlgorithms.Digest(inputStream, hashAlgorithm);
                 sgn.SetExternalDigest(signedHash, null, "RSA");
 
-                return sgn.GetEncodedPKCS7(hashh, PdfSigner.CryptoStandard.CMS, null,
+                return sgn.GetEncodedPKCS7(hash, PdfSigner.CryptoStandard.CMS, null,
                     null, null);
             }
             catch (IOException ioe)
