@@ -45,11 +45,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDD", "DDD", "{E1A2D385-D7C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scheduling", "Scheduling", "{67CA1CF6-469A-4BEF-9C71-7EDEE6DE6A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduling.API", "DDD\Scheduling\Scheduling.API\Scheduling.API.csproj", "{7A2AEA25-C565-4C12-8DF9-58BA1693FCEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduling.API", "DDD\Scheduling\Scheduling.API\Scheduling.API.csproj", "{7A2AEA25-C565-4C12-8DF9-58BA1693FCEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduling.Domain", "DDD\Scheduling\Scheduling.Domain\Scheduling.Domain.csproj", "{D5435723-B5C6-4C84-AB1A-D092C78B4439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduling.Domain", "DDD\Scheduling\Scheduling.Domain\Scheduling.Domain.csproj", "{D5435723-B5C6-4C84-AB1A-D092C78B4439}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduling.Infrastructure", "DDD\Scheduling\Scheduling.Infrastructure\Scheduling.Infrastructure.csproj", "{8B3A8E00-A7F8-4689-B13D-ADE536DCEB9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduling.Infrastructure", "DDD\Scheduling\Scheduling.Infrastructure\Scheduling.Infrastructure.csproj", "{8B3A8E00-A7F8-4689-B13D-ADE536DCEB9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{0B98276C-2BAA-42C1-83C0-0130AE15AA91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.BuildingBlocks.Application", "DDD\BuildingBlocks\DDD.BuildingBlocks.Application\DDD.BuildingBlocks.Application.csproj", "{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.BuildingBlocks.Domain", "DDD\BuildingBlocks\DDD.BuildingBlocks.Domain\DDD.BuildingBlocks.Domain.csproj", "{18137F91-653E-4190-B982-BB94629D343A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.BuildingBlocks.Infrastructure", "DDD\BuildingBlocks\DDD.BuildingBlocks.Infrastructure\DDD.BuildingBlocks.Infrastructure.csproj", "{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduling.Application", "DDD\Scheduling\Scheduling.Application\Scheduling.Application.csproj", "{A39BE73B-0AEE-4989-B226-C2AD97772764}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +157,22 @@ Global
 		{8B3A8E00-A7F8-4689-B13D-ADE536DCEB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B3A8E00-A7F8-4689-B13D-ADE536DCEB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B3A8E00-A7F8-4689-B13D-ADE536DCEB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18137F91-653E-4190-B982-BB94629D343A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18137F91-653E-4190-B982-BB94629D343A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18137F91-653E-4190-B982-BB94629D343A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18137F91-653E-4190-B982-BB94629D343A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +182,11 @@ Global
 		{7A2AEA25-C565-4C12-8DF9-58BA1693FCEC} = {67CA1CF6-469A-4BEF-9C71-7EDEE6DE6A45}
 		{D5435723-B5C6-4C84-AB1A-D092C78B4439} = {67CA1CF6-469A-4BEF-9C71-7EDEE6DE6A45}
 		{8B3A8E00-A7F8-4689-B13D-ADE536DCEB9C} = {67CA1CF6-469A-4BEF-9C71-7EDEE6DE6A45}
+		{0B98276C-2BAA-42C1-83C0-0130AE15AA91} = {E1A2D385-D7CE-44A7-9DE7-2557B5D83393}
+		{EA55EF00-B7AC-465E-B675-4C71EEC4CB75} = {0B98276C-2BAA-42C1-83C0-0130AE15AA91}
+		{18137F91-653E-4190-B982-BB94629D343A} = {0B98276C-2BAA-42C1-83C0-0130AE15AA91}
+		{D33389EE-0880-4D3D-AECE-6AFD2491D1AC} = {0B98276C-2BAA-42C1-83C0-0130AE15AA91}
+		{A39BE73B-0AEE-4989-B226-C2AD97772764} = {67CA1CF6-469A-4BEF-9C71-7EDEE6DE6A45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31ECE976-8E68-497E-9028-467D4E94691E}

@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AggregatesModels\" />
-    <Folder Include="SeedWork\" />
+    <ProjectReference Include="..\..\BuildingBlocks\DDD.BuildingBlocks.Domain\DDD.BuildingBlocks.Domain.csproj" />
   </ItemGroup>
 
 </Project>
