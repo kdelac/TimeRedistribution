@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.0.0" />
+    <PackageReference Include="FluentValidation" Version="9.2.2" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
@@ -23,7 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\DDD.BuildingBlocks.Application\DDD.BuildingBlocks.Application.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\DDD.BuildingBlocks.Infrastructure\DDD.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\Scheduling.Application\Scheduling.Application.csproj" />
     <ProjectReference Include="..\Scheduling.Domain\Scheduling.Domain.csproj" />
   </ItemGroup>
 

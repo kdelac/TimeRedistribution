@@ -235,7 +235,7 @@ namespace MedAppData.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TransactionSetupEnds");
-                });
+                });        
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {

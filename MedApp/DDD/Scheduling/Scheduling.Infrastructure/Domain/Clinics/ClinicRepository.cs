@@ -10,7 +10,7 @@ namespace Scheduling.Infrastructure.Domain.Clinics
     {
         private readonly SchedulingContext _calendarContext;
 
-        public ClinicRepository(SchedulingContext calendarContext)
+        internal ClinicRepository(SchedulingContext calendarContext)
         {
             _calendarContext = calendarContext;
         }
