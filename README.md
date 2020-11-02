@@ -101,6 +101,12 @@ JMeter je aplikacija koja između ostalog služi za ispitivanje brzine API-ja. U
 <p>
 U kodu je složen rad s nosql podacima. Napravljen je context za spajanje na mongodb i neki generički repozitori za crud operacije. Dodao sam indexe u bazu i znatno se povečala brzina pretraživanja po određeno atributu. Čak i 300 puta se ubrza proces pretraživanja po nekom atributu ako se stavi index. Kombinacijom indexa još se može ubrzati proces pretraživanja. Na 1,3milijuna podataka pretraživanje po atributu je trajalo nekoliko sekundi, nakon što sam stavio index ubrzalo se na manje od 10ms za isti atribut.
 </p>
+
+<h3>DDD</h3>
+<p>
+Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom domenom. Kada se primjeni ovaj koncept s lakoćom se može vidjeti što neka aplikacija radi, odnosno što se sve dešava  toj jednoj domeni. Piše se na način da i osoba koja nije programer može s lakoćom primjetiti kako sve funkcionira. Domenom nazivamo dio koji se odnosi na neko područje. Npr. u mom projektu domena je raspored. Svaka domena ima svoj context kako bi se olakšao rad. Kad bi u nekoj organizaciji radili aplikaciju s mnoštvom domena, a samo jednim contextom došlo bi do mnogo konflikata. Kada se primjenjuje ovaj koncept nije preporučeno da dve razlićite domene imaju iste tablice u bazi. Kako između domena ne bi došlo do konflikata svaka domena ima svoj domenski model i dio koji je pisan razumljivim jezikom. 
+  Meni osobno jako se sviđa ovaj način implementacije, ima dosta više posla ali je lako za shvato što, kako i gdje.
+</p
 </body>
 
 </body>
