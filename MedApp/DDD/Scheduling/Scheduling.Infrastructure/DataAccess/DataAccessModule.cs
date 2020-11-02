@@ -46,6 +46,10 @@ namespace Scheduling.Infrastructure.DataAccess
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope()
                 .FindConstructorsWith(new AllConstructorFinder());
+
+            //builder.RegisterType<ClinicRepository>()
+            //    .As<IClinicRepository>()
+            //    .InstancePerLifetimeScope();
         }
 
     }

@@ -8,20 +8,26 @@ namespace Scheduling.Infrastructure.Domain.Appointments
 {
     public class AppointmentRepository : IAppointmentRepository
     {
-        private readonly SchedulingContext _calendarContext;
+        private readonly SchedulingContext _schedulingContext;
 
-        internal AppointmentRepository(SchedulingContext calendarContext)
+        internal AppointmentRepository(SchedulingContext schedulingContext)
         {
-            _calendarContext = calendarContext;
+            _schedulingContext = schedulingContext;
         }
         public async Task AddAsync(Appointment appointment)
         {
-            await _calendarContext.Appointments.AddAsync(appointment);
+            await _schedulingContext.Appointments.AddAsync(appointment);
+
         }
 
         public async Task<Appointment> GetByIdAsync(AppoitmentId id)
         {
-            return await _calendarContext.Appointments.FindAsync(id);
+            return await _schedulingContext.Appointments.FindAsync(id);
+        }
+
+        public async Task Save()
+        {
+            await _schedulingContext.SaveChangesAsync();
         }
     }
 }

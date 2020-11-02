@@ -8,22 +8,26 @@ namespace Scheduling.Infrastructure.Domain.Clinics
 {
     public class ClinicRepository : IClinicRepository
     {
-        private readonly SchedulingContext _calendarContext;
+        private readonly SchedulingContext _schedulingContext;
 
-        internal ClinicRepository(SchedulingContext calendarContext)
+        public ClinicRepository(SchedulingContext schedulingContext)
         {
-            _calendarContext = calendarContext;
+            _schedulingContext = schedulingContext;
         }
 
         public async Task AddAsync(Clinic clinic)
         {
-            await _calendarContext.Clinics.AddAsync(clinic);
-            await _calendarContext.SaveChangesAsync();
+            await _schedulingContext.Clinics.AddAsync(clinic);
         }
 
         public async Task<Clinic> GetByIdAsync(ClinicId id)
         {
-            return await _calendarContext.Clinics.FindAsync(id);
+            return await _schedulingContext.Clinics.FindAsync(id);
+        }
+
+        public async Task Save()
+        {
+            await _schedulingContext.SaveChangesAsync();
         }
     }
 }

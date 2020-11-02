@@ -17,5 +17,27 @@ namespace Scheduling.Domain.Appointments
         {
 
         }
+
+        internal static Appointment CreateNewAppoitment(
+            CalendarId calendarId,
+            AppointmentTerm appointmentTerm,
+            string patientId)
+        {
+            return new Appointment(
+                calendarId,
+                appointmentTerm,
+                patientId
+                );
+        }
+
+        public Appointment(CalendarId calendarId,
+            AppointmentTerm appointmentTerm,
+            string patientId)
+        {
+            Id = new AppoitmentId(Guid.NewGuid());
+            _calendarId = calendarId;
+            _term = appointmentTerm;
+            _patientId = patientId;
+        }
     }
 }

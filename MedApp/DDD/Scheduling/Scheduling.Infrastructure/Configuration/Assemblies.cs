@@ -1,4 +1,5 @@
-﻿using Scheduling.Infrastructure.Configuration.Commands;
+﻿using Scheduling.Application.Configurations.Commands;
+using Scheduling.Infrastructure.Configuration.Commands;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,6 +9,6 @@ namespace Scheduling.Infrastructure.Configuration
 {
     internal static class Assemblies
     {
-        public static readonly Assembly Application = typeof(InternalCommandBase).Assembly;
+        public static readonly Assembly Application = typeof(ICommandHandler<>).Assembly;
     }
 }

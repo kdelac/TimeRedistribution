@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Scheduling.Application.Clinics.CreateClinic;
+using Scheduling.Application.Clinics.GetAllClinics;
 using Scheduling.Application.Contracts;
+using Scheduling.Domain.Clinics;
 
 namespace Scheduling.API.Modules.Scheduling.Clinics
 {
@@ -15,9 +19,11 @@ namespace Scheduling.API.Modules.Scheduling.Clinics
     {
         private readonly ISchedulingModule _schedulerModule;
 
-        public CllinicsController(ISchedulingModule meetingsModule)
+
+        public CllinicsController(ISchedulingModule schedulerModule
+             )
         {
-            _schedulerModule = meetingsModule;
+            _schedulerModule = schedulerModule;
         }
 
         [HttpPost]
@@ -25,10 +31,17 @@ namespace Scheduling.API.Modules.Scheduling.Clinics
         {
             await _schedulerModule.ExecuteCommandAsync(
                 new CreateClinicCommand(
-                    request.Name,
+                    request.Name, 
                     request.Location));
-
             return Ok();
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllMeetingGroups()
+        {
+            var clinics = await _schedulerModule.ExecuteQueryAsync(new GetaAllClinicsQuery());
+
+            return Ok(clinics);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DDD.BuildingBlocks.Domain;
+using Scheduling.Domain.Calendars;
 using Scheduling.Domain.MedicalStaff;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,25 @@ namespace Scheduling.Domain.Clinics
         public MedicalStuff AddNewDoctor(
             string firstname,
             string lastname,
+            DateTime dateOfBirth,
+            CalendarId calendarId)
+        {
+            return MedicalStuff.CreateNewDoctor(Id, 
+                firstname, 
+                lastname, 
+                dateOfBirth,
+                calendarId);
+        }
+
+        public MedicalStuff AddNewNurse(
+            string firstname,
+            string lastname,
             DateTime dateOfBirth)
         {
-            return MedicalStuff.CreateNewDoctor(Id, firstname, lastname, dateOfBirth);
+            return MedicalStuff.CreateNewNurse(Id, 
+                firstname, 
+                lastname, 
+                dateOfBirth);
         }
 
         public Clinic(string name, string location)

@@ -22,6 +22,7 @@ namespace Scheduling.Application.Clinics.CreateClinic
         {
             var clinic = new Clinic(request.Name, request.Location);
             await _clinicRepository.AddAsync(clinic);
+            await _clinicRepository.Save();
 
             return clinic.Id.Value;
         }

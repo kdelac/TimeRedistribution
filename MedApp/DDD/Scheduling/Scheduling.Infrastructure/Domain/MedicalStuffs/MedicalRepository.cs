@@ -8,20 +8,25 @@ namespace Scheduling.Infrastructure.Domain.MedicalStuffs
 {
     public class MedicalRepository : IMedicalRepository
     {
-        private readonly SchedulingContext _calendarContext;
+        private readonly SchedulingContext _schedulingContext;
 
-        internal MedicalRepository(SchedulingContext calendarContext)
+        internal MedicalRepository(SchedulingContext schedulingContext)
         {
-            _calendarContext = calendarContext;
+            _schedulingContext = schedulingContext;
         }
         public async Task AddAsync(MedicalStuff medical)
         {
-            await _calendarContext.MedicalStuffs.AddAsync(medical);
+            await _schedulingContext.MedicalStuffs.AddAsync(medical);
         }
 
         public async Task<MedicalStuff> GetByIdAsync(MedicalStuffId id)
         {
-            return await _calendarContext.MedicalStuffs.FindAsync(id);
+            return await _schedulingContext.MedicalStuffs.FindAsync(id);
+        }
+
+        public async Task Save()
+        {
+            await _schedulingContext.SaveChangesAsync();
         }
     }
 }

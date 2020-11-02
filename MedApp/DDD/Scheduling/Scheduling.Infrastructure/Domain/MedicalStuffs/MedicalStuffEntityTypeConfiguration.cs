@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Scheduling.Domain.Calendars;
 using Scheduling.Domain.Clinics;
 using Scheduling.Domain.MedicalStaff;
 using System;
@@ -18,6 +19,7 @@ namespace Scheduling.Infrastructure.Domain.MedicalStuffs
             builder.Property<string>("_lastname").HasColumnName("Lastname");
             builder.Property<DateTime>("_dateOfBirth").HasColumnName("DateOfBirth");
             builder.Property<ClinicId>("_clinicId").HasColumnName("ClinicId");
+            builder.Property<CalendarId>("_calendarId").HasColumnName("CalendarId");
             builder.OwnsOne<MedicalStuffRole>("_medicalStuffRole", y => 
             {
                 y.Property(x => x.Value).HasColumnName("RoleCode");

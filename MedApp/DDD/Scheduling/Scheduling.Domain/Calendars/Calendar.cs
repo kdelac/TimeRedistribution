@@ -22,22 +22,40 @@ namespace Scheduling.Domain.Calendars
 
         public Calendar(
             string title,
-            MedicalStuffId medicalStuffId)
+            List<MedicalStuffId> nursesIds)
         {
             Id = new CalendarId(Guid.NewGuid());
             _title = title;
 
-            _calendarUsers = new List<CalendarUser>();
-
-            _calendarUsers.Add(CalendarUser.CreateNew(Id, 
-                medicalStuffId, MedicalStuffRole.Doctor));
+            if (nursesIds.Any())
+            {
+                _calendarUsers = new List<CalendarUser>();
+                nursesIds.ForEach(_ => {
+                    _calendarUsers.Add(CalendarUser.CreateNew(Id,
+                    _, MedicalStuffRole.Nurse));
+                });                
+            }            
         }
 
-        public CalendarUser AddAccesToCalendar(
+        public void AddAccesToCalendar(
             MedicalStuffId medicalStuffId)
         {
-            return CalendarUser.CreateNew(Id, medicalStuffId,
-                MedicalStuffRole.Nurse);
+            _calendarUsers.Add(CalendarUser.CreateNew(
+                Id,
+                medicalStuffId,
+                MedicalStuffRole.Nurse                
+                ));
+        }
+
+        public Appointment AddAppoitment(
+            AppointmentTerm appointmentTerm,
+            string patientId
+            )
+        {
+            return Appointment.CreateNewAppoitment(Id,
+                appointmentTerm,
+                patientId
+                );
         }
     }
 }

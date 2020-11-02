@@ -10,5 +10,6 @@ namespace Scheduling.Domain.Calendars
         Task AddAsync(Calendar calendar);
 
         Task<Calendar> GetByIdAsync(CalendarId id);
+        Task Save();
     }
 }

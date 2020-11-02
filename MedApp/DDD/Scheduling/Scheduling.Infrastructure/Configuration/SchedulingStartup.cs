@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DDD.BuildingBlocks.Application;
+using Scheduling.Application.Configurations.Commands;
 using Scheduling.Infrastructure.Configuration.Mediation;
 using Scheduling.Infrastructure.DataAccess;
 
@@ -31,6 +32,7 @@ namespace Scheduling.Infrastructure.Configuration
 
             containerBuilder.RegisterInstance(executionContextAccessor);
             _container = containerBuilder.Build();
+
             SchedulingCompositionRoot.SetContainer(_container);
         }
     }

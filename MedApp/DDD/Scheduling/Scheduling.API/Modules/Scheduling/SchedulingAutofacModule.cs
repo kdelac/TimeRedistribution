@@ -8,6 +8,7 @@ namespace Scheduling.API.Modules.Scheduling
     {
         protected override void Load(ContainerBuilder builder)
         {
+            base.Load(builder);
             builder.RegisterType<SchedulingModule>()
                 .As<ISchedulingModule>()
                 .InstancePerLifetimeScope();

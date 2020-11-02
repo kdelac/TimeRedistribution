@@ -33,9 +33,9 @@ namespace Scheduling.Domain.CalendarUsers
             MedicalStuffId medicalStuffId,
             MedicalStuffRole medicalStuffRole)
         {
-            this.CalendarId = calendarId;
-            this.MedicalStuffId = medicalStuffId;
-            this._role = medicalStuffRole;
+            CalendarId = calendarId;
+            MedicalStuffId = medicalStuffId;
+            _role = medicalStuffRole;
         }
     }
 }

@@ -10,5 +10,7 @@ namespace Scheduling.Domain.MedicalStaff
         Task AddAsync(MedicalStuff calendar);
 
         Task<MedicalStuff> GetByIdAsync(MedicalStuffId id);
+
+        Task Save();
     }
 }

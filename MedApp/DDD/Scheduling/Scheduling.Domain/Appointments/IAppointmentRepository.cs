@@ -10,5 +10,7 @@ namespace Scheduling.Domain.Appointments
         Task AddAsync(Appointment calendar);
 
         Task<Appointment> GetByIdAsync(AppoitmentId id);
+
+        Task Save();
     }
 }

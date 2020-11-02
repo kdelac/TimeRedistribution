@@ -7,5 +7,7 @@ namespace Scheduling.Domain.Clinics
         Task AddAsync(Clinic calendar);
 
         Task<Clinic> GetByIdAsync(ClinicId id);
+
+        Task Save();
     }
 }

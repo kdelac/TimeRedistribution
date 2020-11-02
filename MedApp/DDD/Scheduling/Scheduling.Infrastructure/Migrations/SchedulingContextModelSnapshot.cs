@@ -74,6 +74,10 @@ namespace Scheduling.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("_calendarId")
+                        .HasColumnName("CalendarId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("_clinicId")
                         .HasColumnName("ClinicId")
                         .HasColumnType("uniqueidentifier");

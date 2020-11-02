@@ -8,7 +8,9 @@ using Autofac.Features.Variance;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
-
+using Scheduling.Application.Clinics.CreateClinic;
+using Scheduling.Application.Clinics.GetAllClinics;
+using Scheduling.Application.Contracts;
 
 namespace Scheduling.Infrastructure.Configuration.Mediation
 {
@@ -18,7 +20,7 @@ namespace Scheduling.Infrastructure.Configuration.Mediation
         {
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope();            
 
             builder.RegisterSource(new ScopedContravariantRegistrationSource(
                 typeof(IRequestHandler<,>),
@@ -36,8 +38,9 @@ namespace Scheduling.Infrastructure.Configuration.Mediation
 
             foreach (var mediatorOpenType in mediatorOpenTypes)
             {
+                
                 builder
-                    .RegisterAssemblyTypes(ThisAssembly, Assemblies.Application)
+                    .RegisterAssemblyTypes(Assemblies.Application)
                     .AsClosedTypesOf(mediatorOpenType)
                     .AsImplementedInterfaces()
                     .FindConstructorsWith(new AllConstructorFinder());

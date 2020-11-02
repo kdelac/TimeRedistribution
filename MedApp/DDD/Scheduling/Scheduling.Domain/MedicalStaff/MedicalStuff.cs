@@ -1,4 +1,5 @@
 ﻿using DDD.BuildingBlocks.Domain;
+using Scheduling.Domain.Calendars;
 using Scheduling.Domain.Clinics;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Scheduling.Domain.MedicalStaff
         private string _lastname;
         private DateTime _dateOfBirth;
         private ClinicId _clinicId;
+        private CalendarId _calendarId;
         private MedicalStuffRole _medicalStuffRole;
 
         public MedicalStuff()
@@ -24,14 +26,16 @@ namespace Scheduling.Domain.MedicalStaff
             ClinicId clinicId,
             string firstname,
             string lastname,
-            DateTime dateOfBirth)
+            DateTime dateOfBirth,
+            CalendarId calendarId)
         {            
             return new MedicalStuff(
                 clinicId,
                 firstname,
                 lastname,
                 dateOfBirth,
-                MedicalStuffRole.Doctor);
+                MedicalStuffRole.Doctor,
+                calendarId);
         }
 
         internal static MedicalStuff CreateNewNurse(
@@ -45,7 +49,8 @@ namespace Scheduling.Domain.MedicalStaff
                 firstname,
                 lastname,
                 dateOfBirth,
-                MedicalStuffRole.Nurse);
+                MedicalStuffRole.Nurse,
+                null);
         }
 
         public MedicalStuff(
@@ -53,14 +58,19 @@ namespace Scheduling.Domain.MedicalStaff
             string firstname,
             string lastname,
             DateTime dateOfBirth,
-            MedicalStuffRole medicalStuffRole)
+            MedicalStuffRole medicalStuffRole,
+            CalendarId calendarId)
         {
             Id = new MedicalStuffId(Guid.NewGuid());
             _firstname = firstname;
             _lastname = lastname;
             _dateOfBirth = dateOfBirth;
             _medicalStuffRole = medicalStuffRole;
+            _clinicId = clinicId;
+            _calendarId = calendarId;
 
         }
+
+        public CalendarId GetCalendarId() => _calendarId;
     }
 }
