@@ -47,5 +47,15 @@ namespace Scheduling.Domain.Clinics
             _name = name;
             _location = location;
         }
+
+        public object CreateNew()
+        {
+            return new { Id = Id.Value, Name = _name, Location = _location };
+        }
+
+        public object Update(Guid clinicId)
+        {
+            return new { Id = clinicId, Name = _name, Location = _location };
+        }
     }
 }
