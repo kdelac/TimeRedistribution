@@ -20,6 +20,13 @@ namespace Scheduling.Domain.Calendars
             _calendarUsers = new List<CalendarUser>();
         }
 
+        public Calendar(CalendarId calendarId, string title)
+        {
+            _calendarUsers = new List<CalendarUser>();
+            Id = calendarId;
+            _title = title;
+        }
+
         public Calendar(
             string title,
             List<MedicalStuffId> nursesIds)
@@ -57,5 +64,11 @@ namespace Scheduling.Domain.Calendars
                 patientId
                 );
         }
+
+        public object CreateNew() => new { Id = Id.Value, Title = _title };
+
+        public int UsersCount() => _calendarUsers.Count();
+
+        public List<CalendarUser> GetCalendarUsers() => _calendarUsers;
     }
 }

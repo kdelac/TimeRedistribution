@@ -6,6 +6,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using DDD.BuildingBlocks.Application;
+using Scheduling.Application.Calendars;
+using Scheduling.Domain.Calendars;
+using Scheduling.Infrastructure.Domain.Calendars;
+using Scheduling.Infrastructure.Domain.MedicalStuffs;
+using Scheduling.Application.MedicalStaff;
+using Scheduling.Domain.MedicalStaff;
 
 namespace Scheduling.Infrastructure.DataAccess
 {
@@ -23,6 +30,11 @@ namespace Scheduling.Infrastructure.DataAccess
                 .As<ISqlConnectionFactory>()
                 .WithParameter("connectionString", _databaseConnectionString)
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<CalendarMapper>()
+                .As<IConverter<CalendarDto, Calendar>>();
+            builder.RegisterType<MedicalStaffMapper>()
+                .As<IConverter<MedicalStaffDto, MedicalStuff>>();
 
             builder
                 .Register(c =>

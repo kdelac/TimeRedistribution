@@ -22,6 +22,23 @@ namespace Scheduling.Domain.MedicalStaff
 
         }
 
+        public MedicalStuff(MedicalStuffId medicalStuffId,
+            ClinicId clinicId,
+            string firstname, 
+            string lastname, 
+            DateTime dateOfBirth,             
+            CalendarId calendarId, 
+            MedicalStuffRole medicalStuffRole)
+        {
+            Id = medicalStuffId;
+            _firstname = firstname;
+            _lastname = lastname;
+            _dateOfBirth = dateOfBirth;
+            _clinicId = clinicId;
+            _calendarId = calendarId;
+            _medicalStuffRole = medicalStuffRole;
+        }
+
         internal static MedicalStuff CreateNewDoctor(
             ClinicId clinicId,
             string firstname,

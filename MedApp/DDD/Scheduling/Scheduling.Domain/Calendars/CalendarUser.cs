@@ -37,5 +37,7 @@ namespace Scheduling.Domain.CalendarUsers
             MedicalStuffId = medicalStuffId;
             _role = medicalStuffRole;
         }
+
+        public object CreateNew() => new { CalendarId = CalendarId.Value, MedicalStuffId = MedicalStuffId.Value, RoleCode = _role.Value };
     }
 }
