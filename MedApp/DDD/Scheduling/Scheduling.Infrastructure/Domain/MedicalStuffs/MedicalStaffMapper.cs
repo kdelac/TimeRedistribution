@@ -9,37 +9,26 @@ using System.Text;
 
 namespace Scheduling.Infrastructure.Domain.MedicalStuffs
 {
-    public class MedicalStaffMapper : IConverter<MedicalStaffDto, MedicalStuff>
+    public static class MedicalStaffMapper
     {
-        public MedicalStuff Convert(MedicalStaffDto source_object)
+        public static MedicalStuff Mapp(this MedicalStaffDto medicalStaffDto)
         {
-            var medId = new MedicalStuffId(source_object.Id);
-            var calendarId = new CalendarId(source_object.CalendarId);
-            var clinicId = new ClinicId(source_object.ClinicId);
-            if (source_object.RoleCode == MedicalStuffRole.Doctor.ToString())
+            var medId = new MedicalStuffId(medicalStaffDto.Id);
+            CalendarId calendarId = null;
+            if (medicalStaffDto.CalendarId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
-                return new MedicalStuff(medId, clinicId, source_object.Firstname, source_object.Lastname, source_object.DateOfBirth, calendarId, MedicalStuffRole.Doctor);
+                calendarId = new CalendarId(medicalStaffDto.CalendarId);
+            }
+            
+            var clinicId = new ClinicId(medicalStaffDto.ClinicId);
+            if (medicalStaffDto.RoleCode == MedicalStuffRole.Doctor.ToString())
+            {
+                return new MedicalStuff(medId, clinicId, medicalStaffDto.Firstname, medicalStaffDto.Lastname, medicalStaffDto.DateOfBirth, calendarId, MedicalStuffRole.Doctor);
             }
             else
             {
-                return new MedicalStuff(medId, clinicId, source_object.Firstname, source_object.Lastname, source_object.DateOfBirth, calendarId, MedicalStuffRole.Nurse);
+                return new MedicalStuff(medId, clinicId, medicalStaffDto.Firstname, medicalStaffDto.Lastname, medicalStaffDto.DateOfBirth, MedicalStuffRole.Nurse);
             }
-            
-        }
-
-        public MedicalStaffDto Convert(MedicalStuff source_object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<MedicalStuff> ConvertList(List<MedicalStaffDto> source_object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<MedicalStaffDto> ConvertList(List<MedicalStuff> source_object)
-        {
-            throw new NotImplementedException();
         }
     }
 }

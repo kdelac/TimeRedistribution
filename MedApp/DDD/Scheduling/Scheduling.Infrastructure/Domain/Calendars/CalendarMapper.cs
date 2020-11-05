@@ -6,27 +6,12 @@ using System.Collections.Generic;
 
 namespace Scheduling.Infrastructure.Domain.Calendars
 {
-    public class CalendarMapper : IConverter<CalendarDto, Calendar>
+    public static class CalendarMapper
     {
-        public Calendar Convert(CalendarDto source_object)
+        public static Calendar Mapp(this CalendarDto calendarDto)
         {
-            CalendarId calendarId = new CalendarId(source_object.Id);
-            return new Calendar(calendarId, source_object.Title);
-        }
-
-        public CalendarDto Convert(Calendar source_object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Calendar> ConvertList(List<CalendarDto> source_object)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<CalendarDto> ConvertList(List<Calendar> source_object)
-        {
-            throw new NotImplementedException();
+            CalendarId calendarId = new CalendarId(calendarDto.Id);
+            return new Calendar(calendarId, calendarDto.Title);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Scheduling.Domain.MedicalStaff
             string firstname, 
             string lastname, 
             DateTime dateOfBirth,             
-            CalendarId calendarId, 
+            CalendarId? calendarId, 
             MedicalStuffRole medicalStuffRole)
         {
             Id = medicalStuffId;
@@ -36,6 +36,21 @@ namespace Scheduling.Domain.MedicalStaff
             _dateOfBirth = dateOfBirth;
             _clinicId = clinicId;
             _calendarId = calendarId;
+            _medicalStuffRole = medicalStuffRole;
+        }
+
+        public MedicalStuff(MedicalStuffId medicalStuffId,
+            ClinicId clinicId,
+            string firstname,
+            string lastname,
+            DateTime dateOfBirth,
+            MedicalStuffRole medicalStuffRole)
+        {
+            Id = medicalStuffId;
+            _firstname = firstname;
+            _lastname = lastname;
+            _dateOfBirth = dateOfBirth;
+            _clinicId = clinicId;
             _medicalStuffRole = medicalStuffRole;
         }
 
@@ -89,5 +104,6 @@ namespace Scheduling.Domain.MedicalStaff
         }
 
         public CalendarId GetCalendarId() => _calendarId;
+        public string GetFirstname() => _firstname;
     }
 }

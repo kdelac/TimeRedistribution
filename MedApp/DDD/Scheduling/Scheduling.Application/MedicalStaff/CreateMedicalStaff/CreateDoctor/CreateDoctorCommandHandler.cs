@@ -34,7 +34,7 @@ namespace Scheduling.Application.MedicalStaff.CreateMedicalStaff
             var nursesIds = request.NursesIds.Select(x => new MedicalStuffId(x)).ToList();
 
             var calendar = new Calendar($"{request.Firstname}'s Calendar", nursesIds);
-            await _calendarRepository.AddAsync(calendar);
+            await _calendarRepository.Add(calendar);
 
             var doctor = clinic.AddNewDoctor(request.Firstname, request.Lastname, request.DateOfBirth, calendar.Id);
 

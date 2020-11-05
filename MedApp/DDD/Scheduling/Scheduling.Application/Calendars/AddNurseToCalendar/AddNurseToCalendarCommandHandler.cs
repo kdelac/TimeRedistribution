@@ -40,7 +40,7 @@ namespace Scheduling.Application.Calendars.AddNurseToCalendar
             await _calendarRepository.Add(calendar);
 
 
-            await _calendarRepository.Save();
+            //await _calendarRepository.Save();
 
             return Unit.Value;
         }

@@ -34,6 +34,8 @@ namespace Scheduling.Domain.Calendars
             Id = new CalendarId(Guid.NewGuid());
             _title = title;
 
+            AddDomainEvent(new CalendarCreatedDomainEvent(Id));
+
             if (nursesIds.Any())
             {
                 _calendarUsers = new List<CalendarUser>();
@@ -67,8 +69,12 @@ namespace Scheduling.Domain.Calendars
 
         public object CreateNew() => new { Id = Id.Value, Title = _title };
 
-        public int UsersCount() => _calendarUsers.Count();
+        public int UsersCount() => _calendarUsers == null ? 0 : _calendarUsers.Count();
 
         public List<CalendarUser> GetCalendarUsers() => _calendarUsers;
+        public List<IDomainEvent> GetDomainEvents() => this.DomainEvents.ToList();
+        public string GetCalendatTitle() => _title;
+
+        
     }
 }

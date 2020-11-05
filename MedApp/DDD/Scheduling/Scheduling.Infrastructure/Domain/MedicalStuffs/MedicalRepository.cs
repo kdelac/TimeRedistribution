@@ -14,15 +14,12 @@ namespace Scheduling.Infrastructure.Domain.MedicalStuffs
     {
         private readonly SchedulingContext _schedulingContext;
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
-        private readonly IConverter<MedicalStaffDto, MedicalStuff> _converter;
 
         internal MedicalRepository(SchedulingContext schedulingContext,
-            ISqlConnectionFactory sqlConnectionFactory,
-            IConverter<MedicalStaffDto, MedicalStuff> converter)
+            ISqlConnectionFactory sqlConnectionFactory)
         {
             _schedulingContext = schedulingContext;
             _sqlConnectionFactory = sqlConnectionFactory;
-            _converter = converter;
         }
         public async Task AddAsync(MedicalStuff medical)
         {
@@ -41,7 +38,7 @@ namespace Scheduling.Infrastructure.Domain.MedicalStuffs
             const string sql = "SELECT *  FROM [TestDb].[calendars].[MedicalStuffs] WHERE MedicalStuffs.Id = @Id";
             var param = new { Id = id.Value };
             var medicalStaff = await connection.QuerySingleAsync<MedicalStaffDto>(sql, param);
-            return _converter.Convert(medicalStaff);
+            return medicalStaff.Mapp();
         }
 
         public async Task Save()

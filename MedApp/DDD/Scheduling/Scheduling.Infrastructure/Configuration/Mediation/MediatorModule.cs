@@ -5,6 +5,7 @@ using System.Reflection;
 using Autofac;
 using Autofac.Core;
 using Autofac.Features.Variance;
+using DDD.BuildingBlocks.Infrastructure.DomainEventsDispatching;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
@@ -20,7 +21,11 @@ namespace Scheduling.Infrastructure.Configuration.Mediation
         {
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();            
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DomainEventsDispatcher>()
+                .As<IDomainEventsDispatcher>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterSource(new ScopedContravariantRegistrationSource(
                 typeof(IRequestHandler<,>),

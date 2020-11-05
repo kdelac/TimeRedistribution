@@ -1,8 +1,10 @@
 ﻿using DDD.BuildingBlocks.Domain;
 using Scheduling.Domain.Calendars;
+using Scheduling.Domain.Calendars.Eventc;
 using Scheduling.Domain.MedicalStaff;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Scheduling.Domain.CalendarUsers
@@ -36,8 +38,10 @@ namespace Scheduling.Domain.CalendarUsers
             CalendarId = calendarId;
             MedicalStuffId = medicalStuffId;
             _role = medicalStuffRole;
+            AddDomainEvent(new CalendarUserCreatedDomainEvent(CalendarId, MedicalStuffId));
         }
 
         public object CreateNew() => new { CalendarId = CalendarId.Value, MedicalStuffId = MedicalStuffId.Value, RoleCode = _role.Value };
+        public List<IDomainEvent> GetDomainEvents() => this.DomainEvents.ToList();
     }
 }

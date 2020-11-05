@@ -31,11 +31,6 @@ namespace Scheduling.Infrastructure.DataAccess
                 .WithParameter("connectionString", _databaseConnectionString)
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<CalendarMapper>()
-                .As<IConverter<CalendarDto, Calendar>>();
-            builder.RegisterType<MedicalStaffMapper>()
-                .As<IConverter<MedicalStaffDto, MedicalStuff>>();
-
             builder
                 .Register(c =>
                 {
