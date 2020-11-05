@@ -106,6 +106,8 @@ U kodu je složen rad s nosql podacima. Napravljen je context za spajanje na mon
 <p>
 Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom domenom. Kada se primjeni ovaj koncept s lakoćom se može vidjeti što neka aplikacija radi, odnosno što se sve dešava  toj jednoj domeni. Piše se na način da i osoba koja nije programer može s lakoćom primjetiti kako sve funkcionira. Domenom nazivamo dio koji se odnosi na neko područje. Npr. u mom projektu domena je raspored. Svaka domena ima svoj context kako bi se olakšao rad. Kad bi u nekoj organizaciji radili aplikaciju s mnoštvom domena, a samo jednim contextom došlo bi do mnogo konflikata. Kada se primjenjuje ovaj koncept nije preporučeno da dve razlićite domene imaju iste tablice u bazi. Kako između domena ne bi došlo do konflikata svaka domena ima svoj domenski model i dio koji je pisan razumljivim jezikom. 
   Meni osobno jako se sviđa ovaj način implementacije, ima dosta više posla ali je lako za shvato što, kako i gdje.
+  
+ Napravio sam eventdispacher, koji prima domain eventove i aktivira ih pomoću mediatora. U mediatormodul sam registiro dispaecher i koristio ga u repozitorijima nakon što se dogodi insert u bazu. Da se radi o EF pozivali bi ga nakon što se pozove SaveCanges. Napravio sam dva hendlera koja upravljaju tim eventovima, trenutno samo u konzolu ispisuju što se točno dogodilo.
 </p
 </body>
 
