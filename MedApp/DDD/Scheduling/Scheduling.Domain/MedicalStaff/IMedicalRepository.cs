@@ -13,6 +13,7 @@ namespace Scheduling.Domain.MedicalStaff
         Task<MedicalStuff> GetByIdAsync(MedicalStuffId id);
 
         Task<MedicalStuff> GetById(MedicalStuffId id);
+        Task<List<MedicalStuff>> GetAll();
 
         Task Save();
     }

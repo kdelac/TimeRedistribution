@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Scheduling.Application.Contracts;
 using Scheduling.Application.MedicalStaff.CreateMedicalStaff;
 using Scheduling.Application.MedicalStaff.CreateMedicalStaff.CreateNurse;
+using Scheduling.Application.MedicalStaff.GetAllMedicalStaff;
 
 namespace Scheduling.API.Modules.Scheduling.MedicalStaff
 {
@@ -44,6 +45,14 @@ namespace Scheduling.API.Modules.Scheduling.MedicalStaff
                     request.Lastname,
                     request.DateOfBirth));
             return Ok();
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllMeetingGroups()
+        {
+            var clinics = await _schedulerModule.ExecuteQueryAsync(new GetAllMedicalStaffQuery());
+
+            return Ok(clinics);
         }
 
 
