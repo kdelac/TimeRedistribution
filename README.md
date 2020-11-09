@@ -108,7 +108,32 @@ Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom dome
   Meni osobno jako se sviđa ovaj način implementacije, ima dosta više posla ali je lako za shvato što, kako i gdje.
   
  Napravio sam eventdispacher, koji prima domain eventove i aktivira ih pomoću mediatora. U mediatormodul sam registiro dispaecher i koristio ga u repozitorijima nakon što se dogodi insert u bazu. Da se radi o EF pozivali bi ga nakon što se pozove SaveCanges. Napravio sam dva hendlera koja upravljaju tim eventovima, trenutno samo u konzolu ispisuju što se točno dogodilo.
-</p
+</p>
 </body>
+
+<h3>Confluence</h3>
+<p>
+  Confluenc nudi kreiranje nekoliko prostora za dokumentiranje. Imamo prostor u kojemu definiramo tehničku dokumentaciju, korisničke zahtjeve i ostalo što se veže na dokumentaciju projekta. Zatim imamo prostor u kojem se bilježe timske aktivnosti (što tim radi, kad su bili sastanvi i što se na tim sastancima dogovorilo). Zatim imamo dokumentaciju koja je povezana s softwearom koji je u izradi. On prati događaje na Jiri, unutar njega mogu se definirati novi taskovi na Jiri, referencirat već postojeći taskovi na Jiri odnosno u ovom prostoru piše se sve što je usko vezano za softwear. Postoji još nekoliko prostora: Osobni prostor, gdje se mogu zapisivati osobna zapažanja i bilješke, te prostor gdje se dijele s drugima u timu nova znanja, kako nešto napraviti dobro... Prilikom kreiranja prostora nudi nam se tih nekoliko opcija: 
+</p>
+<img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/prostor.png?raw=true">
+<p>Štp se tiče Jire i Confluenca prilikom Softweare project prostora mora se dodijeliti s kojim projektom na Jiri projekt biti spojen. Kada se stranice uređuju mogu se dodavati razni linkovi. Postoje insertovi za razne chartove na Jiri i sve što Jira nudi, mogu se dodavati isječci koda... Kad govorimo o prostoru koji nije usko povezan s Jirom možemo mu dodijeliti linkove koji šalje direktno na Jira projekt. Isto tako na Jiri se može dodati poveznica koja vodi direktno na tu dokumentaciju. </p>
+</body>
+
+<figure>
+  <img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/spacej.png">
+  <figcaption style="text-align:center">Dodavanje prostora na Jiru</figcaption>
+</figure>
+
+<figure>
+  <img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/spacs.png" >
+  <figcaption style="text-align:center">Dodavanje linka na Jiru na neki od prostora</figcaption>
+</figure>
+
+<p>Pomoću linkova povezani su neki od prostora i Jira.</p>
+
+<figure>
+  <img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/dodavanje.png?raw=true" >
+  <figcaption style="text-align:center">Razne mogućnosti koje se mogu dodati na stranicu</figcaption>
+</figure>
 
 </body>
