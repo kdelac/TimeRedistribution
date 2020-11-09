@@ -1,6 +1,7 @@
 ﻿using DDD.BuildingBlocks.Domain;
 using Scheduling.Domain.Calendars;
 using Scheduling.Domain.Clinics;
+using Scheduling.Domain.MedicalStaff.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -51,7 +52,7 @@ namespace Scheduling.Domain.MedicalStaff
             _lastname = lastname;
             _dateOfBirth = dateOfBirth;
             _clinicId = clinicId;
-            _medicalStuffRole = medicalStuffRole;
+            _medicalStuffRole = medicalStuffRole;            
         }
 
         internal static MedicalStuff CreateNewDoctor(
@@ -101,6 +102,11 @@ namespace Scheduling.Domain.MedicalStaff
             _clinicId = clinicId;
             _calendarId = calendarId;
 
+            if (_medicalStuffRole == MedicalStuffRole.Doctor)
+                AddDomainEvent(new DoctorCreatedDomainEvent(Id));
+
+            if (_medicalStuffRole == MedicalStuffRole.Nurse)
+                AddDomainEvent(new NurseCreatedDomainEvent(Id));
         }
 
         public CalendarId GetCalendarId() => _calendarId;

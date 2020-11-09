@@ -1,5 +1,6 @@
 ﻿using DDD.BuildingBlocks.Domain;
 using Scheduling.Domain.Calendars;
+using Scheduling.Domain.Clinics.Events;
 using Scheduling.Domain.MedicalStaff;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,24 @@ namespace Scheduling.Domain.Clinics
 
         public Clinic()
         {
+        }
+
+        public Clinic(string name, 
+            string location)
+        {
+            Id = new ClinicId(Guid.NewGuid());
+            _name = name;
+            _location = location;
+            AddDomainEvent(new ClinicCreatedDomainEvent(Id));
+        }
+
+        public Clinic(ClinicId clinicId,
+            string name, 
+            string location)
+        {
+            Id = clinicId;
+            _name = name;
+            _location = location;
         }
 
         public MedicalStuff AddNewDoctor(
@@ -39,14 +58,7 @@ namespace Scheduling.Domain.Clinics
                 firstname, 
                 lastname, 
                 dateOfBirth);
-        }
-
-        public Clinic(string name, string location)
-        {
-            Id = new ClinicId(Guid.NewGuid());
-            _name = name;
-            _location = location;
-        }
+        }        
 
         public object CreateNew()
         {

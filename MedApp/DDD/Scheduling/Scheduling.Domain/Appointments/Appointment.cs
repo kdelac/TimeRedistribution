@@ -1,4 +1,5 @@
 ﻿using DDD.BuildingBlocks.Domain;
+using Scheduling.Domain.Appointments.Events;
 using Scheduling.Domain.Calendars;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace Scheduling.Domain.Appointments
             _calendarId = calendarId;
             _term = appointmentTerm;
             _patientId = patientId;
+            AddDomainEvent(new AppointmentCreatedDomainEvent(Id));
         }
     }
 }
