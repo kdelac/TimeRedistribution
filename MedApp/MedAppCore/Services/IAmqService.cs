@@ -11,5 +11,6 @@ namespace MedAppCore.Services
     {
         IObjectMessage ReciveEvent(string queueName);
         bool SendEvent<TEntity>(TEntity model, string queueName);
+        bool SendEventTopic(string message, string queueName);
     }
 }

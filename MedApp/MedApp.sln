@@ -53,13 +53,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduling.Infrastructure",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{0B98276C-2BAA-42C1-83C0-0130AE15AA91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.BuildingBlocks.Application", "DDD\BuildingBlocks\DDD.BuildingBlocks.Application\DDD.BuildingBlocks.Application.csproj", "{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.BuildingBlocks.Application", "DDD\BuildingBlocks\DDD.BuildingBlocks.Application\DDD.BuildingBlocks.Application.csproj", "{EA55EF00-B7AC-465E-B675-4C71EEC4CB75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.BuildingBlocks.Domain", "DDD\BuildingBlocks\DDD.BuildingBlocks.Domain\DDD.BuildingBlocks.Domain.csproj", "{18137F91-653E-4190-B982-BB94629D343A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.BuildingBlocks.Domain", "DDD\BuildingBlocks\DDD.BuildingBlocks.Domain\DDD.BuildingBlocks.Domain.csproj", "{18137F91-653E-4190-B982-BB94629D343A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.BuildingBlocks.Infrastructure", "DDD\BuildingBlocks\DDD.BuildingBlocks.Infrastructure\DDD.BuildingBlocks.Infrastructure.csproj", "{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.BuildingBlocks.Infrastructure", "DDD\BuildingBlocks\DDD.BuildingBlocks.Infrastructure\DDD.BuildingBlocks.Infrastructure.csproj", "{D33389EE-0880-4D3D-AECE-6AFD2491D1AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scheduling.Application", "DDD\Scheduling\Scheduling.Application\Scheduling.Application.csproj", "{A39BE73B-0AEE-4989-B226-C2AD97772764}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduling.Application", "DDD\Scheduling\Scheduling.Application\Scheduling.Application.csproj", "{A39BE73B-0AEE-4989-B226-C2AD97772764}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpWorker", "HelpWorker\HelpWorker.csproj", "{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +175,10 @@ Global
 		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A39BE73B-0AEE-4989-B226-C2AD97772764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

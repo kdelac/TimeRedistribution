@@ -1,28 +1,54 @@
 version: '3.8'
 
 services:
-  timeredistribution:
+  mailer-service1:
     build:
       context: .
-      dockerfile: ./TimeRedistribution/Dockerfile
+      dockerfile: ./MailerWorker/Dockerfile
     depends_on:
       - activemq
-      - elasticsearch
-    environment:
-      DBServer: "db"
-    expose:
-      - "5003"
-    ports:
-      - "5003:80"
+    restart: always
 
-  appointmentredistribution:
-    build: 
+  mailer-service2:
+    build:
       context: .
-      dockerfile: ./AppoitmentRedistribution/Dockerfile
+      dockerfile: ./MailerWorker/Dockerfile
     depends_on:
-      - "db"
-      - "activemq"
-    
+      - activemq
+    restart: always
+
+  mailer-service3:
+    build:
+      context: .
+      dockerfile: ./MailerWorker/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+
+  help-service1:
+    build:
+      context: .
+      dockerfile: ./HelpWorker/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+  
+  help-service2:
+    build:
+      context: .
+      dockerfile: ./HelpWorker/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+  
+  help-service3:
+    build:
+      context: .
+      dockerfile: ./HelpWorker/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+
   activemq:
     image: rmohr/activemq
     expose:
@@ -30,64 +56,5 @@ services:
     ports:
       - "5002:8161"
       - "8888:61616/tcp"
-    
-  mailer-service1:
-    build: ./MailerWorker
-    depends_on:
-      - activemq
-    restart: always
 
-  mailer-service2:
-    build: ./MailerWorker
-    depends_on:
-      - activemq
-    restart: always
-
-  mailer-service3:
-    build: ./MailerWorker
-    depends_on:
-      - activemq
-    restart: always
-
-  test-service:
-    build: 
-      context: .
-      dockerfile: ./TestProject/Dockerfile
-    depends_on:
-      - activemq
-    restart: always
-    
-  db:
-    image: "mcr.microsoft.com/mssql/server"
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Passw0rd"
-      MSSQL_PID: Express
-    expose:
-      - "1433"
-    ports:
-      - "1433:1433"
-    volumes:
-      - ../sqldata:/var/opt/mssql/data
-    container_name: database-container
-  
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
-    container_name: elasticsearch
-    environment:
-      - xpack.security.enabled=false
-      - discovery.type=single-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - ../elasticsearch-data:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-      - 9300:9300
+ 

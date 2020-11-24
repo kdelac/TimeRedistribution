@@ -5,7 +5,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using MedAppCore.Client;
+using MedAppCore.Services;
 using MedAppData;
+using MedAppServices;
 using MedAppServices.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -106,6 +108,8 @@ namespace WebApi
             });
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddScoped<IAmqService, AmqService>();
 
             services.AddHttpClient<IApiCall, ApiCall>()
                     .SetHandlerLifetime(TimeSpan.FromSeconds(5))

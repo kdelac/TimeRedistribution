@@ -1,18 +1,14 @@
+using Apache.NMS;
+using MedAppCore;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Apache.NMS;
-using Apache.NMS.ActiveMQ.Commands;
-using Apache.NMS.Util;
-using MedAppCore;
-using MedAppCore.Models;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace MailerWorker
+namespace HelpWorker
 {
     public class Worker : BackgroundService
     {
@@ -20,7 +16,7 @@ namespace MailerWorker
         private IConnectionFactory connectionFactory;
         private IConnection connection;
         private ISession session;
-        private readonly string SEND_EMAIL = "Consumer.A.VirtualTopic.Message";
+        private readonly string SEND_EMAIL = "Consumer.B.VirtualTopic.Message";
 
         public Worker(ILogger<Worker> logger)
         {
@@ -42,7 +38,7 @@ namespace MailerWorker
         protected void Message_ListenerStatus(IMessage receivedMsg)
         {
             ITextMessage message = receivedMsg as ITextMessage;
-            _logger.LogInformation($"Prvi servis: {message.Text}");
+            _logger.LogInformation($"Drugi servis: {message.Text}");
         }
     }
 }

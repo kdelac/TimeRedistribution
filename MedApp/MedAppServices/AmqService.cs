@@ -19,7 +19,7 @@ namespace MedAppServices
 
         public AmqService()
         {
-            connectionFactory = new NMSConnectionFactory(Urls.ActiveMQ);
+            connectionFactory = new NMSConnectionFactory(Urls.ActiveMQLoc);
             connection = connectionFactory.CreateConnection();
             connection.Start();
             session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
@@ -59,6 +59,31 @@ namespace MedAppServices
             }
 
             return succes;            
+        }
+
+        public bool SendEventTopic(string message, string queueName)
+        {
+            bool succes = false;
+            try
+            {
+                ITextMessage textMessage;
+
+
+                ISession session = connection.CreateSession();
+                ActiveMQTopic topic = new ActiveMQTopic(queueName);
+                IMessageProducer messageProducer = session.CreateProducer();
+
+                textMessage = session.CreateTextMessage(message);
+
+                messageProducer.Send(topic, textMessage);
+                succes = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return succes;
         }
 
         protected void Message_ListenerStatus<TEntity>(IMessage receivedMsg)

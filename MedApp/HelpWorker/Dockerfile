@@ -5,16 +5,17 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MailerWorker/MailerWorker.csproj", "MailerWorker/"]
-RUN dotnet restore "MailerWorker/MailerWorker.csproj"
+COPY ["HelpWorker/HelpWorker.csproj", "HelpWorker/"]
+COPY ["MedAppCore/MedAppCore.csproj", "MedAppCore/"]
+RUN dotnet restore "HelpWorker/HelpWorker.csproj"
 COPY . .
-WORKDIR "/src/MailerWorker"
-RUN dotnet build "MailerWorker.csproj" -c Release -o /app/build
+WORKDIR "/src/HelpWorker"
+RUN dotnet build "HelpWorker.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MailerWorker.csproj" -c Release -o /app/publish
+RUN dotnet publish "HelpWorker.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MailerWorker.dll"]
+ENTRYPOINT ["dotnet", "HelpWorker.dll"]
