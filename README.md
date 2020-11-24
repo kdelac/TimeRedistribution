@@ -90,7 +90,6 @@ U pk varijabla sadrži privatni ključ korisnika. Prije toka krajni korisnik će
   
   Implementirao sam gRPC servis koji kreira novi račun. U .proto fileu definirane su metode koje se koriste. Taj isti .proto file kopirao sam u servise i pomoću njega implementirao klijentsku stranu. U servisu sam morao samo pozvati metodu za kreiranje billinga.
 </p>
-</body>
 
 <h3>JMeter</h3>
 <p>
@@ -109,7 +108,6 @@ Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom dome
   
  Napravio sam eventdispacher, koji prima domain eventove i aktivira ih pomoću mediatora. U mediatormodul sam registiro dispaecher i koristio ga u repozitorijima nakon što se dogodi insert u bazu. Da se radi o EF pozivali bi ga nakon što se pozove SaveCanges. Napravio sam dva hendlera koja upravljaju tim eventovima, trenutno samo u konzolu ispisuju što se točno dogodilo.
 </p>
-</body>
 
 <h3>Confluence</h3>
 <p>
@@ -117,7 +115,7 @@ Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom dome
 </p>
 <img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/prostor.png?raw=true">
 <p>Što se tiče Jire i Confluenca prilikom kreiranja Softweare project prostora mora se dodijeliti s kojim će projektom na Jiri prostor biti spojen. Kada se stranice uređuju mogu se dodavati razni linkovi. Postoje insertovi za razne chartove na Jiri i sve što Jira nudi, mogu se dodavati isječci koda... Kad govorimo o ostalim prostorima mogu se povezati s Jirom tako da im dodamo linkove na projekt. Isto tako na Jiri se može dodati poveznica koja vodi direktno na tu dokumentaciju. </p>
-</body>
+
 
 <figure>
   <img src="https://github.com/kdelac/TimeRedistribution/blob/master/Documents/spacej.png">
@@ -138,5 +136,14 @@ Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom dome
   <figcaption style="text-align:center">Razne mogućnosti koje se mogu dodati na stranicu</figcaption>
 </figure>
 <br><br>
+
+<h3>AMQ više instanci u topicu</h3>
+Prilikom kreiranja potrebno je napraviti VirtualTopic kako bi se mogli subscribati pomoću queuea. To se postiže tako da u ime dodamo VirtualTopic što se može vidjeti iz primjera: <code>ActiveMQTopic topic = new ActiveMQTopic("VirtualTopic.Message");</code> Ako želimo se subscribati na ovu poruku sani jednom iako imamo više instanci moramo se subscribati pomoću queuea. Npr. imamo 2 servisa i nekoliko njihovih istanci, kako bi samo jedan primio poruku mora se napraviti queue <code>
+  session.GetQueue("Consumer.A.VirtualTopic.Message");
+  session.GetQueue("Consumer.B.VirtualTopic.Message");</code>
+  Ako pak želimo da sve instance nekog trećeg servisa prime poruku, tada se subscribamo na topic: <code>session.GetTopic("VirtualTopic.Message");</code>
+<p>
+
+</p>
 
 </body>
