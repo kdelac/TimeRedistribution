@@ -49,6 +49,22 @@ services:
       - activemq
     restart: always
 
+  test-service1:
+    build:
+      context: .
+      dockerfile: ./TestProject/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+
+  test-service2:
+    build:
+      context: .
+      dockerfile: ./TestProject/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+
   activemq:
     image: rmohr/activemq
     expose:
