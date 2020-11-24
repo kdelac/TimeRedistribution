@@ -138,8 +138,10 @@ Ovaj koncept radi se na način da se sav kod mora slagati s nekom poslovnom dome
 <br><br>
 
 <h3>AMQ više instanci u topicu</h3>
-Prilikom kreiranja potrebno je napraviti VirtualTopic kako bi se mogli subscribati pomoću queuea. To se postiže tako da u ime dodamo VirtualTopic što se može vidjeti iz primjera: <code>ActiveMQTopic topic = new ActiveMQTopic("VirtualTopic.Message");</code> Ako želimo se subscribati na ovu poruku sani jednom iako imamo više instanci moramo se subscribati pomoću queuea. Npr. imamo 2 servisa i nekoliko njihovih istanci, kako bi samo jedan primio poruku mora se napraviti queue <code>
-  session.GetQueue("Consumer.A.VirtualTopic.Message");
+Prilikom kreiranja potrebno je napraviti VirtualTopic kako bi se mogli subscribati pomoću queuea. To se postiže tako da u ime dodamo VirtualTopic što se može vidjeti iz primjera: <code>ActiveMQTopic topic = new ActiveMQTopic("VirtualTopic.Message");</code> Ako želimo se subscribati na ovu poruku sani jednom iako imamo više instanci moramo se subscribati pomoću queuea. Npr. imamo 2 servisa i nekoliko njihovih istanci, kako bi samo jedan primio poruku mora se napraviti queue 1. servis: <code>
+  session.GetQueue("Consumer.A.VirtualTopic.Message");</code>
+  2. servis
+  <code>
   session.GetQueue("Consumer.B.VirtualTopic.Message");</code>
   Ako pak želimo da sve instance nekog trećeg servisa prime poruku, tada se subscribamo na topic: <code>session.GetTopic("VirtualTopic.Message");</code>
 <p>
