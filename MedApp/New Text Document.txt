@@ -1,0 +1,51 @@
+timeredistribution:
+    build:
+      context: .
+      dockerfile: ./TimeRedistribution/Dockerfile
+    depends_on:
+      - activemq
+      - elasticsearch
+    environment:
+      DBServer: "db"
+    expose:
+      - "5003"
+    ports:
+      - "5003:80"
+
+  appointmentredistribution:
+    build: 
+      context: .
+      dockerfile: ./AppoitmentRedistribution/Dockerfile
+    depends_on:
+      - "db"
+      - "activemq"
+    
+  activemq:
+    image: rmohr/activemq
+    expose:
+      - "8888"
+    ports:
+      - "5002:8161"
+      - "8888:61616/tcp"
+
+ test-service:
+    build: 
+      context: .
+      dockerfile: ./TestProject/Dockerfile
+    depends_on:
+      - activemq
+    restart: always
+    
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Passw0rd"
+      MSSQL_PID: Express
+    expose:
+      - "1433"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ../sqldata:/var/opt/mssql/data
+    container_name: database-container

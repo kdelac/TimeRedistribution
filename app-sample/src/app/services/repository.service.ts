@@ -26,7 +26,7 @@ export class RepositoryService {
     return this.http.delete(this.createCompleteRoute(route, this.envUrl));
   }
 
-  private createCompleteRoute = (route: string, envAddress: string) => {
+  public createCompleteRoute = (route: string, envAddress: string) => {
     return `${envAddress}/${route}`;
   }
 

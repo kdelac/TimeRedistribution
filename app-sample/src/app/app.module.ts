@@ -4,14 +4,23 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MessageComponent } from './Components/message/message.component';
+import { MessagesComponent } from './Components/messages/messages.component';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MessageComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatGridListModule,
+    ScrollingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

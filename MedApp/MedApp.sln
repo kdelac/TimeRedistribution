@@ -61,7 +61,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.BuildingBlocks.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scheduling.Application", "DDD\Scheduling\Scheduling.Application\Scheduling.Application.csproj", "{A39BE73B-0AEE-4989-B226-C2AD97772764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpWorker", "HelpWorker\HelpWorker.csproj", "{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpWorker", "HelpWorker\HelpWorker.csproj", "{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{D788E267-2464-4396-9525-0BF96028A602}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +181,10 @@ Global
 		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5D25527-54D6-48AD-ABA8-0CB7AD99AC5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D788E267-2464-4396-9525-0BF96028A602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D788E267-2464-4396-9525-0BF96028A602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D788E267-2464-4396-9525-0BF96028A602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D788E267-2464-4396-9525-0BF96028A602}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
