@@ -1,11 +1,14 @@
 
 <mat-grid-list cols="2" rowHeight="2:1">
   <mat-grid-tile>
-    <div #scroll style="overflow: auto; height: inherit; width: -webkit-fill-available; background-color: lightblue;" >
+    <div  [appScrolling] = "position"  style="overflow: auto; height: inherit; width: -webkit-fill-available;" >
       <app-messages [messages]="messages" style="padding: 10px;"></app-messages>
     </div>
   </mat-grid-tile>
   <mat-grid-tile style="overflow:visible;">
+    <button (click)="position='top'">Vrh</button><br>
+    <button (click)="position='bottom'">Kraj</button>
+
     <button (click)="add()">Dodaj</button>
   </mat-grid-tile>
 </mat-grid-list>

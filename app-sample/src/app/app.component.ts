@@ -6,6 +6,7 @@ import { Application } from './models/Application';
 import { Message } from './models/message';
 import { Observable } from 'rxjs';
 import { MessageService } from './services/message.service';
+import { ScrollingDirective } from './Directives/scrolling.directive';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +14,15 @@ import { MessageService } from './services/message.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild('scroll') private myScrollContainer: ElementRef;
-
+  @ViewChild(ScrollingDirective) scroll: ScrollingDirective
 
   messages : Observable<Message[]> ;
   element: HTMLDivElement;
-options: ScrollToOptions;
-displayedColumns: string[] = ['senderName', 'text'];
+  options: ScrollToOptions;
+  displayedColumns: string[] = ['senderName', 'text'];
+  first:boolean = false;
+  position: string = 'bottom';
+  newMessages:boolean = false;
 
 constructor(private _messageService:MessageService) { }
 
@@ -27,19 +30,8 @@ ngOnInit(): void {
 this.getProductsUsingAsyncPipe();
 }
 
-ngAfterViewInit(): void {
-  //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-  //Add 'implements AfterViewInit' to the class.
-
-}
-
-ngAfterViewChecked(): void {
-  //Called after every check of the component's view. Applies to components only.
-  //Add 'implements AfterViewChecked' to the class.
-  this.scrollToBottom();
-}
-
 add(){
+  this.newMessages = !this.newMessages;
   this._messageService.add();
   this.getProductsUsingAsyncPipe();
 }
@@ -48,13 +40,7 @@ public getProductsUsingAsyncPipe() {
   this.messages = this._messageService.getMessages();
 }
 
-scrollToBottom(): void {
-  try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-  } catch(err) {
-    console.log(err)
-  }
-}
+
 
 // login(){
 //   const id = Guid.create();

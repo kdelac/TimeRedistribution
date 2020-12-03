@@ -8,12 +8,14 @@ import { MessageComponent } from './Components/message/message.component';
 import { MessagesComponent } from './Components/messages/messages.component';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { ScrollingDirective } from './Directives/scrolling.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     MessageComponent,
-    MessagesComponent
+    MessagesComponent,
+    ScrollingDirective
   ],
   imports: [
     BrowserModule,

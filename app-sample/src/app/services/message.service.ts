@@ -12,7 +12,15 @@ import { of } from 'rxjs';
 export class MessageService {
   constructor() { }
 
-  messages: Message[] =  [ {text:'Trx Summary', senderName:'Kristijan'},
+  messages: Message[] =  [ {text:'Prvi Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
+  {text:'Trx Summary', senderName:'Kristijan'},
   {text:'Trx Summary', senderName:'Kristijan'},
   {text:'Trx Summary', senderName:'Kristijan'},
   {text:'Trx Summary', senderName:'Kristijan'},
