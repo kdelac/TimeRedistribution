@@ -9,7 +9,7 @@
     <PackageReference Include="Apache.NMS.ActiveMQ" Version="1.7.2" />
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="Elasticsearch.Net" Version="7.8.1" />
-    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.15.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.31.0" />
     <PackageReference Include="Grpc.Tools" Version="2.32.0">
       <PrivateAssets>all</PrivateAssets>
